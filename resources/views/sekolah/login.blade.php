@@ -15,12 +15,48 @@
     <link rel="stylesheet" href="{{ asset('asset_dore/css/main.css') }}" />        
     <!-- <link rel="stylesheet" href="{{ asset('asset_dore/css/loading.css') }}" /> -->
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
         body {
             font-family: 'Roboto', sans-serif !important;
         }
-        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p,li,ul,a,input,select{
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p,li,ul,a,input,select,.bootstrap-tagsinput{
             font-family: 'Roboto', sans-serif !important;
+            color:black;
+        }
+
+        h1 {
+        font-size: 4rem !important;
+        }
+
+        h2 {
+            font-size: 3.052rem !important;
+        }
+
+        h3 {
+            font-size: 2.441rem !important;
+        }
+
+        h4{
+            font-size: 1.953rem !important;
+        }
+
+        h5{
+            font-size: 1.875rem !important;
+        }
+
+        h6{
+            font-size: 1.25rem !important;
+        }
+
+        button,label{
+            font-size: 0.75rem !important;
+        }
+
+        p,li,ul,a,input,select,textarea,span[class*="info-code"],span[class*="info-name"],.selectize-input,span{
+            font-size: 0.875rem !important;
+        }
+        .bootstrap-tagsinput{
+            font-size: 0.8rem !important;
         }
         .logo-single{
             background:url("{{ asset('img/tarbak30x100.png') }}") no-repeat;
@@ -59,7 +95,9 @@
         
         #btn-eye
         {
-            top: 0px;right: 10px;left: unset;width: 40px;height: 40px;background: url("{{ asset('img/hide.svg') }}") no-repeat;background-blend-mode: lighten;background-size: 22px;background-position-x: center;background-position-y: center;opacity: 0.5;cursor: pointer;
+            position: absolute;
+            top: 26px;
+            right: 18px;left: unset;width: 40px;height: 40px;background: url("{{ asset('img/hide.svg') }}") no-repeat;background-blend-mode: lighten;background-size: 22px;background-position-x: center;background-position-y: center;opacity: 0.5;cursor: pointer;
         }
         .btn{
             border-radius: 8px !important;
@@ -117,15 +155,27 @@
                                     {{ Session::get('alert') }}
                                 </div>
                                 @endif
-                                <label class="form-group has-float-label mb-4">
-                                    <input class="form-control" name="nik" id="username" required/>
-                                    <span>NIK</span>
-                                </label>
-                                <label class="form-group has-float-label mb-4">
-                                    <input class="form-control" type="password" name="password" placeholder="" id="password" required>
-                                    <span id="span-password">Password</span>
-                                    <span id="btn-eye"><i class="icon-eye"></i></span>
-                                </label>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <label for="username">Username</label>
+                                                <input class="form-control" type="text" id="username" name="nik" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <label for="password">Password</label>
+                                                <input class="form-control" type="password" name="password" placeholder="" id="password" required>
+                                                <span id="btn-eye"><i class="icon-eye"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <a href="#">Lupa password?</a>
                                     <button class="btn btn-primary btn-lg" type="submit">Masuk</button>

@@ -395,6 +395,7 @@
                                     <div class="col-9">
                                         <input class="form-control" type="text" id="id" name="id" readonly hidden>
                                         <input class="form-control" type="text" id="no_bukti" name="no_bukti" readonly hidden>
+                                        <input class="form-control" type="hidden" id="flag_kelas" name="flag_kelas" readonly >
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -900,15 +901,16 @@
                 var width = ["30%","70%"];
             break;
             case 'kode_kelas': 
-                header = ['Kode Kelas', 'Nama'];
+                header = ['Kode Kelas', 'Nama', 'Jenis Kelas'];
                 if("{{ Session::get('statusAdmin') }}" == "G" ){
                     var toUrl = "{{ url('sekolah-trans/penilaian-kelas') }}";
                 }else{
-                    var toUrl = "{{ url('sekolah-master/kelas') }}";
+                    var toUrl = "{{ url('sekolah-master/multi-kelas') }}";
                 }
                 var columns = [
                     { data: 'kode_kelas' },
-                    { data: 'nama' }
+                    { data: 'nama' },
+                    { data: 'flag_kelas'}
                 ];
                 
                 var judul = "Daftar Kelas";
@@ -917,18 +919,18 @@
                 var jTarget2 = "text";
                 $target = ".info-code_"+par;
                 $target2 = ".info-name_"+par;
-                $target3 = "";
+                $target3 = "#flag_kelas";
                 $target4 = "";
                 parameter = {kode_pp:$('#kode_pp').val()};
-                var width = ["30%","70%"];
+                var width = ["30%","55%","15%"];
             break;
             case 'kode_matpel': 
                 header = ['Kode Matpel', 'Nama'];
-                if("{{ Session::get('statusAdmin') }}" == "G" ){
+                // if("{{ Session::get('statusAdmin') }}" == "G" ){
                     var toUrl = "{{ url('sekolah-trans/penilaian-matpel') }}";
-                }else{
-                    var toUrl = "{{ url('sekolah-master/matpel') }}";
-                }
+                // }else{
+                //     var toUrl = "{{ url('sekolah-master/matpel') }}";
+                // }
                 var columns = [
                     { data: 'kode_matpel' },
                     { data: 'nama' }
@@ -942,7 +944,7 @@
                 $target2 = ".info-name_"+par;
                 $target3 = "";
                 $target4 = "";
-                parameter = {kode_pp:$('#kode_pp').val(),kode_kelas:$('#kode_kelas').val()};
+                parameter = {kode_pp:$('#kode_pp').val(),kode_kelas:$('#kode_kelas').val(),flag_kelas:$('#flag_kelas').val()};
                 var width = ["30%","70%"];
             break;
             case 'kode_kd': 
@@ -1010,7 +1012,7 @@
             break;
             case 'nis[]': 
                 header = ['ID', 'NIS','Nama'];
-                var toUrl = "{{ url('sekolah-trans/siswa') }}";
+                var toUrl = "{{ url('sekolah-trans/penilaian-siswa') }}";
                 var columns = [
                     { data: 'nis' },
                     { data: 'nis2' },
@@ -1024,7 +1026,7 @@
                 $target3 = ".td"+$target2;
                 $target2 = "."+$target2;
                 $target4 = ".td-nilai";
-                parameter = {kode_pp:$('#kode_pp').val(),kode_kelas:$('#kode_kelas').val(),flag_aktif:1};
+                parameter = {kode_pp:$('#kode_pp').val(),kode_kelas:$('#kode_kelas').val(),kode_matpel:$('#kode_matpel').val(),flag_aktif:1,flag_kelas:$('#flag_kelas').val()};
                 var width = ["20%","20%","60%"];
             break;
         }
@@ -1125,6 +1127,10 @@
 
                 if($target3 != ""){
                     $($target3).text(nama);
+                    if(par == "kode_kelas"){
+                        var flag_kelas = $(this).closest('tr').find('td:nth-child(3)').text();
+                        $($target3).val(flag_kelas);
+                    }
                 }
 
                 if($target4 != ""){
@@ -1292,16 +1298,16 @@
         var tmp = id.split(" - ");
         kode = tmp[0];
 
-        if("{{ Session::get('statusAdmin') }}" == "G" ){
+        // if("{{ Session::get('statusAdmin') }}" == "G" ){
             var toUrl = "{{ url('sekolah-trans/penilaian-matpel') }}";
-        }else{
-            var toUrl = "{{ url('sekolah-master/matpel') }}";
-        }
+        // }else{
+        //     var toUrl = "{{ url('sekolah-master/matpel') }}";
+        // }
         $.ajax({
             type: 'GET',
             url: "{{ url('sekolah-master/matpel') }}",
             dataType: 'json',
-            data:{kode_pp:pp,kode_matpel:kode,kode_kelas:$('#kode_kelas').val()},
+            data:{kode_pp:pp,kode_matpel:kode,kode_kelas:$('#kode_kelas').val(),flag_kelas:$('#flag_kelas').val()},
             async:false,
             success:function(result){    
                 if(result.status){
@@ -1370,8 +1376,8 @@
         kode = tmp[0];
         $.ajax({
             type: 'GET',
-            url: "{{ url('sekolah-trans/siswa') }}",
-            data:{kode_pp:$('#kode_pp').val(),nis:kode,kode_kelas:$('#kode_kelas').val()},
+            url: "{{ url('sekolah-trans/penilaian-siswa') }}",
+            data:{kode_pp:$('#kode_pp').val(),nis:kode,kode_kelas:$('#kode_kelas').val(),flag_kelas:$('#flag_kelas').val(),kode_matpel:$('#kode_matpel').val()},
             dataType: 'json',
             async:false,
             success:function(result){    
@@ -1515,6 +1521,7 @@
                     $('#method').val('put');
                     $('#no_bukti').val(id);
                     $('#kode_pp').val(result.data[0].kode_pp);
+                    $('#flag_kelas').val(result.data[0].flag_kelas);
                     $('#kode_ta').val(result.data[0].kode_ta);
                     $('#kode_sem')[0].selectize.setValue(result.data[0].kode_sem);
                     $('#kode_kelas').val(result.data[0].kode_kelas);
@@ -1808,6 +1815,7 @@
                     $('#method').val('put');
                     $('#no_bukti').val(id);
                     $('#kode_pp').val(result.data[0].kode_pp);
+                    $('#flag_kelas').val(result.data[0].flag_kelas);
                     $('#kode_ta').val(result.data[0].kode_ta);
                     $('#kode_sem')[0].selectize.setValue(result.data[0].kode_sem);
                     $('#kode_kelas').val(result.data[0].kode_kelas);
@@ -2069,7 +2077,7 @@
                 var nis = $('#input-nilai > tbody > tr:eq('+index+') > td').find(".inp-kode").val();
                 var nama = $('#input-nilai > tbody > tr:eq('+index+') > td').find(".inp-nama").val();
                 var nilai = $('#input-nilai > tbody > tr:eq('+index+') > td').find(".inp-nilai").val();
-                var nis2 = $('#input-nilai > tbody > tr:eq('+index+') > td').find(".inp-ni2").val();
+                var nis2 = $('#input-nilai > tbody > tr:eq('+index+') > td').find(".inp-nis2").val();
                
                 $('#input-nilai > tbody > tr:eq('+index+') > td').find(".inp-kode").val(nis);
                 $('#input-nilai > tbody > tr:eq('+index+') > td').find(".td-kode").text(nis);
@@ -2309,6 +2317,7 @@
                 var nilai = $(this).parents("tr").find(".inp-nilai").val();
                 var nis2 = $(this).parents("tr").find(".inp-nis2").val();
                 var no = $(this).parents("tr").find(".no-nilai").text();
+
                 $(this).parents("tr").find(".inp-kode").val(nis);
                 $(this).parents("tr").find(".td-kode").text(nis);
                 if(idx == 1){
@@ -2330,9 +2339,8 @@
                     $(this).parents("tr").find(".td-nis2").hide();
                     $(this).parents("tr").find(".inp-nis2").focus();
                 }else{
-                    
-                    $(this).parents("tr").find(".inp-nama").hide();
-                    $(this).parents("tr").find(".td-nama").show();
+                    $(this).parents("tr").find(".inp-nis2").hide();
+                    $(this).parents("tr").find(".td-nis2").show();
                 }
 
                 $(this).parents("tr").find(".inp-nama").val(nama);
@@ -2358,6 +2366,8 @@
                     $(this).parents("tr").find(".td-nilai").show();
                 }
                 hitungTotalRow();
+                var nis2 = $(this).parents("tr").find(".inp-nis2").val();
+                console.log(nis2);
             }
         }
     });
@@ -2471,7 +2481,7 @@
                             var nik_user = "{{ Session::get('nikUser') }}";
                             var nik = "{{ Session::get('userLog') }}";
 
-                            var link = "{{ config('api.url').'sekolah/penilaian-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=non&kode_pp="+$('#kode_pp').val()+"&kode_kelas="+$('#kode_kelas').val()+"&kode_matpel="+$('.info-name_kode_matpel > span ').text()+"&kode_jenis="+$('#kode_jenis').val()+"&kode_kd="+$('#kode_kd').val()+"&kode_sem="+$('#kode_sem option:selected').text();
+                            var link = "{{ config('api.url').'sekolah/penilaian-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=non&kode_pp="+$('#kode_pp').val()+"&kode_kelas="+$('#kode_kelas').val()+"&kode_matpel="+$('.info-name_kode_matpel > span ').text()+"&kode_jenis="+$('#kode_jenis').val()+"&kode_kd="+$('#kode_kd').val()+"&kode_sem="+$('#kode_sem option:selected').text()+"&flag_kelas="+$('#flag_kelas').val()+"&kode_matpel2="+$('.info-code_kode_matpel').text();
 
                             $('.pesan-upload-judul').html('Gagal upload!');
                             $('.pesan-upload-judul').removeClass('text-success');
@@ -2655,7 +2665,7 @@
         var kode_lokasi = "{{ Session::get('lokasi') }}";
         var nik_user = "{{ Session::get('nikUser') }}";
         var nik = "{{ Session::get('userLog') }}";
-        var link = "{{ config('api.url').'sekolah/penilaian-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template&kode_pp="+$('#kode_pp').val()+"&kode_kelas="+$('#kode_kelas').val()+"&kode_matpel="+$('.info-name_kode_matpel > span ').text()+"&kode_jenis="+$('#kode_jenis').val()+"&kode_kd="+$('#kode_kd').val()+"&kode_sem="+$('#kode_sem option:selected').text();
+        var link = "{{ config('api.url').'sekolah/penilaian-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template&kode_pp="+$('#kode_pp').val()+"&kode_kelas="+$('#kode_kelas').val()+"&kode_matpel="+$('.info-name_kode_matpel > span ').text()+"&kode_jenis="+$('#kode_jenis').val()+"&kode_kd="+$('#kode_kd').val()+"&kode_sem="+$('#kode_sem option:selected').text()+"&flag_kelas="+$('#flag_kelas').val()+"&kode_matpel2="+$('.info-code_kode_matpel').text();
         window.open(link, '_blank'); 
     });
 

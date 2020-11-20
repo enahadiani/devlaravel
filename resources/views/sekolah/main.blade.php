@@ -24,26 +24,15 @@
     <link rel="stylesheet" href="{{ asset('asset_dore/css/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap-float-label.min.css') }}" />
     
-    <link rel="stylesheet" href="{{ asset('asset_elite/dist/js/swal/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('asset_dore/dist/js/swal/sweetalert2.min.css') }}">
     <!-- Selectize -->
-    <link href="{{ asset('asset_elite/selectize.bootstrap3.css') }}" rel="stylesheet">
+    <link href="{{ asset('asset_dore/selectize.bootstrap3.css') }}" rel="stylesheet">
     
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap-tagsinput.css') }}" />
     <!-- <link rel="stylesheet" href="{{ asset('asset_dore/css/loading.css') }}" /> -->
+    <link rel="stylesheet" href="{{ asset('mainstyle.css') }}" />
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-
-
-        body {
-            font-family: 'Roboto', sans-serif !important;
-        }
-        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p,li,ul,a,input,select{
-            font-family: 'Roboto', sans-serif !important;
-        }
-        .highcharts-root {
-            font-family: 'Roboto', sans-serif !important;
-        }
-
+        
         .logo{
             background:url("{{ asset('img/tarbak30x100.png') }}") no-repeat;
             background-size: 100px;
@@ -57,345 +46,13 @@
             background-size:30px;
             width:30px;
         }
-        .navbar{
-            height:60px;
-            padding:0;
-        }
-        @media (max-width: 1439px) {
-            .navbar {
-            height: 60px; } }
-        @media (max-width: 1199px) {
-            .navbar {
-            height: 60px;
-            padding: 12px 0; } }
-        @media (max-width: 767px) {
-            .navbar {
-            height: 60px; } }
-        .menu{
-            padding-top:60px;
-            height: calc(100% - 60px);
-        }
-        .menu .main-menu {
-            height: calc(100% - 60px);
-        }
-
-        @media (max-width: 1439px) {
-        .menu .main-menu {
-            height: calc(100% - 60px); } }
-        @media (max-width: 1199px) {
-        .menu .main-menu {
-            height: calc(100% - 60px); } }
-        @media (max-width: 767px) {
-        .menu .main-menu {
-            height: calc(100% - 60px); } }
-        .menu .sub-menu {
-            
-            height: calc(100% - 60px);
-        }
-
-        @media (max-width: 1439px) {
-        .menu .sub-menu {
-            height: calc(100% - 60px); } 
-        }
-        @media (max-width: 1199px) {
-        .menu .sub-menu {
-            height: calc(100% - 60px); } }
-        @media (max-width: 767px) {
-        .menu .sub-menu {
-            height: calc(100% - 60px); } }
-        @media (max-width: 1439px) {
-            .menu {
-            padding-top: 60px;
-            height: calc(100% - 60px); } }
-        @media (max-width: 1199px) {
-            .menu {
-            padding-top: 60px;
-            height: calc(100% - 60px); } }
-        @media (max-width: 767px) {
-            .menu {
-            padding-top: 60px;
-            height: calc(100% - 60px); } }
-
-        /* @media (max-width: 1439px) {
-            main {
-            margin-top: 100px; } }
-        @media (max-width: 1199px) {
-            main {
-            margin-top: 100px; } }
-        @media (max-width: 767px) {
-            main {
-            margin-top: 100px; } } */
-
-        main {
-        margin-left: 390px;
-        margin-top: 90px;
-        margin-right: 30px;
-        margin-bottom: 40px; }
-        main.default-transition {
-            transition: margin-left 300ms; }
-        main .container-fluid {
-            padding-left: 0;
-            padding-right: 0; }
-        @media (max-width: 1439px) {
-            main {
-            margin-left: 390px;
-            margin-right: 30px;
-            margin-top: 90px;
-            margin-bottom: 30px; } }
-        @media (max-width: 1199px) {
-            main {
-            margin-left: 370px;
-            margin-right: 30px;
-            margin-top: 90px;
-            margin-bottom: 20px; } }
-        @media (max-width: 767px) {
-            main {
-            margin-left: 15px !important;
-            margin-right: 15px !important;
-            margin-top: 90px !important;
-            margin-bottom: 0; } }
-        @media (max-width: 575px) {
-            main {
-            margin-bottom: 0; } }
-        
-        #app-container.sub-hidden main,
-        #app-container.menu-sub-hidden main,
-        #app-container.menu-hidden main 
-        {
-            margin-left: 140px; 
-        }
-        
-        #app-container.main-hidden main,
-        #app-container.menu-hidden main 
-        {
-            margin-left: 40px; 
-        }
-        
-        #app-container.menu-main-hidden main 
-        {
-            margin-left: 270px; 
-        }
-        
-        #app-container.menu-main-hidden.menu-hidden main 
-        {
-            margin-left: 40px; 
-        }
-        
-        @media (max-width: 1439px) 
-        {
-            #app-container.sub-hidden main,
-            #app-container.menu-sub-hidden main,
-            #app-container.menu-hidden main 
-            {
-                margin-left: 140px; 
-            }
-            #app-container.main-hidden main,
-            #app-container.menu-hidden main 
-            {
-                margin-left: 40px; 
-            }
-            #app-container.menu-main-hidden main 
-            {
-                margin-left: 270px; 
-            }
-            #app-container.menu-main-hidden.menu-hidden main 
-            {
-                margin-left: 40px; 
-            } 
-        }
-        
-        @media (max-width: 1199px) 
-        {
-            #app-container.sub-hidden main,
-            #app-container.menu-sub-hidden main,
-            #app-container.menu-hidden main 
-            {
-                margin-left: 140px; 
-            }
-            #app-container.main-hidden main,
-            #app-container.menu-hidden main 
-            {
-                margin-left: 40px; 
-            }
-            #app-container.menu-main-hidden main 
-            {
-                margin-left: 270px; 
-            }
-            #app-container.menu-main-hidden.menu-hidden main 
-            {
-                margin-left: 40px; 
-            } 
-        }
-
-        body {
-        min-height: calc(100% - 90px);
-        position: relative;
-        padding-bottom: 0px; }
-        @media (max-width: 1439px) {
-            body {
-            min-height: calc(100% - 90px); } }
-        @media (max-width: 1199px) {
-            body {
-            min-height: calc(100% - 90px); } }
-        @media (max-width: 767px) {
-            body {
-            min-height: calc(100% - 90px); } }
-        @media (max-width: 575px) {
-            body {
-            padding-bottom: 0px; } }
-        body.no-footer {
-            padding-bottom: initial; 
-        }
-
-        .swal2-modal {
-            border-radius:0.75rem !important;
-            width:270px !important;
-            font-family: 'Roboto', sans-serif !important;
-        }
-        .swal2-title{
-            font-family: 'Roboto', sans-serif !important;
-            font-size:20px !important;
-            color:black !important;
-        }
-        
-        .swal2-content{
-            font-family: 'Roboto', sans-serif !important;
-            font-size:12px !important;
-            color:black;
-        }
-
-        .swal2-confirm{
-            width:110px !important;
-            margin-left:5px !important;            
-        }
-        
-        .swal2-cancel{
-            width:110px !important;
-        }
-
-        .btn-red {
-            background-color: #EB3F33;
-            border-color: #EB3F33;
-            color: #fff; 
-        }
-        .btn-red:hover {
-                color: #fff;
-                background-color: #EB3F33DE;
-                border-color: #EB3F33DE; 
-            }
-
-        .dropdown-profile{
-            display:unset
-        }
-        .imgprofile{
-            position:absolute;
-        }
-        .userprofile{   
-            margin-left:50px;
-            font-size:13px;
-        }
-        .userjab{   
-            margin-left:50px;
-            font-size:10px;
-        }
-
-        .dropdown-periode:hover,.dropdown-lokasi{
-            background: unset !important;
-        }
-
-        /* #notificationDropdown2
-        {
-            left: 50% !important;
-            right: auto !important;
-            transform: translate(-60%, 0) !important;
-        }
-
-        */
-        #adminDropdown
-        {
-            width:250px !important; 
-        }
-
-        div.dropdown:hover > div.dropdown-menu {
-            display: block !important;
-        } 
-        
-        div.dropdown>div.dropdown-toggle:active {
-            pointer-events: none;
-        }
-
-        .btn-200{
-            width:200px !important;
-        }
-
-        .report-link:hover{
-            background: #F8F8F8
-        }
-        .report-link:active, .report-link:focus{
-            background: #E8E8E8;
-        }
-
-        .link-report{
-            color:blue;
-        }
-
-        .logo-lap{
-            width:100px
-        }
-
-        @media print {
-            .link-report{
-                color:unset;
-            }
-        }
-
-        .page-break{
-            page-break-after:always !important;
-        }
-
-        .judul-nama{
-            font-weight:bold;
-            font-size:1.1rem;
-        }
-        .judul-lokasi{
-            font-weight:bold;
-            font-size:1rem;
-        }
-        .judul-periode{
-            font-weight:bold;
-            font-size:0.75rem;
-        }
-        .saku-progress{
-            position:fixed;
-            z-index:9000;
-            bottom:0;
-            width:100%;
-        }
-
-        .periode-label,.lokasi-label{
-            color:#B7B7B7;
-        }
-
-        input[id^=label]:read-only {
-            background: none;
-            pointer-events: none;
-        }
-
-        .btn{
-            border-radius: 8px !important;
-        }
-        
-        .form-row > .col, .form-row > [class*="col-"] {
-            padding-right: 15px;
-            padding-left: 15px;
-        }
     </style>
     <script>
         var $public_asset = "{{ asset('asset_dore') }}/";
     </script>
     <script src="{{ asset('asset_dore/js/vendor/jquery-3.3.1.min.js') }}"></script>
-    <script src="{{ asset('asset_elite/highcharts2.js') }}"></script>
-    <script src="{{ asset('asset_elite/highcharts-more.js') }}"></script>
+    <script src="{{ asset('asset_dore/highcharts2.js') }}"></script>
+    <script src="{{ asset('asset_dore/highcharts-more.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/typeahead.bundle.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/moment.min.js') }}"></script>
@@ -411,20 +68,20 @@
     <script src="{{ asset('asset_dore/js/vendor/mousetrap.min.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/glide.min.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/bootstrap-notify.min.js') }}"></script>
-    <script src="{{ asset('asset_elite/dist/js/swal/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('asset_dore/js/swal/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('asset_dore/js/dore.script.js') }}"></script>
     
-    <script src="{{ asset('asset_elite/standalone/selectize.min.js') }}"></script>
+    <script src="{{ asset('asset_dore/standalone/selectize.min.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/jquery.validate/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/jquery.validate/additional-methods.min.js') }}"></script>
     
     
     <!-- <script src="{{ asset('asset_dore/js/loading.js') }}"></script> -->
-    <script src="{{ asset('asset_elite/printThis/printThis.js') }}"></script>
+    <script src="{{ asset('asset_dore/printThis/printThis.js') }}"></script>
     <script src="{{ asset('asset_dore/js/jquery.table2excel.js') }}"></script>
-    <script src="{{ asset('asset_elite/jquery.twbsPagination.min.js') }}"></script>
-    <script src="{{ asset('asset_elite/sai.js') }}"></script>
-    <script src="{{ asset('asset_elite/inputmask.js') }}"></script>
+    <script src="{{ asset('asset_dore/jquery.twbsPagination.min.js') }}"></script>
+    <script src="{{ asset('asset_dore/sai.js') }}"></script>
+    <script src="{{ asset('asset_dore/inputmask.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/bootstrap-tagsinput.min.js') }}"></script>
 </head>
 <!-- <div class="preloader-wrap">
@@ -472,8 +129,8 @@
 
 
         <a class="navbar-logo" href="#">
-            <span class="logo d-none d-xs-block"></span>
-            <span class="logo-mobile d-block d-xs-none"></span>
+            <span class="logo d-none d-xs-block to-home"></span>
+            <span class="logo-mobile d-block d-xs-none to-home"></span>
         </a>
         @php
             $tmp = explode(" ",Session::get('namaUser'));
@@ -488,7 +145,7 @@
                     <span class="name">{{ $nama }}</span>
                     <span id="foto-profile">
                     @if (Session::get('foto') == "" || Session::get('foto') == "-" )
-                    <img alt="Profile Picture" src="{{ asset('asset_elite/images/user.png') }}" style="width:40px;height:40px"/>
+                    <img alt="Profile Picture" src="{{ asset('asset_dore/images/user.png') }}" style="width:40px;height:40px"/>
                     @else
                     <img alt="Profile Picture" src="{{ config('api.url').'sekolah/storage/'.Session::get('foto') }}" style="width:40px;height:40px"/>
                     @endif
@@ -499,7 +156,7 @@
                         <div style="height: 45px;padding: 0 1rem;">
                             <span id="adminProfilePhoto">
                                 @if (Session::get('foto') == "" || Session::get('foto') == "-" )
-                                <img alt="Profile Picture" class="imgprofile ml-0" src="{{ asset('asset_elite/images/user.png') }}" style="width:40px;height:40px"/>
+                                <img alt="Profile Picture" class="imgprofile ml-0" src="{{ asset('asset_dore/images/user.png') }}" style="width:40px;height:40px"/>
                                 @else
                                 <img alt="Profile Picture" class="imgprofile ml-0" src="{{ config('api.url').'sekolah/storage/'.Session::get('foto') }}" style="width:40px;height:40px"/>
                                 @endif
@@ -1331,6 +988,15 @@
     
     $('#notificationButton').click(function(){
         updateNotifRead();
+    });
+
+    $('.to-home').click(function(){
+        if(form != "" || form != "-"){
+
+            loadForm("{{ url('sekolah-auth/form') }}/"+form);
+        }else{
+            loadForm("{{ url('sekolah-auth/form') }}/blankform");
+        }
     });
     var $theme = "dore.light.blueolympic.min.css";
  
