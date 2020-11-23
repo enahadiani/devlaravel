@@ -59,7 +59,7 @@
             font-size: 0.8rem !important;
         }
         .logo-single{
-            background:url("{{ asset('img/tarbak30x100.png') }}") no-repeat;
+            background:url("{{ asset('img/esaku-landscape.png') }}") no-repeat;
             background-size: 150px;
             background-position-y: center;
             width:160px;
@@ -172,7 +172,7 @@
                             <!-- <h6 class="mb-0">Masuk</h6> -->
                             <!-- <h6 class="mb-4">Selamat Datang -->
                             <!-- </h6> -->
-                            <form method="POST" action="{{ url('sekolah-auth/login') }}" id="form-login">
+                            <form method="POST" action="{{ url('dev-auth/login') }}" id="form-login">
                                 @csrf
                                 @if(Session::has('alert'))
                                 <div class="alert alert-danger rounded" role="alert" style="border-radius: 0.5rem !important;">

@@ -34,7 +34,7 @@
     <style>
         
         .logo{
-            background:url("{{ asset('img/tarbak30x100.png') }}") no-repeat;
+            background:url("{{ asset('img/esaku-landscape.png') }}") no-repeat;
             background-size: 100px;
             background-position-x: center;
             background-position-y: center;
@@ -42,7 +42,7 @@
             height:35px;
         }
         .logo-mobile{
-            background:url("{{ asset('img/tarbak30x30.png') }}") no-repeat;
+            background:url("{{ asset('img/logo.png') }}") no-repeat;
             background-size:30px;
             width:30px;
         }
@@ -147,7 +147,7 @@
                     @if (Session::get('foto') == "" || Session::get('foto') == "-" )
                     <img alt="Profile Picture" src="{{ asset('asset_dore/img/user.png') }}" style="width:40px;height:40px"/>
                     @else
-                    <img alt="Profile Picture" src="{{ config('api.url').'sekolah/storage/'.Session::get('foto') }}" style="width:40px;height:40px"/>
+                    <img alt="Profile Picture" src="{{ config('api.url').'dev/storage/'.Session::get('foto') }}" style="width:40px;height:40px"/>
                     @endif
                     </span>
                 </button>
@@ -158,7 +158,7 @@
                                 @if (Session::get('foto') == "" || Session::get('foto') == "-" )
                                 <img alt="Profile Picture" class="imgprofile ml-0" src="{{ asset('asset_dore/img/user.png') }}" style="width:40px;height:40px"/>
                                 @else
-                                <img alt="Profile Picture" class="imgprofile ml-0" src="{{ config('api.url').'sekolah/storage/'.Session::get('foto') }}" style="width:40px;height:40px"/>
+                                <img alt="Profile Picture" class="imgprofile ml-0" src="{{ config('api.url').'dev/storage/'.Session::get('foto') }}" style="width:40px;height:40px"/>
                                 @endif
                             </span>
                             <p class="userprofile mb-0">{{ $nama }}</p>
@@ -350,7 +350,7 @@
                 var cancel = (data.cancel != undefined ? data.cancel : 'Batal');
                 // function callBackMsg(){
                 //     window.localStorage.setItem('logged_in', false);
-                //     window.location.href = "{{ url('sekolah-auth/logout') }}";
+                //     window.location.href = "{{ url('dev-auth/logout') }}";
                 // }
                 
                 // function callBackCancel(){
@@ -456,7 +456,7 @@
                 case 'logout':
                     if (result.value) {
                         window.localStorage.setItem('logged_in', false);
-                        window.location.href = "{{ url('sekolah-auth/logout') }}";
+                        window.location.href = "{{ url('dev-auth/logout') }}";
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         // console.log('cancel');
                     }                    
@@ -544,7 +544,7 @@
     function getNotif(){
         $.ajax({
             type: 'GET',
-            url: "{{ url('sekolah-auth/notif') }}",
+            url: "{{ url('dev-auth/notif') }}",
             dataType: 'json',
             async:false,
             success:function(result){    
@@ -603,7 +603,7 @@
                     var msg = "Internal server error";
                 }else if(jqXHR.status == 401){
                     var msg = "Unauthorized";
-                    window.location="{{ url('/sekolah-auth/sesi-habis') }}";
+                    window.location="{{ url('/dev-auth/sesi-habis') }}";
                 }else if(jqXHR.status == 405){
                     var msg = "Route not valid. Page not found";
                 }
@@ -615,7 +615,7 @@
     function updateNotifRead(){
         $.ajax({
             type: 'POST',
-            url: "{{ url('sekolah-auth/notif-update-status') }}",
+            url: "{{ url('dev-auth/notif-update-status') }}",
             dataType: 'json',
             async:false,
             success:function(result){    
@@ -631,7 +631,7 @@
                     var msg = "Internal server error";
                 }else if(jqXHR.status == 401){
                     var msg = "Unauthorized";
-                    window.location="{{ url('/sekolah-auth/sesi-habis') }}";
+                    window.location="{{ url('/dev-auth/sesi-habis') }}";
                 }else if(jqXHR.status == 405){
                     var msg = "Route not valid. Page not found";
                 }
@@ -652,12 +652,12 @@
     function loadForm(url){
         $.ajax({
             type: 'GET',
-            url: "{{ url('sekolah-auth/cek_session') }}",
+            url: "{{ url('dev-auth/cek_session') }}",
             dataType: 'json',
             async:false,
             success:function(result){    
                 if(!result.status){
-                    window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }else{
                     
                     $('.body-content').load(url);
@@ -673,7 +673,7 @@
                     var msg = "Internal server error";
                 }else if(jqXHR.status == 401){
                     var msg = "Unauthorized";
-                    window.location="{{ url('/sekolah-auth/sesi-habis') }}";
+                    window.location="{{ url('/dev-auth/sesi-habis') }}";
                 }else if(jqXHR.status == 405){
                     var msg = "Route not valid. Page not found";
                 }
@@ -686,7 +686,7 @@
     function getFormList() {
         $.ajax({
             type:'GET',
-            url:"{{url('sekolah-auth/search-form-list2')}}",
+            url:"{{url('dev-auth/search-form-list2')}}",
             dataType: 'json',
             async: false,
             success: function(result) {
@@ -697,7 +697,7 @@
                     }
 
                 }else if(!result.status && result.message == "Unauthorized"){
-                    window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 } else{
                     console.log(result.message);
                 }
@@ -709,7 +709,7 @@
                     var msg = "Internal server error";
                 }else if(jqXHR.status == 401){
                     var msg = "Unauthorized";
-                    window.location="{{ url('/sekolah-auth/sesi-habis') }}";
+                    window.location="{{ url('/dev-auth/sesi-habis') }}";
                 }else if(jqXHR.status == 405){
                     var msg = "Route not valid. Page not found";
                 }
@@ -723,7 +723,7 @@
     function searchForm(cari){
         $.ajax({
             type: 'POST',
-            url: "{{ url('sekolah-auth/search-form') }}",
+            url: "{{ url('dev-auth/search-form') }}",
             dataType: 'json',
             data:{'cari':cari},
             async:false,
@@ -743,7 +743,7 @@
                         $('.main-menu li').removeClass('active');
                         $('a[href="#'+target+'"]').parents("li").addClass("active");
 
-                        loadForm("{{ url('sekolah-auth/form')}}/"+form);
+                        loadForm("{{ url('dev-auth/form')}}/"+form);
                         return false;
                     }
                 }else{
@@ -760,7 +760,7 @@
                     var msg = "Internal server error";
                 }else if(jqXHR.status == 401){
                     var msg = "Unauthorized";
-                    window.location="{{ url('/sekolah-auth/sesi-habis') }}";
+                    window.location="{{ url('/dev-auth/sesi-habis') }}";
                 }else if(jqXHR.status == 405){
                     var msg = "Route not valid. Page not found";
                 }
@@ -770,13 +770,13 @@
     }
 
     function loadProfile(){
-        loadForm("{{url('sekolah-auth/form/fProfile')}}");
+        loadForm("{{url('dev-auth/form/fProfile')}}");
     }
     
     function loadMenu(){
         $.ajax({
             type: 'GET',
-            url: "{{ url('sekolah-auth/menu') }}",
+            url: "{{ url('dev-auth/menu') }}",
             dataType: 'json',
             async:false,
             success:function(result){  
@@ -800,7 +800,7 @@
                     var msg = "Internal server error";
                 }else if(jqXHR.status == 401){
                     var msg = "Unauthorized";
-                    window.location="{{ url('/sekolah-auth/sesi-habis') }}";
+                    window.location="{{ url('/dev-auth/sesi-habis') }}";
                 }else if(jqXHR.status == 405){
                     var msg = "Route not valid. Page not found";
                 }
@@ -818,20 +818,21 @@
     $('.dropdown-lokasi').html("<span class='lokasi-label'>Lokasi</span> <span class='periode-app float-right'>{{ Session::get('lokasi') }}</span>");
     
     if(form !="" || form != "-"){
-        loadForm("{{ url('sekolah-auth/form')}}/"+form)
+        loadForm("{{ url('dev-auth/form')}}/"+form)
     }
+
+    console.log(form);
     
     $('.sub-menu').on('click','.a_link',function(e){
         e.preventDefault();
         var form = $(this).data('href');
         $('.sub-menu li').removeClass('active');
         $(this).closest('li').addClass('active');
-        var url = "{{ url('sekolah-auth/form')}}/"+form;
+        var url = "{{ url('dev-auth/form')}}/"+form;
         console.log(url);
         if(form == "" || form == "-"){
             // alert('Form dilock!');
-            // return false;
-            loadForm("{{ url('sekolah-auth/form') }}/blankform");
+            return false;
         }else{
             loadForm(url);
             
@@ -841,7 +842,7 @@
     $('.main-menu').on('click','.a_link',function(e){
         e.preventDefault();
         var form = $(this).data('href');
-        var url = "{{ url('sekolah-auth/form')}}/"+form;
+        var url = "{{ url('dev-auth/form')}}/"+form;
         console.log(url);
         if(form == "" || form == "-"){
             // alert('Form dilock!');
@@ -900,14 +901,14 @@
     });
 
     $('#btn-newtab').click(function(){
-        var url = "{{url('sekolah-auth')}}";
+        var url = "{{url('dev-auth')}}";
         window.open(url, '_blank');
     });
 
     // $('#cari').typeahead({
     //     source: function (cari, result) {
     //         $.ajax({
-    //             url: "{{ url('sekolah-auth/search-form-list') }}",
+    //             url: "{{ url('dev-auth/search-form-list') }}",
     //             data: {cari:cari},            
     //             dataType: "json",
     //             type: "GET",
@@ -971,12 +972,12 @@
     }
 
     setTimeout(function(){
-        window.location.href = "{{url('sekolah-auth/sesi-habis')}}";
+        window.location.href = "{{url('dev-auth/sesi-habis')}}";
     }, 1000 * 60 * 60);
     
     var form ="{{ Session::get('dash') }}";
     if(form !="" || form != "-"){
-        loadForm("{{ url('sekolah-auth/form') }}/"+form);
+        loadForm("{{ url('dev-auth/form') }}/"+form);
     }
     
     $( window ).resize(function() {
@@ -996,9 +997,9 @@
     $('.to-home').click(function(){
         if(form != "" || form != "-"){
 
-            loadForm("{{ url('sekolah-auth/form') }}/"+form);
+            loadForm("{{ url('dev-auth/form') }}/"+form);
         }else{
-            loadForm("{{ url('sekolah-auth/form') }}/blankform");
+            loadForm("{{ url('dev-auth/form') }}/blankform");
         }
     });
     var $theme = "dore.light.blueolympic.min.css";
@@ -1012,7 +1013,7 @@
         function storageChange (event) {
             if(event.key === 'logged_in') {
                 if(window.localStorage.getItem('logged_in') == "false"){
-                    window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
             }
         }

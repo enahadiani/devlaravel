@@ -47,6 +47,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
 
         $this->mapSekolahRoutes();
+
+        $this->mapDevRoutes();
     }
 
     /**
@@ -105,6 +107,35 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/sekolah/report.php'));
+   
+    }
+
+    protected function mapDevRoutes()
+    {
+        Route::prefix('dev-auth')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/dev/auth.php'));
+
+        Route::prefix('dev-dash')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/dev/dash.php'));
+    
+        Route::prefix('dev-master')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/dev/master.php'));
+    
+        Route::prefix('dev-trans')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/dev/trans.php'));
+    
+        Route::prefix('dev-report')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/dev/report.php'));
    
     }
 
