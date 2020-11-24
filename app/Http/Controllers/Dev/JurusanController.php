@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Exception\BadResponseException;
 
-class JenisController extends Controller
+class JurusanController extends Controller
 {
     public function __contruct() {
         if(!Session::get('login')){
@@ -20,7 +20,7 @@ class JenisController extends Controller
         try{
                 
             $client = new Client();
-            $response = $client->request('GET',  config('api.url').'dev/jenis',[
+            $response = $client->request('GET',  config('api.url').'dev/jurusan',[
                 'headers' => [
                     'Authorization' => 'Bearer '.Session::get('token'),
                     'Accept'     => 'application/json',
@@ -46,13 +46,13 @@ class JenisController extends Controller
         try{
                 
             $client = new Client();
-            $response = $client->request('GET',  config('api.url').'dev/jenis',[
+            $response = $client->request('GET',  config('api.url').'dev/jurusan',[
                 'headers' => [
                     'Authorization' => 'Bearer '.Session::get('token'),
                     'Accept'     => 'application/json',
                 ],
                 'query' => [
-                    'kode_jenis' => $request->kode_jenis
+                    'kode_jur' => $request->kode_jur
                 ]
             ]);
 
@@ -74,20 +74,20 @@ class JenisController extends Controller
     public function store(Request $request) {
 
             $this->validate($request, [
-                'kode_jenis' => 'required',
+                'kode_jur' => 'required',
                 'nama' => 'required',
                 'status' => 'required'
             ]);
 
             try {
                 $client = new Client();
-                $response = $client->request('POST',  config('api.url').'dev/jenis',[
+                $response = $client->request('POST',  config('api.url').'dev/jurusan',[
                     'headers' => [
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
                     'form_params' => [
-                        'kode_jenis' => $request->kode_jenis,
+                        'kode_jur' => $request->kode_jur,
                         'nama' => $request->nama,
                         'status' => $request->status
                     ]
@@ -111,20 +111,20 @@ class JenisController extends Controller
     public function update(Request $request) {
 
             $this->validate($request, [
-                'kode_jenis' => 'required',
+                'kode_jur' => 'required',
                 'nama' => 'required',
                 'status' => 'required'
             ]);
 
             try {
                 $client = new Client();
-                $response = $client->request('PUT',  config('api.url').'dev/jenis',[
+                $response = $client->request('PUT',  config('api.url').'dev/jurusan',[
                     'headers' => [
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
                     'form_params' => [
-                        'kode_jenis' => $request->kode_jenis,
+                        'kode_jur' => $request->kode_jur,
                         'nama' => $request->nama,
                         'status' => $request->status
                     ]
@@ -148,14 +148,14 @@ class JenisController extends Controller
     public function destroy(Request $request) {
             try{
                 $client = new Client();
-                $response = $client->request('DELETE',  config('api.url').'dev/jenis',
+                $response = $client->request('DELETE',  config('api.url').'dev/jurusan',
                 [
                     'headers' => [
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
                     'query' =>[
-                        'kode_jenis' => $request->kode_jenis
+                        'kode_jur' => $request->kode_jur
                     ]
                 ]);
         
@@ -174,4 +174,5 @@ class JenisController extends Controller
                 return response()->json(['data' => $data], 200);
             }
     }
+
 }
