@@ -256,11 +256,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row" id="form-status">
                             <div class="form-group col-md-6 col-sm-12">
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
-                                        <label for="status">Status</label>
+                                        <label for="status1">Status</label>
                                         <input class="form-control" type="text" id="status1" name="status">
                                     </div>
                                 </div>
@@ -278,7 +278,7 @@
             <div class="modal-content" style="border-radius:0.75em">
                 <div class="modal-header py-0" style="display:block;">
                     <h6 class="modal-title py-2" style="position: absolute;">Preview Data Jenis <span id="modal-preview-nama"></span><span id="modal-preview-id" style="display:none"></span><span id="modal-preview-kode" style="display:none"></span> </h6>
-                    <button type="button" class="close float-right ml-2" data-dismiss="modal" aria-label="Close" style="line-height:2.5">
+                    <button type="button" class="close float-right ml-3" data-dismiss="modal" aria-label="Close" style="line-height:3.5">
                     <span aria-hidden="true">&times;</span>
                     </button>
 
@@ -405,6 +405,25 @@
         dataTable.page.len(parseInt(selText)).draw();
     });
 
+    //LAST ADD
+    function last_add(param,isi){
+        var rowIndexes = [];
+        dataTable.rows( function ( idx, data, node ) {             
+            if(data[param] === isi){
+                rowIndexes.push(idx);                  
+            }
+            return false;
+        }); 
+        dataTable.row(rowIndexes).select();
+        $('.selected td:eq(0)').addClass('last-add');
+        console.log('last-add');
+        setTimeout(function() {
+            console.log('timeout');
+            $('.selected td:eq(0)').removeClass('last-add');
+            dataTable.row(rowIndexes).deselect();
+        }, 1000 * 60 * 10);
+    }
+
     // BUTTON TAMBAH
     $('#saku-datatable').on('click', '#btn-tambah', function(){
         $('#row-id').hide();
@@ -498,12 +517,12 @@
                         $('#method').val('post');
                         $('.input-group-prepend').addClass('hidden');
                         $('span[class^=info-name]').addClass('hidden');
-                        $('#kode_jenis').attr('readonly', false);
+                        $('#kode_jur').attr('readonly', false);
                         msgDialog({
                             id:result.data.kode,
                             type:'simpan'
                         });
-                        last_add("kode_jenis",result.data.kode);
+                        last_add("kode_jur",result.data.kode);
                     }else if(!result.data.status && result.data.message === "Unauthorized"){
                         window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                     }else{
@@ -554,15 +573,15 @@
             dataType: 'json',
             data:{'kode_jur':id},
             async:false,
-            success:function(res){
-                var result = res.data;
+            success:function(result){
                 if(result.status){
                     $('#id_edit').val('edit');
                     $('#kode_jur').val(id);
                     $('#method').val('put');
                     $('#kode_jur').attr('readonly', true);
-                    $('#nama').val(result.data.nama);
+                    $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
+                    $('#form-status').hide();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
                 }else if(!result.status && result.message == "Unauthorized"){
@@ -602,7 +621,6 @@
             }
         });
     }
-
     $('#saku-datatable').on('click','#btn-delete',function(e){
         var kode = $(this).closest('tr').find('td:eq(0)').html();
 
@@ -657,7 +675,7 @@
     $('.modal-header').on('click', '#btn-edit2', function(){
         var id= $('#modal-preview-id').text();
         
-        $('#judul-form').html('Edit Data Jenis');
+        $('#judul-form').html('Edit Data Jurusan');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
         $('#btn-save').attr('type','button');
@@ -665,18 +683,19 @@
 
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-master/jurusan') }}",
+            url: "{{ url('dev-master/jurusan-detail') }}",
             dataType: 'json',
             data:{'kode_jur':id},
             async:false,
             success:function(result){
-                if(result.data.status){
+                if(result.status){
                     $('#id_edit').val('edit');
                     $('#kode_jur').val(id);
                     $('#method').val('put');
                     $('#kode_jur').attr('readonly', true);
-                    $('#nama').val(result.data.nama);
+                    $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
+                    $('#form-status').hide();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
                     $('#modal-preview').modal('hide');

@@ -75,8 +75,7 @@ class JenisController extends Controller
 
             $this->validate($request, [
                 'kode_jenis' => 'required',
-                'nama' => 'required',
-                'status' => 'required'
+                'nama' => 'required'
             ]);
 
             try {
@@ -88,8 +87,7 @@ class JenisController extends Controller
                     ],
                     'form_params' => [
                         'kode_jenis' => $request->kode_jenis,
-                        'nama' => $request->nama,
-                        'status' => $request->status
+                        'nama' => $request->nama
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
@@ -112,8 +110,7 @@ class JenisController extends Controller
 
             $this->validate($request, [
                 'kode_jenis' => 'required',
-                'nama' => 'required',
-                'status' => 'required'
+                'nama' => 'required'
             ]);
 
             try {
@@ -125,8 +122,7 @@ class JenisController extends Controller
                     ],
                     'form_params' => [
                         'kode_jenis' => $request->kode_jenis,
-                        'nama' => $request->nama,
-                        'status' => $request->status
+                        'nama' => $request->nama
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK

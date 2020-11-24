@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Exception\BadResponseException;
 
-class JurusanController extends Controller
+class SiswaController extends Controller
 {
     public function __contruct() {
         if(!Session::get('login')){
@@ -20,7 +20,7 @@ class JurusanController extends Controller
         try{
                 
             $client = new Client();
-            $response = $client->request('GET',  config('api.url').'dev/jurusan',[
+            $response = $client->request('GET',  config('api.url').'dev/siswa',[
                 'headers' => [
                     'Authorization' => 'Bearer '.Session::get('token'),
                     'Accept'     => 'application/json',
@@ -46,13 +46,13 @@ class JurusanController extends Controller
         try{
                 
             $client = new Client();
-            $response = $client->request('GET',  config('api.url').'dev/jurusan',[
+            $response = $client->request('GET',  config('api.url').'dev/siswa',[
                 'headers' => [
                     'Authorization' => 'Bearer '.Session::get('token'),
                     'Accept'     => 'application/json',
                 ],
                 'query' => [
-                    'kode_jur' => $request->kode_jur
+                    'nim' => $request->nim
                 ]
             ]);
 
@@ -74,19 +74,19 @@ class JurusanController extends Controller
     public function store(Request $request) {
 
             $this->validate($request, [
-                'kode_jur' => 'required',
+                'nim' => 'required',
                 'nama' => 'required'
             ]);
 
             try {
                 $client = new Client();
-                $response = $client->request('POST',  config('api.url').'dev/jurusan',[
+                $response = $client->request('POST',  config('api.url').'dev/siswa',[
                     'headers' => [
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
                     'form_params' => [
-                        'kode_jur' => $request->kode_jur,
+                        'nim' => $request->nim,
                         'nama' => $request->nama
                     ]
                 ]);
@@ -109,19 +109,19 @@ class JurusanController extends Controller
     public function update(Request $request) {
 
             $this->validate($request, [
-                'kode_jur' => 'required',
+                'nim' => 'required',
                 'nama' => 'required'
             ]);
 
             try {
                 $client = new Client();
-                $response = $client->request('PUT',  config('api.url').'dev/jurusan',[
+                $response = $client->request('PUT',  config('api.url').'dev/siswa',[
                     'headers' => [
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
                     'form_params' => [
-                        'kode_jur' => $request->kode_jur,
+                        'nim' => $request->nim,
                         'nama' => $request->nama
                     ]
                 ]);
@@ -144,14 +144,14 @@ class JurusanController extends Controller
     public function destroy(Request $request) {
             try{
                 $client = new Client();
-                $response = $client->request('DELETE',  config('api.url').'dev/jurusan',
+                $response = $client->request('DELETE',  config('api.url').'dev/siswa',
                 [
                     'headers' => [
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
                     'query' =>[
-                        'kode_jur' => $request->kode_jur
+                        'nim' => $request->nim
                     ]
                 ]);
         
@@ -170,5 +170,4 @@ class JurusanController extends Controller
                 return response()->json(['data' => $data], 200);
             }
     }
-
 }

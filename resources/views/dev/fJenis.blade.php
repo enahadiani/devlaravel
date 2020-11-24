@@ -1,4 +1,4 @@
- <!-- CSS tambahan -->
+<!-- CSS tambahan -->
 <style>
         th,td{
             padding:8px !important;
@@ -165,58 +165,62 @@
             font-size: 16px;margin-left:5px;position: absolute;top: 5px;right: 10px;background: white;padding: 5px 0 5px 5px;z-index: 4;height:27px;
         }
 </style>
-<div class="row" id="saku-datatable">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
-                <h5 style="position:absolute;top: 25px;">Data Jenis</h5>
-                <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
-            </div>
-            <div class="separator mb-2"></div>
-            <div class="row" style="padding-right:1.75rem;padding-left:1.75rem">
-                <div class="dataTables_length col-sm-12" id="table-data_length"></div>
-                <div class="d-block d-md-inline-block float-left col-md-6 col-sm-12">
-                    <div class="page-countdata">
-                        <label>Menampilkan 
-                            <select style="border:none" id="page-count">
-                                <option value="10">10 per halaman</option>
-                                <option value="25">25 per halaman</option>
-                                <option value="50">50 per halaman</option>
-                                <option value="100">100 per halaman</option>
-                            </select>
-                        </label>
-                    </div>
+
+<!-- DATATABLES -->
+    <div class="row" id="saku-datatable">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
+                    <h5 style="position:absolute;top: 25px;">Data Jenis</h5>
+                    <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
                 </div>
-                <div class="d-block d-md-inline-block float-right col-md-6 col-sm-12">
-                    <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" placeholder="Search..."
-                        aria-label="Search..." aria-describedby="filter-btn" id="searchData" style="border-top-right-radius: 0 !important;border-bottom-right-radius: 0 !important;">
-                        <div class="input-group-append" >
-                            <span class="input-group-text" id="filter-btn" style="border-top-right-radius: 0.5rem !important;border-bottom-right-radius: 0.5rem !important;"><span class="badge badge-pill badge-outline-primary mb-0" id="jum-filter" style="font-size: 8px;margin-right: 5px;padding: 0.5em 0.75em;"></span><i class="simple-icon-equalizer mr-1"></i> Filter</span>
+                <div class="separator mb-2"></div>
+                <div class="row" style="padding-right:1.75rem;padding-left:1.75rem">
+                    <div class="dataTables_length col-sm-12" id="table-data_length"></div>
+                    <div class="d-block d-md-inline-block float-left col-md-6 col-sm-12">
+                        <div class="page-countdata">
+                            <label>Menampilkan 
+                                <select style="border:none" id="page-count">
+                                    <option value="10">10 per halaman</option>
+                                    <option value="25">25 per halaman</option>
+                                    <option value="50">50 per halaman</option>
+                                    <option value="100">100 per halaman</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-block d-md-inline-block float-right col-md-6 col-sm-12">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="Search..."
+                            aria-label="Search..." aria-describedby="filter-btn" id="searchData" style="border-top-right-radius: 0 !important;border-bottom-right-radius: 0 !important;">
+                            <div class="input-group-append" >
+                                <span class="input-group-text" id="filter-btn" style="border-top-right-radius: 0.5rem !important;border-bottom-right-radius: 0.5rem !important;"><span class="badge badge-pill badge-outline-primary mb-0" id="jum-filter" style="font-size: 8px;margin-right: 5px;padding: 0.5em 0.75em;"></span><i class="simple-icon-equalizer mr-1"></i> Filter</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body" style="min-height: 560px !important;padding-top:0;">                    
-                <div class="table-responsive ">
-                    <table id="table-data" style='width:100%'>                                    
-                        <thead>
-                            <tr>
-                                <th>Kode Jenis</th>
-                                <th>Nama</th>
-                                <th>Tgl Input</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <div class="card-body" style="min-height: 560px !important;padding-top:0;">                    
+                    <div class="table-responsive ">
+                        <table id="table-data" style='width:100%'>                                    
+                            <thead>
+                                <tr>
+                                    <th>Kode Jenis</th>
+                                    <th>Nama</th>
+                                    <th>Tgl Input</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+<!-- END DATATABLES -->
+
 <!-- FORM INPUT -->
     <form id="form-tambah" class="tooltip-label-right" novalidate>
         <div class="row" id="saku-form" style="display:none;">
@@ -256,29 +260,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12">
-                                        <label for="status">Status</label>
-                                        <input class="form-control" type="text" id="status1" name="status">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+<!-- END FORM INPUT -->
 
 <!-- MODAL PREVIEW -->
     <div class="modal" tabindex="-1" role="dialog" id="modal-preview">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:600px">
             <div class="modal-content" style="border-radius:0.75em">
                 <div class="modal-header py-0" style="display:block;">
-                    <h6 class="modal-title py-2" style="position: absolute;">Preview Data Jenis Penilaian <span id="modal-preview-nama"></span><span id="modal-preview-id" style="display:none"></span><span id="modal-preview-kode" style="display:none"></span> </h6>
-                    <button type="button" class="close float-right ml-2" data-dismiss="modal" aria-label="Close" style="line-height:1.5">
+                    <h6 class="modal-title py-2" style="position: absolute;">Preview Data Jenis<span id="modal-preview-nama"></span><span id="modal-preview-id" style="display:none"></span><span id="modal-preview-kode" style="display:none"></span> </h6>
+                    <button type="button" class="close float-right ml-3" data-dismiss="modal" aria-label="Close" style="line-height:3.5">
                     <span aria-hidden="true">&times;</span>
                     </button>
 
@@ -307,6 +302,7 @@
         </div>
     </div>
 <!-- END MODAL PREVIEW -->    
+
 <script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
 
@@ -405,6 +401,25 @@
         var selText = $(this).val();
         dataTable.page.len(parseInt(selText)).draw();
     });
+
+    //LAST ADD
+    function last_add(param,isi){
+        var rowIndexes = [];
+        dataTable.rows( function ( idx, data, node ) {             
+            if(data[param] === isi){
+                rowIndexes.push(idx);                  
+            }
+            return false;
+        }); 
+        dataTable.row(rowIndexes).select();
+        $('.selected td:eq(0)').addClass('last-add');
+        console.log('last-add');
+        setTimeout(function() {
+            console.log('timeout');
+            $('.selected td:eq(0)').removeClass('last-add');
+            dataTable.row(rowIndexes).deselect();
+        }, 1000 * 60 * 10);
+    }
 
     // BUTTON TAMBAH
     $('#saku-datatable').on('click', '#btn-tambah', function(){
@@ -555,15 +570,15 @@
             dataType: 'json',
             data:{'kode_jenis':id},
             async:false,
-            success:function(res){
-                var result = res.data;
+            success:function(result){
                 if(result.status){
                     $('#id_edit').val('edit');
                     $('#kode_jenis').val(id);
                     $('#method').val('put');
                     $('#kode_jenis').attr('readonly', true);
-                    $('#nama').val(result.data.nama);
+                    $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
+                    $('#form-status').hide();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
                 }else if(!result.status && result.message == "Unauthorized"){
@@ -612,6 +627,7 @@
             type:'hapus'
         });
     });
+    // END BUTTON HAPUS
 
     // PREVIEW DETAIL
     $('#table-data tbody').on('click','td',function(e){
@@ -661,18 +677,19 @@
 
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-master/jenis') }}",
+            url: "{{ url('dev-master/jenis-detail') }}",
             dataType: 'json',
             data:{'kode_jenis':id},
             async:false,
             success:function(result){
-                if(result.data.status){
+                if(result.status){
                     $('#id_edit').val('edit');
                     $('#kode_jenis').val(id);
                     $('#method').val('put');
                     $('#kode_jenis').attr('readonly', true);
-                    $('#nama').val(result.data.nama);
+                    $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
+                    $('#form-status').hide();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
                     $('#modal-preview').modal('hide');
@@ -698,5 +715,4 @@
         $('.dropdown-ke1').removeClass('hidden');
         $('.dropdown-ke2').addClass('hidden');
     });
-
 </script>
