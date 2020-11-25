@@ -206,6 +206,7 @@
                                 <tr>
                                     <th>Kode Jenis</th>
                                     <th>Nama</th>
+                                    <th>Status</th>
                                     <th>Tgl Input</th>
                                     <th>Action</th>
                                 </tr>
@@ -321,7 +322,7 @@
         bLengthChange: false,
         sDom: 't<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
         "ordering": true,
-        "order": [[2, "desc"]],
+        "order": [[3, "desc"]],
         'ajax': {
             'url': "{{url('dev-master/jenis')}}",
             'async':false,
@@ -348,15 +349,16 @@
                 }
             },
             {
-                "targets": [2],
+                "targets": [3],
                 "visible": false,
                 "searchable": false
             },
-            {'targets': 3, data: null, 'defaultContent': action_html }
+            {'targets': 4, data: null, 'defaultContent': action_html }
         ],
         'columns': [
             { data: 'kode_jenis' },
             { data: 'nama' },
+             { data: 'status' },
             { data: 'tgl_input'}
         ],
         drawCallback: function () {
@@ -578,7 +580,6 @@
                     $('#kode_jenis').attr('readonly', true);
                     $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
-                    $('#form-status').hide();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
                 }else if(!result.status && result.message == "Unauthorized"){
@@ -631,7 +632,7 @@
 
     // PREVIEW DETAIL
     $('#table-data tbody').on('click','td',function(e){
-        if($(this).index() != 2){
+        if($(this).index() != 3){
 
             var id = $(this).closest('tr').find('td').eq(0).html();
             var data = dataTable.row(this).data();
@@ -642,6 +643,10 @@
             <tr>
                 <td>Nama Jenis</td>
                 <td>`+data.nama+`</td>
+            </tr>
+            <tr>
+                <td>Status Jenis</td>
+                <td>`+data.status+`</td>
             </tr>
             <tr>
                 <td>Tgl Input</td>
@@ -689,7 +694,6 @@
                     $('#kode_jenis').attr('readonly', true);
                     $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
-                    $('#form-status').hide();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
                     $('#modal-preview').modal('hide');

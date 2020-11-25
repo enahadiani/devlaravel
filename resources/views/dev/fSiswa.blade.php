@@ -207,6 +207,8 @@
                                     <th>NIS</th>
                                     <th>Nama Siswa</th>
                                     <th>Jurusan</th>
+                                    <th>Status</th>
+                                    <th></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -260,12 +262,49 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <label for="kode_jur">Jurusan</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend hidden" style="border: 1px solid #d7d7d7;">
+                                                <span class="input-group-text info-code_kode_jur" readonly="readonly" title="" data-toggle="tooltip" data-placement="top" ></span>
+                                            </div>
+                                            <input type="text" class="form-control inp-label-kode_jur" id="kode_jur" name="kode_jur" value="" title="">
+                                            <span class="info-name_kode_jur hidden">
+                                                <span></span> 
+                                            </span>
+                                            <i class="simple-icon-close float-right info-icon-hapus hidden"></i>
+                                            <i class="simple-icon-magnifier search-item2" id="search_kode_jur"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </form>
 <!-- END FORM INPUT -->
+
+<!-- MODAL CBBL -->
+    <div class="modal" tabindex="-1" role="dialog" id="modal-search">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:600px">
+            <div class="modal-content">
+                <div style="display: block;" class="modal-header">
+                    <h5 class="modal-title" style="position: absolute;margin-bottom:10px"></h5><button type="button" class="close" data-dismiss="modal" aria-label="Close" style="top: 0;position: relative;z-index: 10;right: ;">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- END MODAL CBBL -->
 
 <!-- MODAL PREVIEW -->
     <div class="modal" tabindex="-1" role="dialog" id="modal-preview">
@@ -303,11 +342,214 @@
     </div>
 <!-- END MODAL PREVIEW -->    
 <script>
-
+    setHeightForm();
+    var $iconLoad = $('.preloader');
+    var $target = "";
+    var $target2 = "";
+    
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
         }
+    });
+    
+    $('[id^=label]').attr('readonly',true);
+
+    var scrollform = document.querySelector('.form-body');
+    var psscrollform = new PerfectScrollbar(scrollform);
+    
+    var scroll = document.querySelector('#content-preview');
+    var psscroll = new PerfectScrollbar(scroll);
+
+    function getJurusan(id){
+
+        if(id == ""){
+            return false;
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: "{{ url('dev-master/jurusan') }}",
+            dataType: 'json',
+            data:{kode_jur:id},
+            async:false,
+            success:function(result){    
+                if(result.status){
+                    if(typeof result.daftar !== 'undefined' && result.daftar.length>0){
+                        showInfoField('kode_jur',result.daftar[0].kode_jur,result.daftar[0].nama);
+                        
+                    }else{
+                        $('#kode_jur').attr('readonly',false);
+                        $('#kode_jur').css('border-left','1px solid #d7d7d7');
+                        $('#kode_jur').val('');
+                        $('#kode_jur').focus();
+                    }
+                }
+                else if(!result.status && result.message == 'Unauthorized'){
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+                }
+            }
+        });
+    }
+
+    $('[data-toggle="tooltip"]').tooltip(); 
+
+    function showInfoField(kode,isi_kode,isi_nama){
+        $('#'+kode).val(isi_kode);
+        $('#'+kode).attr('style','border-left:0;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important');
+        $('.info-code_'+kode).text(isi_kode).parent('div').removeClass('hidden');
+        $('.info-code_'+kode).attr('title',isi_nama);
+        $('.info-name_'+kode).removeClass('hidden');
+        $('.info-name_'+kode).attr('title',isi_nama);
+        $('.info-name_'+kode+' span').text(isi_nama);
+        var width = $('#'+kode).width()-$('#search_'+kode).width()-10;
+        var height =$('#'+kode).height();
+        var pos =$('#'+kode).position();
+        $('.info-name_'+kode).width(width).css({'left':pos.left,'height':height});
+        $('.info-name_'+kode).closest('div').find('.info-icon-hapus').removeClass('hidden');
+    }
+
+    jumFilter();
+
+    function showFilter(param,target1,target2){
+        var par = param;
+        var modul = '';
+        var header = [];
+        $target = target1;
+        $target2 = target2;
+        var parameter = {param:par};
+        
+        switch(par){
+            case 'kode_jur': 
+                header = ['Kode', 'Nama'];
+                var toUrl = "{{ url('dev-master/jurusan') }}";
+                var columns = [
+                    { data: 'kode_jur' },
+                    { data: 'nama' }
+                ];
+                var judul = "Daftar Jurusan";
+                var pilih = "jurusan";
+                var jTarget1 = "text";
+                var jTarget2 = "text";
+                $target = ".info-code_"+par;
+                $target2 = ".info-name_"+par;
+                $target3 = "";
+                $target4 = "";
+                parameter = {kode_jur:$('#kode_jur').val()};
+            break;
+        }
+
+        var header_html = '';
+        var width = ["30%","70%"];
+        for(i=0; i<header.length; i++){
+            header_html +=  "<th style='width:"+width[i]+"'>"+header[i]+"</th>";
+        }
+
+        var table = "<table width='100%' id='table-search'><thead><tr>"+header_html+"</tr></thead>";
+        table += "<tbody></tbody></table>";
+
+        $('#modal-search .modal-body').html(table);
+
+        var searchTable = $("#table-search").DataTable({
+            sDom: '<"row view-filter"<"col-sm-12"<f><"clearfix">>>t<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
+            ajax: {
+                "url": toUrl,
+                "data": parameter,
+                "type": "GET",
+                "async": false,
+                "dataSrc" : function(json) {
+                    return json.daftar;
+                }
+            },
+            columns: columns,
+            drawCallback: function () {
+                $($(".dataTables_wrapper .pagination li:first-of-type"))
+                    .find("a")
+                    .addClass("prev");
+                $($(".dataTables_wrapper .pagination li:last-of-type"))
+                    .find("a")
+                    .addClass("next");
+
+                $(".dataTables_wrapper .pagination").addClass("pagination-sm");
+            },
+            language: {
+                paginate: {
+                    previous: "<i class='simple-icon-arrow-left'></i>",
+                    next: "<i class='simple-icon-arrow-right'></i>"
+                },
+                search: "_INPUT_",
+                searchPlaceholder: "Search...",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
+                infoFiltered: "(terfilter dari _MAX_ total entri)"
+            },
+        });
+
+        $('#modal-search .modal-title').html(judul);
+        $('#modal-search').modal('show');
+        searchTable.columns.adjust().draw();
+
+        $('#table-search tbody').on('click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                searchTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                var kode = $(this).closest('tr').find('td:nth-child(1)').text();
+                var nama = $(this).closest('tr').find('td:nth-child(2)').text();
+                if(jTarget1 == "val"){
+                    $($target).val(kode);
+                    $($target).attr('value',kode);
+                }else{
+                    $('#'+par).css('border-left',0);
+                    $('#'+par).val(kode);
+                    $($target).text(kode);
+                    $($target).attr("title",nama);
+                    $($target).parents('div').removeClass('hidden');
+                }
+
+                if(jTarget2 == "val"){
+                    $($target2).val(nama);
+                }else{
+                    
+                    console.log('sini2');
+                    var width= $('#'+par).width()-$('#search_'+par).width()-10;
+                    var pos =$('#'+par).position();
+                    var height = $('#'+par).height();
+                    console.log(par);
+                    $('#'+par).attr('style','border-left:0;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important');
+                    $($target2).width($('#'+par).width()-$('#search_'+par).width()-10).css({'left':pos.left,'height':height});
+                    $($target2+' span').text(nama);
+                    $($target2).attr("title",nama);
+                    $($target2).removeClass('hidden');
+                    $($target2).closest('div').find('.info-icon-hapus').removeClass('hidden')
+                }
+
+                if($target3 != ""){
+                    $($target3).text(nama);
+                }
+                $('#modal-search').modal('hide');
+            }
+        });
+    }
+
+    $('#form-tambah').on('click', '.search-item2', function(){
+        if($(this).css('cursor') == "not-allowed"){
+            return false;
+        }
+        var par = $(this).closest('div').find('input').attr('name');
+        showFilter(par);
+    });
+
+    $('.info-icon-hapus').click(function(){
+        var par = $(this).closest('div').find('input').attr('name');
+        $('#'+par).val('');
+        $('#'+par).attr('readonly',false);
+        $('#'+par).attr('style','border-top-left-radius: 0.5rem !important;border-bottom-left-radius: 0.5rem !important');
+        $('.info-code_'+par).parent('div').addClass('hidden');
+        $('.info-name_'+par).addClass('hidden');
+        $(this).addClass('hidden');
     });
 
     //TD ACTION
@@ -319,7 +561,7 @@
         bLengthChange: false,
         sDom: 't<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
         "ordering": true,
-        "order": [[2, "desc"]],
+        "order": [[4, "desc"]],
         'ajax': {
             'url': "{{url('dev-master/siswa')}}",
             'async':false,
@@ -346,15 +588,17 @@
                 }
             },
             {
-                "targets": [2],
+                "targets": [4],
                 "visible": false,
                 "searchable": false
             },
-            {'targets': 3, data: null, 'defaultContent': action_html }
+            {'targets': 5, data: null, 'defaultContent': action_html }
         ],
         'columns': [
             { data: 'nim' },
             { data: 'nama' },
+            { data: 'nama_jur' },
+            { data: 'status' },
             { data: 'tgl_input'}
         ],
         drawCallback: function () {
@@ -510,6 +754,7 @@
                         $('#id_edit').val('');
                         $('#judul-form').html('Tambah Data Jenis');
                         $('#method').val('post');
+                        $('.info-icon-hapus').addClass('hidden');
                         $('.input-group-prepend').addClass('hidden');
                         $('span[class^=info-name]').addClass('hidden');
                         $('#nim').attr('readonly', false);
@@ -575,10 +820,11 @@
                     $('#method').val('put');
                     $('#nim').attr('readonly', true);
                     $('#nama').val(result.daftar[0].nama);
+                    $('#kode_jur').val(result.daftar[0].kode_jur);
                     // $('#row-id').show();
-                    $('#form-status').hide();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
+                    showInfoField('kode_jur',result.daftar[0].kode_jur,result.daftar[0].nama_jur);
                 }else if(!result.status && result.message == "Unauthorized"){
                     window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
@@ -629,17 +875,25 @@
 
     // PREVIEW DETAIL
     $('#table-data tbody').on('click','td',function(e){
-        if($(this).index() != 2){
+        if($(this).index() != 4){
 
             var id = $(this).closest('tr').find('td').eq(0).html();
             var data = dataTable.row(this).data();
             var html = `<tr>
-                <td style='border:none'>Kode Jenis</td>
+                <td style='border:none'>NIS</td>
                 <td style='border:none'>`+data.nim+`</td>
             </tr>
             <tr>
-                <td>Nama Jenis</td>
+                <td>Nama Siswa</td>
                 <td>`+data.nama+`</td>
+            </tr>
+             <tr>
+                <td>Jurusan</td>
+                <td>`+data.nama_jur+`</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>`+data.status+`</td>
             </tr>
             <tr>
                 <td>Tgl Input</td>
@@ -687,7 +941,6 @@
                     $('#nim').attr('readonly', true);
                     $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
-                    $('#form-status').hide();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
                     $('#modal-preview').modal('hide');

@@ -75,7 +75,8 @@ class SiswaController extends Controller
 
             $this->validate($request, [
                 'nim' => 'required',
-                'nama' => 'required'
+                'nama' => 'required',
+                'kode_jur' => 'required'
             ]);
 
             try {
@@ -87,7 +88,8 @@ class SiswaController extends Controller
                     ],
                     'form_params' => [
                         'nim' => $request->nim,
-                        'nama' => $request->nama
+                        'nama' => $request->nama,
+                        'kode_jur' => $request->kode_jur
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
@@ -110,7 +112,8 @@ class SiswaController extends Controller
 
             $this->validate($request, [
                 'nim' => 'required',
-                'nama' => 'required'
+                'nama' => 'required',
+                'kode_jur' => 'required'
             ]);
 
             try {
@@ -122,7 +125,8 @@ class SiswaController extends Controller
                     ],
                     'form_params' => [
                         'nim' => $request->nim,
-                        'nama' => $request->nama
+                        'nama' => $request->nama,
+                        'kode_jur' => $request->kode_jur
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
