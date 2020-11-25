@@ -204,9 +204,9 @@
                         <table id="table-data" style='width:100%'>                                    
                             <thead>
                                 <tr>
+                                    <th>No Tagihan</th>
                                     <th>NIS</th>
-                                    <th>Nama Siswa</th>
-                                    <th>Jurusan</th>
+                                    <th>Tanggal</th>
                                     <th>Status</th>
                                     <th></th>
                                     <th>Action</th>
@@ -243,41 +243,43 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
+                            <div class="form-group col-md-12 col-sm-12">
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-3 col-sm-12">
+                                        <label for="no_tagihan">No Tagihan</label>
+                                        <input class="form-control" type="text" id="no_tagihan" name="no_tagihan">
+                                    </div>
+                                    <div class="col-md-3 col-sm-12">
                                         <label for="nim">NIS</label>
-                                        <input class="form-control" type="text" id="nim" name="nim">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12">
-                                        <label for="nama">Nama Siswa</label>
-                                        <input class="form-control" type="text" id="nama" name="nama">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12">
-                                        <label for="kode_jur">Jurusan</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend hidden" style="border: 1px solid #d7d7d7;">
-                                                <span class="input-group-text info-code_kode_jur" readonly="readonly" title="" data-toggle="tooltip" data-placement="top" ></span>
+                                                <span class="input-group-text info-code_nim" readonly="readonly" title="" data-toggle="tooltip" data-placement="top" ></span>
                                             </div>
-                                            <input type="text" class="form-control inp-label-kode_jur" id="kode_jur" name="kode_jur" value="" title="">
-                                            <span class="info-name_kode_jur hidden">
+                                            <input type="text" class="form-control inp-label-nim" id="nim" name="nim" value="" title="">
+                                            <span class="info-name_nim hidden">
                                                 <span></span> 
                                             </span>
                                             <i class="simple-icon-close float-right info-icon-hapus hidden"></i>
-                                            <i class="simple-icon-magnifier search-item2" id="search_kode_jur"></i>
+                                            <i class="simple-icon-magnifier search-item2" id="search_nim"></i>
                                         </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12">
+                                        <label for="tanggal">Tanggal</label>
+                                        <input class="form-control" type="text" id="tanggal" name="tanggal">
+                                    </div>
+                                    <div class="col-md-3 col-sm-12">
+                                        <label for="periode">Periode</label>
+                                        <input class="form-control" type="text" id="periode" name="periode">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <div class="row">
+                                   <div class="col-md-12 col-sm-12">
+                                        <label for="keterangan" >Keterangan</label>
+                                        <textarea id="keterangan" name="keterangan" class="form-control" style="height:60px"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -342,6 +344,7 @@
     </div>
 <!-- END MODAL PREVIEW -->    
 <script>
+    
     setHeightForm();
     var $iconLoad = $('.preloader');
     var $target = "";
@@ -362,7 +365,7 @@
     var psscroll = new PerfectScrollbar(scroll);
 
     //GET TABLE JURUSAN
-    function getJurusan(id){
+    function getSiswa(id){
 
         if(id == ""){
             return false;
@@ -370,20 +373,20 @@
 
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-master/jurusan') }}",
+            url: "{{ url('dev-master/siswa') }}",
             dataType: 'json',
-            data:{kode_jur:id},
+            data:{nim:id},
             async:false,
             success:function(result){    
                 if(result.status){
                     if(typeof result.daftar !== 'undefined' && result.daftar.length>0){
-                        showInfoField('kode_jur',result.daftar[0].kode_jur,result.daftar[0].nama);
+                        showInfoField('nim',result.daftar[0].nim,result.daftar[0].nama);
                         
                     }else{
-                        $('#kode_jur').attr('readonly',false);
-                        $('#kode_jur').css('border-left','1px solid #d7d7d7');
-                        $('#kode_jur').val('');
-                        $('#kode_jur').focus();
+                        $('#nim').attr('readonly',false);
+                        $('#nim').css('border-left','1px solid #d7d7d7');
+                        $('#nim').val('');
+                        $('#nim').focus();
                     }
                 }
                 else if(!result.status && result.message == 'Unauthorized'){
@@ -422,22 +425,22 @@
         var parameter = {param:par};
         
         switch(par){
-            case 'kode_jur': 
+            case 'nim': 
                 header = ['Kode', 'Nama'];
-                var toUrl = "{{ url('dev-master/jurusan') }}";
+                var toUrl = "{{ url('dev-master/siswa') }}";
                 var columns = [
-                    { data: 'kode_jur' },
+                    { data: 'nim' },
                     { data: 'nama' }
                 ];
-                var judul = "Daftar Jurusan";
-                var pilih = "jurusan";
+                var judul = "Daftar Siswa";
+                var pilih = "Siswa";
                 var jTarget1 = "text";
                 var jTarget2 = "text";
                 $target = ".info-code_"+par;
                 $target2 = ".info-name_"+par;
                 $target3 = "";
                 $target4 = "";
-                parameter = {kode_jur:$('#kode_jur').val()};
+                parameter = {nim:$('#nim').val()};
             break;
         }
 
@@ -565,7 +568,7 @@
         "ordering": true,
         "order": [[4, "desc"]],
         'ajax': {
-            'url': "{{url('dev-master/siswa')}}",
+            'url': "{{url('dev-trans/tagihan')}}",
             'async':false,
             'type': 'GET',
             'dataSrc' : function(json) {
@@ -597,9 +600,9 @@
             {'targets': 5, data: null, 'defaultContent': action_html }
         ],
         'columns': [
+            { data: 'no_tagihan' },
             { data: 'nim' },
-            { data: 'nama' },
-            { data: 'nama_jur' },
+            { data: 'tanggal' },
             { data: 'status' },
             { data: 'tgl_input'}
         ],
@@ -668,14 +671,14 @@
     // BUTTON TAMBAH
     $('#saku-datatable').on('click', '#btn-tambah', function(){
         $('#row-id').hide();
-        $('#judul-form').html('Tambah Data Jenis');
+        $('#judul-form').html('Tambah Data Tagihan');
         $('#btn-update').attr('id','btn-save');
         $('#btn-save').attr('type','submit');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
         $('#method').val('post');
         $('#id_edit').val('');
-        $('#nim').attr('readonly', false);
+        $('#no_tagihan').attr('readonly', true);
         $('.info-icon-hapus').addClass('hidden');
         $('#saku-datatable').hide();
         $('#saku-form').show();
@@ -714,12 +717,12 @@
                 required: true,
                 maxlength:15   
             },
-            nama:
+            keterangan:
             {
                 required: true,
                 maxlength:50   
             },
-            kode_jur:
+            periode:
             {
                 required: true
             }
@@ -729,10 +732,10 @@
             var parameter = $('#id_edit').val();
             var id = $('#nim').val();
             if(parameter == "edit"){
-                var url = "{{ url('dev-master/siswa') }}";
+                var url = "{{ url('dev-trans/tagihan') }}";
                 var pesan = "updated";
             }else{
-                var url = "{{ url('dev-master/siswa') }}";
+                var url = "{{ url('dev-trans/tagihan') }}";
                 var pesan = "saved";
             }
 
@@ -759,7 +762,7 @@
                         $('#form-tambah').validate().resetForm();
                         $('[id^=label]').html('');
                         $('#id_edit').val('');
-                        $('#judul-form').html('Tambah Data Jenis');
+                        $('#judul-form').html('Tambah Data Tagihan');
                         $('#method').val('post');
                         $('.info-icon-hapus').addClass('hidden');
                         $('.input-group-prepend').addClass('hidden');
@@ -769,7 +772,7 @@
                             id:result.data.kode,
                             type:'simpan'
                         });
-                        last_add("kode_jenis",result.data.kode);
+                        last_add("no_tagihan",result.data.kode);
                     }else if(!result.data.status && result.data.message === "Unauthorized"){
                         window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                     }else{
@@ -803,12 +806,12 @@
         }
     });
     // END BUTTON SIMPAN
-    
+
     // BUTTON EDIT
     $('#saku-datatable').on('click', '#btn-edit', function(){
         var id = $(this).closest('tr').find('td:eq(0)').html();
         
-        $('#judul-form').html('Edit Data Jenis');
+        $('#judul-form').html('Edit Data Tagihan');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
         $('#btn-save').attr('type','button');
@@ -816,22 +819,23 @@
 
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-master/siswa-detail') }}",
+            url: "{{ url('dev-trans/tagihan-detail') }}",
             dataType: 'json',
-            data:{'nim':id},
+            data:{'no_tagihan':id},
             async:false,
             success:function(result){
                 if(result.status){
                     $('#id_edit').val('edit');
                     $('#nim').val(id);
                     $('#method').val('put');
-                    $('#nim').attr('readonly', true);
-                    $('#nama').val(result.daftar[0].nama);
-                    $('#kode_jur').val(result.daftar[0].kode_jur);
+                    $('#no_tagihan').attr('readonly', true);
+                    $('#no_tagihan').val(result.daftar[0].no_tagihan);
+                    $('#keterangan').val(result.daftar[0].keterangan);
+                    $('#nim').val(result.daftar[0].nim);
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
-                    showInfoField('kode_jur',result.daftar[0].kode_jur,result.daftar[0].nama_jur);
+                    showInfoField('nim',result.daftar[0].nim);
                 }else if(!result.status && result.message == "Unauthorized"){
                     window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
@@ -841,18 +845,18 @@
     // END BUTTON EDIT
 
     // BUTTON HAPUS DATA
-    function hapusData(id,kode){
+    function hapusData(id){
         $.ajax({
             type: 'DELETE',
-            url: "{{ url('dev-master/siswa') }}",
+            url: "{{ url('dev-trans/tagihan') }}",
             dataType: 'json',
-            data:{'nim':id},
+            data:{'no_tagihan':id},
             async:false,
             success:function(result){
                 if(result.data.status){
                     dataTable.ajax.reload(); 
                     $('#btn-tampil').click();                       
-                    showNotification("top", "center", "success","Hapus Data","Data Jenis ("+id+")");
+                    showNotification("top", "center", "success","Hapus Data","Data Tagihan ("+id+")");
                     $('#modal-pesan-id').html('');
                     $('#table-delete tbody').html('');
                     $('#modal-pesan').modal('hide');
@@ -887,16 +891,20 @@
             var id = $(this).closest('tr').find('td').eq(0).html();
             var data = dataTable.row(this).data();
             var html = `<tr>
-                <td style='border:none'>NIS</td>
-                <td style='border:none'>`+data.nim+`</td>
+                <td style='border:none'>No Tagihan</td>
+                <td style='border:none'>`+data.no_tagihan+`</td>
             </tr>
             <tr>
-                <td>Nama Siswa</td>
-                <td>`+data.nama+`</td>
+                <td>NIS Siswa</td>
+                <td>`+data.nim+`</td>
             </tr>
-             <tr>
-                <td>Jurusan</td>
-                <td>`+data.nama_jur+`</td>
+            <tr>
+                <td>Keterangan</td>
+                <td>`+data.keterangan+`</td>
+            </tr>
+            <tr>
+                <td>tanggal</td>
+                <td>`+data.tanggal+`</td>
             </tr>
             <tr>
                 <td>Status</td>
@@ -936,7 +944,7 @@
 
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-master/siswa-detail') }}",
+            url: "{{ url('dev-trans/tagihan-detail') }}",
             dataType: 'json',
             data:{'nim':id},
             async:false,
@@ -946,13 +954,11 @@
                     $('#nim').val(id);
                     $('#method').val('put');
                     $('#nim').attr('readonly', true);
-                    $('#nama').val(result.daftar[0].nama);
-                    $('#kode_jur').val(result.daftar[0].kode_jur);
+                    $('#nim').val(result.daftar[0].nim);
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
                     $('#modal-preview').modal('hide');
-                    showInfoField('kode_jur',result.daftar[0].kode_jur,result.daftar[0].nama_jur);
                 }else if(!result.status && result.message == "Unauthorized"){
                     window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
@@ -975,4 +981,5 @@
         $('.dropdown-ke1').removeClass('hidden');
         $('.dropdown-ke2').addClass('hidden');
     });
+
 </script>

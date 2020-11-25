@@ -204,9 +204,11 @@
                         <table id="table-data" style='width:100%'>                                    
                             <thead>
                                 <tr>
+                                    <th>No Bayar</th>
                                     <th>NIS</th>
-                                    <th>Nama Siswa</th>
-                                    <th>Jurusan</th>
+                                    <th>Tanggal</th>
+                                    <th>Keterangan</th>
+                                    <th>Periode</th>
                                     <th>Status</th>
                                     <th></th>
                                     <th>Action</th>
@@ -342,6 +344,7 @@
     </div>
 <!-- END MODAL PREVIEW -->    
 <script>
+    
     setHeightForm();
     var $iconLoad = $('.preloader');
     var $target = "";
@@ -361,199 +364,6 @@
     var scroll = document.querySelector('#content-preview');
     var psscroll = new PerfectScrollbar(scroll);
 
-    //GET TABLE JURUSAN
-    function getJurusan(id){
-
-        if(id == ""){
-            return false;
-        }
-
-        $.ajax({
-            type: 'GET',
-            url: "{{ url('dev-master/jurusan') }}",
-            dataType: 'json',
-            data:{kode_jur:id},
-            async:false,
-            success:function(result){    
-                if(result.status){
-                    if(typeof result.daftar !== 'undefined' && result.daftar.length>0){
-                        showInfoField('kode_jur',result.daftar[0].kode_jur,result.daftar[0].nama);
-                        
-                    }else{
-                        $('#kode_jur').attr('readonly',false);
-                        $('#kode_jur').css('border-left','1px solid #d7d7d7');
-                        $('#kode_jur').val('');
-                        $('#kode_jur').focus();
-                    }
-                }
-                else if(!result.status && result.message == 'Unauthorized'){
-                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
-                }
-            }
-        });
-    }
-
-    $('[data-toggle="tooltip"]').tooltip(); 
-
-    function showInfoField(kode,isi_kode,isi_nama){
-        $('#'+kode).val(isi_kode);
-        $('#'+kode).attr('style','border-left:0;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important');
-        $('.info-code_'+kode).text(isi_kode).parent('div').removeClass('hidden');
-        $('.info-code_'+kode).attr('title',isi_nama);
-        $('.info-name_'+kode).removeClass('hidden');
-        $('.info-name_'+kode).attr('title',isi_nama);
-        $('.info-name_'+kode+' span').text(isi_nama);
-        var width = $('#'+kode).width()-$('#search_'+kode).width()-10;
-        var height =$('#'+kode).height();
-        var pos =$('#'+kode).position();
-        $('.info-name_'+kode).width(width).css({'left':pos.left,'height':height});
-        $('.info-name_'+kode).closest('div').find('.info-icon-hapus').removeClass('hidden');
-    }
-
-    jumFilter();
-
-    //SHOW SEARCH-MODAL
-    function showFilter(param,target1,target2){
-        var par = param;
-        var modul = '';
-        var header = [];
-        $target = target1;
-        $target2 = target2;
-        var parameter = {param:par};
-        
-        switch(par){
-            case 'kode_jur': 
-                header = ['Kode', 'Nama'];
-                var toUrl = "{{ url('dev-master/jurusan') }}";
-                var columns = [
-                    { data: 'kode_jur' },
-                    { data: 'nama' }
-                ];
-                var judul = "Daftar Jurusan";
-                var pilih = "jurusan";
-                var jTarget1 = "text";
-                var jTarget2 = "text";
-                $target = ".info-code_"+par;
-                $target2 = ".info-name_"+par;
-                $target3 = "";
-                $target4 = "";
-                parameter = {kode_jur:$('#kode_jur').val()};
-            break;
-        }
-
-        var header_html = '';
-        var width = ["30%","70%"];
-        for(i=0; i<header.length; i++){
-            header_html +=  "<th style='width:"+width[i]+"'>"+header[i]+"</th>";
-        }
-
-        var table = "<table width='100%' id='table-search'><thead><tr>"+header_html+"</tr></thead>";
-        table += "<tbody></tbody></table>";
-
-        $('#modal-search .modal-body').html(table);
-
-        var searchTable = $("#table-search").DataTable({
-            sDom: '<"row view-filter"<"col-sm-12"<f><"clearfix">>>t<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
-            ajax: {
-                "url": toUrl,
-                "data": parameter,
-                "type": "GET",
-                "async": false,
-                "dataSrc" : function(json) {
-                    return json.daftar;
-                }
-            },
-            columns: columns,
-            drawCallback: function () {
-                $($(".dataTables_wrapper .pagination li:first-of-type"))
-                    .find("a")
-                    .addClass("prev");
-                $($(".dataTables_wrapper .pagination li:last-of-type"))
-                    .find("a")
-                    .addClass("next");
-
-                $(".dataTables_wrapper .pagination").addClass("pagination-sm");
-            },
-            language: {
-                paginate: {
-                    previous: "<i class='simple-icon-arrow-left'></i>",
-                    next: "<i class='simple-icon-arrow-right'></i>"
-                },
-                search: "_INPUT_",
-                searchPlaceholder: "Search...",
-                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-                infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
-                infoFiltered: "(terfilter dari _MAX_ total entri)"
-            },
-        });
-
-        $('#modal-search .modal-title').html(judul);
-        $('#modal-search').modal('show');
-        searchTable.columns.adjust().draw();
-
-        $('#table-search tbody').on('click', 'tr', function () {
-            if ( $(this).hasClass('selected') ) {
-                $(this).removeClass('selected');
-            }
-            else {
-                searchTable.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-                var kode = $(this).closest('tr').find('td:nth-child(1)').text();
-                var nama = $(this).closest('tr').find('td:nth-child(2)').text();
-                if(jTarget1 == "val"){
-                    $($target).val(kode);
-                    $($target).attr('value',kode);
-                }else{
-                    $('#'+par).css('border-left',0);
-                    $('#'+par).val(kode);
-                    $($target).text(kode);
-                    $($target).attr("title",nama);
-                    $($target).parents('div').removeClass('hidden');
-                }
-
-                if(jTarget2 == "val"){
-                    $($target2).val(nama);
-                }else{
-                    
-                    console.log('sini2');
-                    var width= $('#'+par).width()-$('#search_'+par).width()-10;
-                    var pos =$('#'+par).position();
-                    var height = $('#'+par).height();
-                    console.log(par);
-                    $('#'+par).attr('style','border-left:0;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important');
-                    $($target2).width($('#'+par).width()-$('#search_'+par).width()-10).css({'left':pos.left,'height':height});
-                    $($target2+' span').text(nama);
-                    $($target2).attr("title",nama);
-                    $($target2).removeClass('hidden');
-                    $($target2).closest('div').find('.info-icon-hapus').removeClass('hidden')
-                }
-
-                if($target3 != ""){
-                    $($target3).text(nama);
-                }
-                $('#modal-search').modal('hide');
-            }
-        });
-    }
-
-    $('#form-tambah').on('click', '.search-item2', function(){
-        if($(this).css('cursor') == "not-allowed"){
-            return false;
-        }
-        var par = $(this).closest('div').find('input').attr('name');
-        showFilter(par);
-    });
-
-    $('.info-icon-hapus').click(function(){
-        var par = $(this).closest('div').find('input').attr('name');
-        $('#'+par).val('');
-        $('#'+par).attr('readonly',false);
-        $('#'+par).attr('style','border-top-left-radius: 0.5rem !important;border-bottom-left-radius: 0.5rem !important');
-        $('.info-code_'+par).parent('div').addClass('hidden');
-        $('.info-name_'+par).addClass('hidden');
-        $(this).addClass('hidden');
-    });
-
     //TD ACTION
     var action_html = "<a href='#' title='Edit' id='btn-edit'><i class='simple-icon-pencil' style='font-size:18px'></i></a> &nbsp;&nbsp;&nbsp; <a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";
 
@@ -563,9 +373,9 @@
         bLengthChange: false,
         sDom: 't<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
         "ordering": true,
-        "order": [[4, "desc"]],
+        "order": [[6, "desc"]],
         'ajax': {
-            'url': "{{url('dev-master/siswa')}}",
+            'url': "{{url('dev-trans/bayar')}}",
             'async':false,
             'type': 'GET',
             'dataSrc' : function(json) {
@@ -590,16 +400,18 @@
                 }
             },
             {
-                "targets": [4],
+                "targets": [6],
                 "visible": false,
                 "searchable": false
             },
-            {'targets': 5, data: null, 'defaultContent': action_html }
+            {'targets': 7, data: null, 'defaultContent': action_html }
         ],
         'columns': [
+            { data: 'no_bayar' },
             { data: 'nim' },
-            { data: 'nama' },
-            { data: 'nama_jur' },
+            { data: 'tanggal' },
+            { data: 'keterangan' },
+            { data: 'periode' },
             { data: 'status' },
             { data: 'tgl_input'}
         ],
@@ -665,314 +477,4 @@
         }, 1000 * 60 * 10);
     }
 
-    // BUTTON TAMBAH
-    $('#saku-datatable').on('click', '#btn-tambah', function(){
-        $('#row-id').hide();
-        $('#judul-form').html('Tambah Data Jenis');
-        $('#btn-update').attr('id','btn-save');
-        $('#btn-save').attr('type','submit');
-        $('#form-tambah')[0].reset();
-        $('#form-tambah').validate().resetForm();
-        $('#method').val('post');
-        $('#id_edit').val('');
-        $('#nim').attr('readonly', false);
-        $('.info-icon-hapus').addClass('hidden');
-        $('#saku-datatable').hide();
-        $('#saku-form').show();
-        $('.input-group-prepend').addClass('hidden');
-        $('span[class^=info-name]').addClass('hidden');
-    });
-    // END BUTTON TAMBAH
-
-    // BUTTON KEMBALI
-    $('#saku-form').on('click', '#btn-kembali', function(){
-        var kode = null;
-        msgDialog({
-            id:kode,
-            type:'keluar'
-        });
-    });
-    // END BUTTON KEMBALI
-
-    // BUTTON UPDATE
-    $('#saku-form').on('click', '#btn-update', function(){
-        var kode = $('#kode_vendor').val();
-        msgDialog({
-            id:kode,
-            type:'edit'
-        });
-    });
-    // END BUTTON UPDATE
-    
-    //BUTTON SIMPAN /SUBMIT
-    $('#form-tambah').validate({
-        ignore: [],
-        rules: 
-        {
-            nim:
-            {
-                required: true,
-                maxlength:15   
-            },
-            nama:
-            {
-                required: true,
-                maxlength:50   
-            },
-            kode_jur:
-            {
-                required: true
-            }
-        },
-        errorElement: "label",
-        submitHandler: function (form) {
-            var parameter = $('#id_edit').val();
-            var id = $('#nim').val();
-            if(parameter == "edit"){
-                var url = "{{ url('dev-master/siswa') }}";
-                var pesan = "updated";
-            }else{
-                var url = "{{ url('dev-master/siswa') }}";
-                var pesan = "saved";
-            }
-
-            var formData = new FormData(form);
-            for(var pair of formData.entries()) {
-                console.log(pair[0]+ ', '+ pair[1]); 
-            }
-            
-            $.ajax({
-                type: 'POST', 
-                url: url,
-                dataType: 'json',
-                data: formData,
-                async:false,
-                contentType: false,
-                cache: false,
-                processData: false, 
-                success:function(result){
-                    if(result.data.status){
-                        dataTable.ajax.reload();
-                        $('#btn-tampil').click();    
-                        $('#row-id').hide();
-                        $('#form-tambah')[0].reset();
-                        $('#form-tambah').validate().resetForm();
-                        $('[id^=label]').html('');
-                        $('#id_edit').val('');
-                        $('#judul-form').html('Tambah Data Jenis');
-                        $('#method').val('post');
-                        $('.info-icon-hapus').addClass('hidden');
-                        $('.input-group-prepend').addClass('hidden');
-                        $('span[class^=info-name]').addClass('hidden');
-                        $('#nim').attr('readonly', false);
-                        msgDialog({
-                            id:result.data.kode,
-                            type:'simpan'
-                        });
-                        last_add("kode_jenis",result.data.kode);
-                    }else if(!result.data.status && result.data.message === "Unauthorized"){
-                        window.location.href = "{{ url('dev-auth/sesi-habis') }}";
-                    }else{
-                        if(result.data.kode == "-" && result.data.jenis != undefined){
-                            msgDialog({
-                                id: id,
-                                type: result.data.jenis,
-                                text:'NIS sudah digunakan'
-                            });
-                        }else{
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Something went wrong!',
-                                footer: '<a href>'+result.data.message+'</a>'
-                            })
-                        }
-                    }
-                },
-                fail: function(xhr, textStatus, errorThrown){
-                    alert('request failed:'+textStatus);
-                }
-            });
-            // $('#btn-simpan').html("Simpan").removeAttr('disabled');
-        },
-        errorPlacement: function (error, element) {
-            var id = element.attr("id");
-            $("label[for="+id+"]").append("<br/>");
-            $("label[for="+id+"]").append(error);
-        }
-    });
-    // END BUTTON SIMPAN
-    
-    // BUTTON EDIT
-    $('#saku-datatable').on('click', '#btn-edit', function(){
-        var id = $(this).closest('tr').find('td:eq(0)').html();
-        
-        $('#judul-form').html('Edit Data Jenis');
-        $('#form-tambah')[0].reset();
-        $('#form-tambah').validate().resetForm();
-        $('#btn-save').attr('type','button');
-        $('#btn-save').attr('id','btn-update');
-
-        $.ajax({
-            type: 'GET',
-            url: "{{ url('dev-master/siswa-detail') }}",
-            dataType: 'json',
-            data:{'nim':id},
-            async:false,
-            success:function(result){
-                if(result.status){
-                    $('#id_edit').val('edit');
-                    $('#nim').val(id);
-                    $('#method').val('put');
-                    $('#nim').attr('readonly', true);
-                    $('#nama').val(result.daftar[0].nama);
-                    $('#kode_jur').val(result.daftar[0].kode_jur);
-                    // $('#row-id').show();
-                    $('#saku-datatable').hide();
-                    $('#saku-form').show();
-                    showInfoField('kode_jur',result.daftar[0].kode_jur,result.daftar[0].nama_jur);
-                }else if(!result.status && result.message == "Unauthorized"){
-                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
-                }
-            }
-        });
-    });
-    // END BUTTON EDIT
-
-    // BUTTON HAPUS DATA
-    function hapusData(id,kode){
-        $.ajax({
-            type: 'DELETE',
-            url: "{{ url('dev-master/siswa') }}",
-            dataType: 'json',
-            data:{'nim':id},
-            async:false,
-            success:function(result){
-                if(result.data.status){
-                    dataTable.ajax.reload(); 
-                    $('#btn-tampil').click();                       
-                    showNotification("top", "center", "success","Hapus Data","Data Jenis ("+id+")");
-                    $('#modal-pesan-id').html('');
-                    $('#table-delete tbody').html('');
-                    $('#modal-pesan').modal('hide');
-                }else if(!result.data.status && result.data.message == "Unauthorized"){
-                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
-                }else{
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Something went wrong!',
-                        footer: '<a href>'+result.data.message+'</a>'
-                    });
-                }
-            }
-        });
-    }
-
-     $('#saku-datatable').on('click','#btn-delete',function(e){
-        var kode = $(this).closest('tr').find('td:eq(0)').html();
-
-        msgDialog({
-            id: kode,
-            type:'hapus'
-        });
-    });
-    // END BUTTON HAPUS
-
-    // PREVIEW DETAIL
-    $('#table-data tbody').on('click','td',function(e){
-        if($(this).index() != 4){
-
-            var id = $(this).closest('tr').find('td').eq(0).html();
-            var data = dataTable.row(this).data();
-            var html = `<tr>
-                <td style='border:none'>NIS</td>
-                <td style='border:none'>`+data.nim+`</td>
-            </tr>
-            <tr>
-                <td>Nama Siswa</td>
-                <td>`+data.nama+`</td>
-            </tr>
-             <tr>
-                <td>Jurusan</td>
-                <td>`+data.nama_jur+`</td>
-            </tr>
-            <tr>
-                <td>Status</td>
-                <td>`+data.status+`</td>
-            </tr>
-            <tr>
-                <td>Tgl Input</td>
-                <td>`+data.tgl_input+`</td>
-            </tr>
-            `;
-            $('#table-preview tbody').html(html);
-            
-            $('#modal-preview-id').text(id);
-            $('#modal-preview').modal('show');
-        }
-    });
-
-    // BUTTON DELETE 2
-    $('.modal-header').on('click','#btn-delete2',function(e){
-        var id = $('#modal-preview-id').text();
-        $('#modal-preview').modal('hide');
-        msgDialog({
-            id:id,
-            type:'hapus'
-        });
-    });
-
-    //BUTTON EDIT 2
-    $('.modal-header').on('click', '#btn-edit2', function(){
-        var id= $('#modal-preview-id').text();
-        
-        $('#judul-form').html('Edit Data Jenis');
-        $('#form-tambah')[0].reset();
-        $('#form-tambah').validate().resetForm();
-        $('#btn-save').attr('type','button');
-        $('#btn-save').attr('id','btn-update');
-
-        $.ajax({
-            type: 'GET',
-            url: "{{ url('dev-master/siswa-detail') }}",
-            dataType: 'json',
-            data:{'nim':id},
-            async:false,
-            success:function(result){
-                if(result.status){
-                    $('#id_edit').val('edit');
-                    $('#nim').val(id);
-                    $('#method').val('put');
-                    $('#nim').attr('readonly', true);
-                    $('#nama').val(result.daftar[0].nama);
-                    $('#kode_jur').val(result.daftar[0].kode_jur);
-                    // $('#row-id').show();
-                    $('#saku-datatable').hide();
-                    $('#saku-form').show();
-                    $('#modal-preview').modal('hide');
-                    showInfoField('kode_jur',result.daftar[0].kode_jur,result.daftar[0].nama_jur);
-                }else if(!result.status && result.message == "Unauthorized"){
-                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
-                }
-            }
-        });
-    });
-
-    //BUTTON CETAK
-    $('.modal-header').on('click','#btn-cetak',function(e){
-        e.stopPropagation();
-        $('.dropdown-ke1').addClass('hidden');
-        $('.dropdown-ke2').removeClass('hidden');
-        console.log('ok');
-    });
-
-    //BUTTON CETAK 2
-    $('.modal-header').on('click','#btn-cetak2',function(e){
-        // $('#dropdownAksi').dropdown('toggle');
-        e.stopPropagation();
-        $('.dropdown-ke1').removeClass('hidden');
-        $('.dropdown-ke2').addClass('hidden');
-    });
 </script>
