@@ -125,6 +125,7 @@ class TagihanController extends Controller
                         'Accept'     => 'application/json',
                     ],
                     'form_params' => [
+                        'no_tagihan' => $request->no_tagihan,
                         'nim' => $request->nim,
                         'tanggal' => $request->tanggal,
                         'keterangan' => $request->keterangan,

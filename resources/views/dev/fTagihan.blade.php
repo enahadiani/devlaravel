@@ -222,65 +222,139 @@
         </div>
     </div>
 <!-- END DATATABLES -->
-
-<!-- FORM INPUT -->
+ <!-- FORM INPUT -->
     <form id="form-tambah" class="tooltip-label-right" novalidate>
         <div class="row" id="saku-form" style="display:none;">
-            <div class="col-sm-12" style="height: 90px;">
-                <div class="card">
+            <div class="col-sm-12">
+                <div class="card" style=''>
                     <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
                         <h5 id="judul-form" style="position:absolute;top:25px"></h5>
-                        <button type="submit" class="btn btn-primary ml-2"  style="float:right;" id="btn-save"><i class="fa fa-save"></i> Simpan</button>
+                        <button type="submit" class="btn btn-primary ml-2"  style="float:right;" id="btn-save" ><i class="fa fa-save"></i> Simpan</button>
                         <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;"><i class="fa fa-undo"></i> Keluar</button>
                     </div>
-                    <div class="separator mb-2"></div>
-                    <!-- FORM BODY -->
-                    <div class="card-body pt-3 form-body">
-                        <div class="form-group row" id="row-id">
-                            <div class="col-9">
-                                <input class="form-control" type="hidden" id="id_edit" name="id_edit">
+                    <div class="separator"></div>
+                    <div class="card-body form-body" style='background:#f8f8f8;padding: 0 !important;border-bottom-left-radius: .75rem;border-bottom-right-radius: .75rem;'>
+                        <div class="card" style='border-radius:0'>
+                            <div class="card-body">
                                 <input type="hidden" id="method" name="_method" value="post">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12 col-sm-12">
-                                <div class="row">
-                                    <div class="col-md-3 col-sm-12">
-                                        <label for="no_tagihan">No Tagihan</label>
-                                        <input class="form-control" type="text" id="no_tagihan" name="no_tagihan">
-                                    </div>
-                                    <div class="col-md-3 col-sm-12">
-                                        <label for="nim">NIS</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend hidden" style="border: 1px solid #d7d7d7;">
-                                                <span class="input-group-text info-code_nim" readonly="readonly" title="" data-toggle="tooltip" data-placement="top" ></span>
-                                            </div>
-                                            <input type="text" class="form-control inp-label-nim" id="nim" name="nim" value="" title="">
-                                            <span class="info-name_nim hidden">
-                                                <span></span> 
-                                            </span>
-                                            <i class="simple-icon-close float-right info-icon-hapus hidden"></i>
-                                            <i class="simple-icon-magnifier search-item2" id="search_nim"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-12">
-                                        <label for="tanggal">Tanggal</label>
-                                        <input class="form-control" type="text" id="tanggal" name="tanggal">
-                                    </div>
-                                    <div class="col-md-3 col-sm-12">
-                                        <label for="periode">Periode</label>
-                                        <input class="form-control" type="text" id="periode" name="periode">
+                                <div class="form-group row" id="row-id">
+                                    <div class="col-9">
+                                        <input class="form-control" type="text" id="id" name="id" readonly hidden>
+                                        <input class="form-control" type="text" id="no_bukti" name="no_bukti" readonly hidden>
+                                        <input class="form-control" type="hidden" id="flag_kelas" name="flag_kelas" readonly >
                                     </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-3 col-sm-12">
+                                                <label for="no_tagihan">No Tagihan</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend hidden" style="border: 1px solid #d7d7d7;">
+                                                        <span class="input-group-text info-code_no_tagihan" readonly="readonly" title="" data-toggle="tooltip" data-placement="top" ></span>
+                                                    </div>
+                                                    <input type="text" class="form-control inp-label-no_tagihan" id="no_tagihan" name="no_tagihan" value="" title="">
+                                                    <span class="info-name_no_tagihan hidden">
+                                                        <span></span> 
+                                                    </span>
+                                                    <i class="simple-icon-close float-right info-icon-hapus hidden"></i>
+                                                    <i class="simple-icon-magnifier search-item2" id="search_no_tagihan"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-12">
+                                                <label for="nim">NIS</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend hidden" style="border: 1px solid #d7d7d7;">
+                                                        <span class="input-group-text info-code_nim" readonly="readonly" title="" data-toggle="tooltip" data-placement="top" ></span>
+                                                    </div>
+                                                    <input type="text" class="form-control inp-label-nim" id="nim" name="nim" value="" title="">
+                                                    <span class="info-name_nim hidden">
+                                                        <span></span> 
+                                                    </span>
+                                                    <i class="simple-icon-close float-right info-icon-hapus hidden"></i>
+                                                    <i class="simple-icon-magnifier search-item2" id="search_nim"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-12">
+                                                <label for="tanggal">Tanggal</label>
+                                                <input class="form-control" type="date" id="tanggal" name="tanggal">
+                                            </div>
+                                            <div class="col-md-3 col-sm-12">
+                                                <label for="periode">Periode</label>
+                                                <input class="form-control" type="text" id="periode" name="periode">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <div class="row">
+                                           <div class="col-md-12 col-sm-12">
+                                                <label for="keterangan" >Keterangan</label>
+                                                <textarea id="keterangan" name="keterangan" class="form-control" style="height:50px"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>      
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
-                                <div class="row">
-                                   <div class="col-md-12 col-sm-12">
-                                        <label for="keterangan" >Keterangan</label>
-                                        <textarea id="keterangan" name="keterangan" class="form-control" style="height:60px"></textarea>
+                        <div class="card mt-3" style='border-top-left-radius:0;border-top-right-radius:0'>
+                            <div class="card-body">
+                                <ul class="nav nav-tabs col-12 " role="tablist">
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#data-nilai" role="tab" aria-selected="true"><span class="hidden-xs-down">Data Nilai</span></a> </li>
+                                </ul>
+                                <div class="tab-content tabcontent-border col-12 p-0">
+                                    <div class="tab-pane active" id="data-nilai" role="tabpanel">
+                                        <div class='col-xs-12 nav-control' style="padding: 0px 5px;">
+                                            <div class="dropdown d-inline-block mx-0">
+                                                <a class="btn dropdown-toggle mb-1 px-0" href="#" role="button" id="dropdown-import" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style='font-size:18px'>
+                                                <i class='simple-icon-doc' ></i> <span style="font-size:12.8px">Import Excel <i class='simple-icon-arrow-down' style="font-size:10px"></i></span> 
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdown-import" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 45px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                    <a class="dropdown-item" href='#' id="download-template" >Download Template</a>
+                                                    <a class="dropdown-item" href="#" id="import-excel" >Upload</a>
+                                                </div>
+                                            </div>
+                                            <a style="font-size:18px;float: right;margin-top: 6px;text-align: right;" class=""><span style="font-size:12.8px;padding: .5rem .5rem .5rem 1.25rem;margin: auto 0;" id="total-row" ></span></a>
+                                        </div>
+                                        <div class='col-xs-12' style='min-height:420px; margin:0px; padding:0px;'>
+                                            <table class="table table-bordered table-condensed gridexample" id="input-nilai" style="width:100%;table-layout:fixed;word-wrap:break-word;white-space:nowrap">
+                                            <thead style="background:#F8F8F8">
+                                                <tr>
+                                                    <th style="width:3%">No</th>
+                                                    <th style="width:15%">ID</th>
+                                                    <th style="width:20%">NIS</th>
+                                                    <th style="width:40%">Nama</th>
+                                                    <th style="width:17%">Nilai</th>
+                                                    <th width="5%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                            </table>
+                                            <a type="button" href="#" data-id="0" title="add-row" class="add-row btn btn-light2 btn-block btn-sm">Tambah Baris</a>
+                                        </div>
                                     </div>
+                                    <!-- <div class="tab-pane" id="data-dok" role="tabpanel">
+                                        <div class='col-xs-12' style='min-height:420px; margin:0px; padding:0px;'>
+                                            <table class="table table-bordered table-condensed" id="input-dok" style='width:100%'>
+                                                <thead>
+                                                    <tr>
+                                                        <th width="5%">No</th>
+                                                        <th width="10%">NIS</th>
+                                                        <th width="20%">Nama</th>
+                                                        <th width="20%">Nama Dokumen</th>
+                                                        <th width="20%">Nama File Upload</th>
+                                                        <th width="20%">Upload File</th>
+                                                        <th width="5%"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                            <a type="button" href="#" data-id="0" title="add-row-dok" class="add-row-dok btn btn-light2 btn-block btn-sm">Tambah Baris</a>
+                                        </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -289,8 +363,7 @@
             </div>
         </div>
     </form>
-<!-- END FORM INPUT -->
-
+<!-- FORM INPUT  -->
 <!-- MODAL CBBL -->
     <div class="modal" tabindex="-1" role="dialog" id="modal-search">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:600px">
@@ -678,7 +751,7 @@
         $('#form-tambah').validate().resetForm();
         $('#method').val('post');
         $('#id_edit').val('');
-        $('#no_tagihan').attr('readonly', true);
+        $('#no_tagihan').attr('readonly', false);
         $('.info-icon-hapus').addClass('hidden');
         $('#saku-datatable').hide();
         $('#saku-form').show();
@@ -831,6 +904,8 @@
                     $('#no_tagihan').attr('readonly', true);
                     $('#no_tagihan').val(result.daftar[0].no_tagihan);
                     $('#keterangan').val(result.daftar[0].keterangan);
+                    $('#periode').val(result.daftar[0].periode);
+                    $('#tanggal').val(result.daftar[0].tanggal);
                     $('#nim').val(result.daftar[0].nim);
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
