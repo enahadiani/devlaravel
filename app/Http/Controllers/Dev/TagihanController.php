@@ -24,6 +24,9 @@ class TagihanController extends Controller
                 'headers' => [
                     'Authorization' => 'Bearer '.Session::get('token'),
                     'Accept'     => 'application/json',
+                ],
+                'query' => [
+                    'no_tagihan' => $request->no_tagihan
                 ]
             ]);
 
