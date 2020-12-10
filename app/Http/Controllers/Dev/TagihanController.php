@@ -70,9 +70,9 @@ class TagihanController extends Controller
                 $response_data = $response->getBody()->getContents();
             
                 $data = json_decode($response_data,true);
-                $data = $data["data"];
+                $data = $data;
             }
-            return response()->json(['daftar' => $data, 'status' => true], 200);
+            return response()->json(['data' => $data], 200);
 
         } catch (BadResponseException $ex) {
             $response = $ex->getResponse();
@@ -101,7 +101,7 @@ class TagihanController extends Controller
                         'tanggal' => $request->tanggal,
                         'keterangan' => $request->keterangan,
                         'periode' => $request->periode,
-                        'kode_jenis' => $request->kode_tagihan,
+                        'kode_jenis' => $request->kode_jenis,
                         'jenis_tagihan' => $request->jenis_tagihan,
                         'nilai' => $request->nilai
                     ]
@@ -143,7 +143,7 @@ class TagihanController extends Controller
                         'tanggal' => $request->tanggal,
                         'keterangan' => $request->keterangan,
                         'periode' => $request->periode,
-                        'kode_jenis' => $request->kode_tagihan,
+                        'kode_jenis' => $request->kode_jenis,
                         'jenis_tagihan' => $request->jenis_tagihan,
                         'nilai' => $request->nilai
                     ]

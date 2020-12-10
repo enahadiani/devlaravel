@@ -171,7 +171,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
-                    <h5 style="position:absolute;top: 25px;">Data Jenis</h5>
+                    <h6 style="position:absolute;top: 25px;">Data Jenis</h6>
                     <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
                 </div>
                 <div class="separator mb-2"></div>
@@ -229,7 +229,7 @@
             <div class="col-sm-12">
                 <div class="card" style=''>
                     <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
-                        <h5 id="judul-form" style="position:absolute;top:25px"></h5>
+                        <h6 id="judul-form" style="position:absolute;top:25px"></h6>
                         <button type="submit" class="btn btn-primary ml-2"  style="float:right;" id="btn-save" ><i class="fa fa-save"></i> Simpan</button>
                         <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;"><i class="fa fa-undo"></i> Keluar</button>
                     </div>
@@ -368,7 +368,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:600px">
             <div class="modal-content">
                 <div style="display: block;" class="modal-header">
-                    <h5 class="modal-title" style="position: absolute;margin-bottom:10px"></h5><button type="button" class="close" data-dismiss="modal" aria-label="Close" style="top: 0;position: relative;z-index: 10;right: ;">
+                    <h6 class="modal-title" style="position: absolute;margin-bottom:10px"></h6><button type="button" class="close" data-dismiss="modal" aria-label="Close" style="top: 0;position: relative;z-index: 10;right: ;">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -604,7 +604,7 @@
         
         switch(par){
             case 'nim': 
-                header = ['Kode', 'Nama'];
+                header = ['NIS', 'Nama'];
                 var toUrl = "{{ url('dev-master/siswa') }}";
                 var columns = [
                     { data: 'nim' },
@@ -619,6 +619,23 @@
                 $target3 = "";
                 $target4 = "";
                 parameter = {nim:$('#nim').val()};
+            break;
+            case 'kode_jenis[]': 
+                header = ['Kode Jenis', 'Nama'];
+                var toUrl = "{{ url('dev-master/jenis') }}";
+                var columns = [
+                    { data: 'kode_jenis' },
+                    { data: 'nama' }
+                ];
+                var judul = "Daftar Jenis Tagihan";
+                var pilih = "Siswa";
+                var jTarget1 = "val";
+                var jTarget2 = "val";
+                $target = "."+$target;
+                $target3 = ".td"+$target2;
+                $target2 = "."+$target2;
+                $target4 = ".td-nilai";
+                parameter = {kode_jenis:$('#kode_jenis').val()};
             break;
         }
         var header_html = '';
@@ -734,6 +751,67 @@
             }
         });
     }
+
+    function getJenis(id){
+        var tmp = id.split(" - ");
+        kode = tmp[0];
+        $.ajax({
+            type: 'GET',
+            url: "{{ url('dev-master/jenis') }}",
+            dataType: 'json',
+            data:{kode_jenis:kode},
+            async:false,
+            success:function(result){    
+                if(result.status){
+                     if(typeof result.daftar !== 'undefined' && result.daftar.length>0){
+                        if(jenis == 'change'){
+                            $('.'+target1).val(kode);
+                            $('.td'+target1).text(kode);
+
+                            $('.'+target2).val(result.daftar[0].nama);
+                            $('.td'+target2).text(result.daftar[0].nama);
+                            $('.td'+target3).text('');
+                        }else{
+
+                            $("#input-tagihan td").removeClass("px-0 py-0 aktif");
+                            $('.'+target2).closest('td').addClass("px-0 py-0 aktif");
+
+                            $('.'+target1).closest('tr').find('.search-kode').hide();
+                            $('.'+target1).val(id);
+                            $('.td'+target1).text(id);
+                            $('.'+target1).hide();
+                            $('.td'+target1).show();
+
+                            $('.'+target2).val(result.daftar[0].nama);
+                            $('.td'+target2).text(result.daftar[0].nama);
+                            $('.'+target2).show();
+                            $('.td'+target2).hide();
+                            $('.'+target2).focus();
+                            $('.td'+target3).text('');
+                        }
+                    }
+                }
+                else if(!result.status && result.message == 'Unauthorized'){
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+                }
+                else{
+                    if(jenis == 'change'){
+
+                        $('.'+target1).val('');
+                        $('.'+target2).val('');
+                        $('.td'+target2).text('');
+                        $('.'+target1).focus();
+                    }else{
+                        $('.'+target1).val('');
+                        $('.'+target2).val('');
+                        $('.td'+target2).text('');
+                        $('.'+target1).focus();
+                        alert('Jenis Tagihan tidak valid');
+                    }
+                }
+            }
+        });
+    }
     
     $('#form-tambah').on('click', '.search-item2', function(){
         if($(this).css('cursor') == "not-allowed"){
@@ -772,26 +850,26 @@
             data:{no_tagihan:id},
             async:false,
             success:function(res){
-                var result= res.data;
+                var result = res.data;
                 if(result.status){
                     $('#id').val('edit');
                     $('#method').val('put');
                     $('#no_bukti').val(id);
                     $('#no_tagihan').attr('readonly', true);
-                    $('#no_tagihan').val(result.daftar[0].no_tagihan);
-                    $('#keterangan').val(result.daftar[0].keterangan);
-                    $('#periode').val(result.daftar[0].periode);
-                    $('#tanggal').val(result.daftar[0].tanggal);
-                    $('#nim').val(result.daftar[0].nim);
+                    $('#no_tagihan').val(result.data[0].no_tagihan);
+                    $('#keterangan').val(result.data[0].keterangan);
+                    $('#periode').val(result.data[0].periode);
+                    $('#tanggal').val(result.data[0].tanggal);
+                    $('#nim').val(result.data[0].nim);
             
-                    if(result.data_detail.length > 0){
+                    if(result.detail.length > 0){
                         var input = '';
                         var no=1;
-                        for(var i=0;i<result.data_detail.length;i++){
-                            var line =result.data_detail[i];
+                        for(var i=0;i<result.detail.length;i++){
+                            var line =result.detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
-                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_tagihan+"</span><input type='text' id='kode"+no+"' name='kode_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_tagihan+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_jenis+"</span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_jenis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
                             input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
@@ -805,8 +883,8 @@
                             }
                         })
                         no= 1;
-                        for(var i=0;i<result.data_detail.length;i++){
-                            var line =result.data_detail[i];
+                        for(var i=0;i<result.detail.length;i++){
+                            var line =result.detail[i];
                             $('.nilke'+no).inputmask("numeric", {
                                 radixPoint: ",",
                                 groupSeparator: ".",
@@ -819,12 +897,14 @@
                         }
                         
                     }
+
                     hitungTotalRow();
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
 
-                    showInfoField('nim',result.daftar[0].nim);
+                    showInfoField('nim',result.daftar[0].nim,result.daftar[0].nama);
+                    showInfoField('kode_jenis',result.daftar[0].kode_jenis,result.daftar[0].nama);
                 }
                 else if(!result.status && result.message == 'Unauthorized'){
                     window.location.href = "{{ url('dev-auth/sesi-habis') }}";
@@ -878,7 +958,7 @@
     $('#saku-datatable').on('click', '#btn-tambah', function(){
         $('#row-id').hide();
         $('#method').val('post');
-        $('#judul-form').html('Tambah Data Penilaian Siswa');
+        $('#judul-form').html('Tambah Data Tagihan Siswa');
         $('#btn-update').attr('id','btn-save');
         $('#btn-save').attr('type','submit');
         $('#form-tambah')[0].reset();
@@ -927,33 +1007,33 @@
                 dataType: 'json',
                 async:false,
                 success:function(res){
-                    var result= res.data;
+                    var result = res.data;
                     if(result.status){
 
                         var html = 
                         `<tr>
                             <td style='border:none'>No Tagihan</td>
-                            <td style='border:none'>`+result.daftar[0].no_tagihan+`</td>
+                            <td style='border:none'>`+result.data[0].no_tagihan+`</td>
                         </tr>
                         <tr>
                             <td>NIS Siswa</td>
-                            <td>`+result.daftar[0].nim+`</td>
+                            <td>`+result.data[0].nim+`</td>
                         </tr>
                         <tr>
                             <td>Keterangan</td>
-                            <td>`+result.daftar[0].keterangan+`</td>
+                            <td>`+result.data[0].keterangan+`</td>
                         </tr>
                         <tr>
                             <td>tanggal</td>
-                            <td>`+result.daftar[0].tanggal+`</td>
+                            <td>`+result.data[0].tanggal+`</td>
                         </tr>
                         <tr>
                             <td>Status</td>
-                            <td>`+result.daftar[0].status+`</td>
+                            <td>`+result.data[0].status+`</td>
                         </tr>
                         <tr>
                             <td>Tgl Input</td>
-                            <td>`+result.daftar[0].tgl_input+`</td>
+                            <td>`+result.data[0].tgl_input+`</td>
                         </tr>
                         <tr>
                             <td colspan='2'>
@@ -963,8 +1043,7 @@
                                             <th style="width:5%">No</th>
                                             <th style="width:30%">Kode Tagihan</th>
                                             <th style="width:35%">Jenis Tagihan</th>
-                                            <th style="width:25%">Nilai</th>
-                                            <th width="5%"></th>
+                                            <th style="width:30%">Nilai</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -975,14 +1054,14 @@
                         
                         $('#table-preview tbody').html(html);
                         var det = ``;
-                        if(result.data_detail.length > 0){
+                        if(result.detail.length > 0){
                             var input = '';
                             var no=1;
-                            for(var i=0;i<result.data_detail.length;i++){
-                                var line =result.data_detail[i];
+                            for(var i=0; i<result.detail.length; i++){
+                                var line =result.detail[i];
                                 input += "<tr>";
                                 input += "<td>"+no+"</td>";
-                                input += "<td >"+line.kode_tagihan+"</td>";
+                                input += "<td >"+line.kode_jenis+"</td>";
                                 input += "<td >"+line.jenis_tagihan+"</td>";
                                 input += "<td class='text-right'>"+format_number(line.nilai)+"</td>";
                                 input += "</tr>";
@@ -1004,19 +1083,17 @@
 
     $('.modal-header').on('click','#btn-delete2',function(e){
         var id = $('#modal-preview-id').text();
-        var kode_pp = $('#modal-preview-kode').text();
         $('#modal-preview').modal('hide');
         msgDialog({
             id:id,
-            kode:kode_pp,
+            kode:id,
             type:'hapus'
         });
     });
 
     $('.modal-header').on('click', '#btn-edit2', function(){
         var id= $('#modal-preview-id').text();
-        var kode_pp= $('#modal-preview-kode').text();
-        $('#judul-form').html('Edit Data Penilaian Siswa');
+        $('#judul-form').html('Edit Data Tagihan Siswa');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
         
@@ -1034,8 +1111,8 @@
                     $('#id').val('edit');
                     $('#method').val('put');
                     $('#no_tagihan').val(id);
-                    $('#nim').val(result.data[0].nim);
-                
+                    $('#nim').val(result.data[0].nim,result.daftar[0].nama);
+
                     if(result.data_detail.length > 0){
                         var input = '';
                         var no=1;
@@ -1043,7 +1120,7 @@
                             var line =result.data_detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
-                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_tagihan+"</span><input type='text' id='kode"+no+"' name='kode_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_tagihan+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_jenis+"</span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_jenis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
                             input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
@@ -1243,12 +1320,12 @@
         $('#input-tagihan > tbody > tr').each(function(index, row) {
             if(!$(row).hasClass('selected-row')) {
                 
-                var kode_tagihan = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").val();
+                var kode_jenis = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").val();
                 var jenis_tagihan = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").val();
                 var nilai = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-nilai").val();
                
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").val(kode_tagihan);
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-kode").text(kode_tagihan);
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").val(kode_jenis);
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-kode").text(kode_jenis);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").val(jenis_tagihan);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-jenis").text(jenis_tagihan);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-nilai").val(nilai);
@@ -1278,7 +1355,7 @@
         var header = [];
         
         switch(par){
-            case 'kode_tagihan[]': 
+            case 'kode_jenis[]': 
                 var par2 = "jenis_tagihan[]";
             break;
         }
@@ -1372,8 +1449,8 @@
             var input = "";
             input += "<tr class='row-nilai'>";
             input += "<td class='no-nilai text-center'>"+no+"</td>";
-            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'></span><input type='text' id='kode"+no+"' name='kode_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'></span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value=''></td>";
+            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'></span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'></span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'></span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='' required></td>";
             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
             input += "</tr>";
@@ -1419,13 +1496,13 @@
                 $('#input-tagihan td').removeClass('px-0 py-0 aktif');
                 $(this).addClass('px-0 py-0 aktif');
         
-                var kode_tagihan = $(this).parents("tr").find(".inp-kode").val();
+                var kode_jenis = $(this).parents("tr").find(".inp-kode").val();
                 var jenis_tagihan = $(this).parents("tr").find(".inp-jenis").val();
                 var nilai = $(this).parents("tr").find(".inp-nilai").val();
                 var no = $(this).parents("tr").find(".no-nilai").text();
 
-                $(this).parents("tr").find(".inp-kode").val(kode_tagihan);
-                $(this).parents("tr").find(".td-kode").text(kode_tagihan);
+                $(this).parents("tr").find(".inp-kode").val(kode_jenis);
+                $(this).parents("tr").find(".td-kode").text(kode_jenis);
                 if(idx == 1){
                     $(this).parents("tr").find(".inp-kode").show();
                     $(this).parents("tr").find(".td-kode").hide();
@@ -1662,7 +1739,7 @@
                             var line =result.detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
-                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_tagihan+"</span><input type='text' id='kode"+no+"' name='kode_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_tagihan+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_jenis+"</span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_jenis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
                             input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
