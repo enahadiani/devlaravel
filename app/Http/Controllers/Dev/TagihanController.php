@@ -16,6 +16,13 @@ class TagihanController extends Controller
         }
     }
 
+    public function joinNum($num){
+        // menggabungkan angka yang di-separate(10.000,75) menjadi 10000.00
+        $num = str_replace(".", "", $num);
+        $num = str_replace(",", ".", $num);
+        return $num;
+    }
+
     public function index(Request $request){
         try{
                 
@@ -93,7 +100,10 @@ class TagihanController extends Controller
                         'nim' => $request->nim,
                         'tanggal' => $request->tanggal,
                         'keterangan' => $request->keterangan,
-                        'periode' => $request->periode
+                        'periode' => $request->periode,
+                        'kode_jenis' => $request->kode_tagihan,
+                        'jenis_tagihan' => $request->jenis_tagihan,
+                        'nilai' => $request->nilai
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
@@ -106,7 +116,7 @@ class TagihanController extends Controller
             } catch (BadResponseException $ex) {
                 $response = $ex->getResponse();
                 $res = json_decode($response->getBody(),true);
-                $data['message'] = $res['message'];
+                $data['message'] = $res;
                 $data['status'] = false;
                 return response()->json(['data' => $data], 500);
             }
@@ -132,7 +142,10 @@ class TagihanController extends Controller
                         'nim' => $request->nim,
                         'tanggal' => $request->tanggal,
                         'keterangan' => $request->keterangan,
-                        'periode' => $request->periode
+                        'periode' => $request->periode,
+                        'kode_jenis' => $request->kode_tagihan,
+                        'jenis_tagihan' => $request->jenis_tagihan,
+                        'nilai' => $request->nilai
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK

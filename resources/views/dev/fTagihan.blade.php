@@ -707,6 +707,33 @@
             }
         });
     }
+
+    function getSiswa(id){
+        var tmp = id.split(" - ");
+        kode = tmp[0];
+        $.ajax({
+            type: 'GET',
+            url: "{{ url('dev-master/siswa') }}",
+            dataType: 'json',
+            data:{nim:kode},
+            async:false,
+            success:function(result){    
+                if(result.status){
+                    if(typeof result.daftar !== 'undefined' && result.daftar.length>0){
+                        showInfoField('nim',result.daftar[0].nim,result.daftar[0].nama);
+                    }else{
+                        $('#nim').attr('readonly',false);
+                        $('#nim').css('border-left','1px solid #d7d7d7');
+                        $('#nim').val('');
+                        $('#nim').focus();
+                    }
+                }
+                else if(!result.status && result.message == 'Unauthorized'){
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+                }
+            }
+        });
+    }
     
     $('#form-tambah').on('click', '.search-item2', function(){
         if($(this).css('cursor') == "not-allowed"){
@@ -764,13 +791,11 @@
                             var line =result.data_detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
-                            input += "<td ><span class='td-kode tdniske"+no+" tooltip-span'>"+line.nis+"</span><input type='text' id='niskode"+no+"' name='nis[]' class='form-control inp-kode niske"+no+" hidden' value='"+line.nis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-nis hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-nis2 tdnis2ke"+no+" tooltip-span'>"+line.nis2+"</span><input type='text' name='nis2[]' class='form-control inp-nis2 nis2ke"+no+" hidden'  value='"+line.nis2+"' readonly></td>";
-                            input += "<td ><span class='td-nama tdnmsiswake"+no+" tooltip-span'>"+line.nama+"</span><input type='text' name='nama_siswa[]' class='form-control inp-nama nmsiswake"+no+" hidden'  value='"+line.nama+"' readonly></td>";
+                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_tagihan+"</span><input type='text' id='kode"+no+"' name='kode_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_tagihan+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
-        
                             no++;
                         }
                         $('#input-tagihan tbody').html(input);
@@ -802,7 +827,7 @@
                     showInfoField('nim',result.daftar[0].nim);
                 }
                 else if(!result.status && result.message == 'Unauthorized'){
-                    window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
                 $iconLoad.hide();
             }
@@ -826,7 +851,7 @@
                     $('#table-delete tbody').html('');
                     $('#modal-delete').modal('hide');
                 }else if(!result.data.status && result.data.message == "Unauthorized"){
-                    window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }else{
                     Swal.fire({
                         icon: 'error',
@@ -841,11 +866,9 @@
 
     $('#saku-datatable').on('click','#btn-delete',function(e){
         var id = $(this).closest('tr').find('td').eq(0).html();
-        var tmp = $(this).closest('tr').find('td').eq(6).html().split("-");
-        var kode_pp = tmp[0];
         msgDialog({
             id: id,
-            kode: kode_pp,
+            kode: id,
             type:'hapus'
         });
     });
@@ -862,18 +885,12 @@
         $('#form-tambah').validate().resetForm();
         $('#id').val('');
         $('#input-tagihan tbody').html('');
-        $('#nama_kd').text('');
-        $('#pelaksanaan').text('');
         $('#saku-datatable').hide();
         $('#saku-form').show();
         $('.input-group-prepend').addClass('hidden');
         $('span[class^=info-name]').addClass('hidden');
         $('.info-icon-hapus').addClass('hidden');
         $('[class*=inp-label-]').attr('style','border-top-left-radius: 0.5rem !important;border-bottom-left-radius: 0.5rem !important;border-left:1px solid #d7d7d7 !important');
-        if("{{ Session::get('kodePP') }}" != ""){
-            $('#kode_pp').val("{{ Session::get('kodePP') }}");
-            $('#kode_pp').trigger('change');
-        }
         hitungTotalRow();
     });
     // END BUTTON TAMBAH
@@ -900,41 +917,6 @@
 
     // PREVIEW DATA
     $('#table-data tbody').on('click','td',function(e){
-        if($(this).index() != 4){
-
-            var id = $(this).closest('tr').find('td').eq(0).html();
-            var data = dataTable.row(this).data();
-            var html = 
-            `<tr>
-                <td style='border:none'>No Tagihan</td>
-                <td style='border:none'>`+data.no_tagihan+`</td>
-            </tr>
-            <tr>
-                <td>NIS Siswa</td>
-                <td>`+data.nim+`</td>
-            </tr>
-            <tr>
-                <td>Keterangan</td>
-                <td>`+data.keterangan+`</td>
-            </tr>
-            <tr>
-                <td>tanggal</td>
-                <td>`+data.tanggal+`</td>
-            </tr>
-            <tr>
-                <td>Status</td>
-                <td>`+data.status+`</td>
-            </tr>
-            <tr>
-                <td>Tgl Input</td>
-                <td>`+data.tgl_input+`</td>
-            </tr>
-            `;
-            $('#table-preview tbody').html(html);
-            
-            $('#modal-preview-id').text(id);
-            $('#modal-preview').modal('show');
-        }
         if($(this).index() != 4){
 
             var id = $(this).closest('tr').find('td').eq(0).html();
@@ -1000,9 +982,8 @@
                                 var line =result.data_detail[i];
                                 input += "<tr>";
                                 input += "<td>"+no+"</td>";
-                                input += "<td >"+line.nis+"</td>";
-                                input += "<td >"+line.nis2+"</td>";
-                                input += "<td >"+line.nama+"</td>";
+                                input += "<td >"+line.kode_tagihan+"</td>";
+                                input += "<td >"+line.jenis_tagihan+"</td>";
                                 input += "<td class='text-right'>"+format_number(line.nilai)+"</td>";
                                 input += "</tr>";
                                 no++;
@@ -1013,7 +994,7 @@
                         $('#modal-preview').modal('show');
                     }
                     else if(!result.status && result.message == 'Unauthorized'){
-                        window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                        window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                     }
                 }
             });
@@ -1043,27 +1024,17 @@
         $('#btn-save').attr('id','btn-update');
         $.ajax({
             type: 'GET',
-            url: "{{ url('sekolah-trans/penilaian-detail') }}",
+            url: "{{ url('dev-trans/penilaian-detail') }}",
             dataType: 'json',
-            data:{kode_pp:kode_pp,no_bukti:id},
+            data:{no_tagihan:id},
             async:false,
             success:function(res){
                 var result= res.data;
                 if(result.status){
                     $('#id').val('edit');
                     $('#method').val('put');
-                    $('#no_bukti').val(id);
-                    $('#kode_pp').val(result.data[0].kode_pp);
-                    $('#flag_kelas').val(result.data[0].flag_kelas);
-                    $('#kode_ta').val(result.data[0].kode_ta);
-                    $('#kode_sem')[0].selectize.setValue(result.data[0].kode_sem);
-                    $('#kode_kelas').val(result.data[0].kode_kelas);
-                    $('#kode_matpel').val(result.data[0].kode_matpel);
-                    $('#kode_jenis').val(result.data[0].kode_jenis);
-                    $('#kode_kd').val(result.data[0].kode_kd);
-                    $('#nama_kd').text(result.data[0].nama_kd);
-                    $('#pelaksanaan').text(result.data[0].pelaksanaan);
-                    $('#penilaian_ke').val(result.data[0].jumlah);
+                    $('#no_tagihan').val(id);
+                    $('#nim').val(result.data[0].nim);
                 
                     if(result.data_detail.length > 0){
                         var input = '';
@@ -1072,13 +1043,11 @@
                             var line =result.data_detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
-                            input += "<td ><span class='td-kode tdniske"+no+" tooltip-span'>"+line.nis+"</span><input type='text' id='niskode"+no+"' name='nis[]' class='form-control inp-kode niske"+no+" hidden' value='"+line.nis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-nis hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-nis2 tdnis2ke"+no+" tooltip-span'>"+line.nis2+"</span><input type='text' name='nis2[]' class='form-control inp-nis2 nis2ke"+no+" hidden'  value='"+line.nis2+"' readonly></td>";
-                            input += "<td ><span class='td-nama tdnmsiswake"+no+" tooltip-span'>"+line.nama+"</span><input type='text' name='nama_siswa[]' class='form-control inp-nama nmsiswake"+no+" hidden'  value='"+line.nama+"' readonly></td>";
+                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_tagihan+"</span><input type='text' id='kode"+no+"' name='kode_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_tagihan+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
-        
                             no++;
                         }
                         $('#input-tagihan tbody').html(input);
@@ -1106,13 +1075,9 @@
                     $('#modal-preview').modal('hide');
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
-                    showInfoField('kode_pp',result.data[0].kode_pp,result.data[0].nama_pp);
-                    showInfoField('kode_kelas',result.data[0].kode_kelas,result.data[0].nama_kelas);
-                    showInfoField('kode_matpel',result.data[0].kode_matpel,result.data[0].nama_matpel);
-                    showInfoField('kode_jenis',result.data[0].kode_jenis,result.data[0].nama_jenis);
                 }
                 else if(!result.status && result.message == 'Unauthorized'){
-                   window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                   window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
             }
         });
@@ -1138,36 +1103,7 @@
         ignore: [],
         rules: 
         {
-            kode_pp:
-            {
-                required: true,
-                maxlength:10   
-            },
-            kode_kelas:
-            {
-                required: true
-            },
-            kode_matpel:
-            {
-                required: true
-            },
-            kode_jenis:
-            {
-                required: true
-            },
-            kode_ta:
-            {
-                required: true
-            },
-            kode_sem:
-            {
-                required: true
-            },
-            kode_kd:
-            {
-                required: true
-            },
-            nama_kd:
+            nim:
             {
                 required: true
             }
@@ -1179,12 +1115,12 @@
             var jumdet = $('#input-tagihan tr').length;
             
             var param = $('#id').val();
-            var id = $('#no_bukti').val();
+            var id = $('#nim').val();
             // $iconLoad.show();
             if(param == "edit"){
-                var url = "{{ url('sekolah-trans/penilaian') }}";
+                var url = "{{ url('dev-trans/tagihan') }}";
             }else{
-                var url = "{{ url('sekolah-trans/penilaian') }}";
+                var url = "{{ url('dev-trans/tagihan') }}";
             }
             for(var pair of formData.entries()) {
                 console.log(pair[0]+ ', '+ pair[1]); 
@@ -1210,35 +1146,29 @@
                             $('#form-tambah').validate().resetForm();
                             $('#row-id').hide();
                             $('#method').val('post');
-                            $('#judul-form').html('Tambah Data Penilaian Siswa');
+                            $('#judul-form').html('Tambah Data Tagihan Siswa');
                             $('#id').val('');
                             $('#input-tagihan tbody').html('');
-                            $('#nama_kd').text('');
-                            $('#pelaksanaan').text('');
                             $('[id^=label]').html('');                            
                             $('.input-group-prepend').addClass('hidden');
                             $('span[class^=info-name]').addClass('hidden');
                             $('.info-icon-hapus').addClass('hidden');
                             $('[class*=inp-label-]').attr('style','border-top-left-radius: 0.5rem !important;border-bottom-left-radius: 0.5rem !important;border-left:1px solid #d7d7d7 !important');
-                            if("{{ Session::get('kodePP') }}" != ""){
-                                $('#kode_pp').val("{{ Session::get('kodePP') }}");
-                                $('#kode_pp').trigger('change');
-                            }
                             hitungTotalRow();
 
                             msgDialog({
-                                id:result.data.no_bukti,
+                                id:result.data.nim,
                                 type:'simpan'
                             });
                             
-                            last_add("no_bukti",result.data.no_bukti);
+                            last_add("nim",result.data.nim);
                         }
                         else if(!result.data.status && result.data.message === "Unauthorized"){
-                            window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                            window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                         }else{
                             if(result.data.jenis == 'duplicate'){
                                 msgDialog({
-                                    id: result.data.no_bukti,
+                                    id: result.data.nim,
                                     type: result.data.jenis,
                                     text: result.data.message
                                 });
@@ -1314,21 +1244,21 @@
             if(!$(row).hasClass('selected-row')) {
                 
                 var kode_tagihan = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").val();
-                var jenis_tagihan = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-nama").val();
+                var jenis_tagihan = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").val();
                 var nilai = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-nilai").val();
                
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").val(kode_tagihan);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-kode").text(kode_tagihan);
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis_tagihan").val(jenis_tagihan);
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-jenis_tagihan").text(jenis_tagihan);
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").val(jenis_tagihan);
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-jenis").text(jenis_tagihan);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-nilai").val(nilai);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-nilai").text(nilai);
                 
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").hide();
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-kode").show();
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".search-kode_tagihan").hide();
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis_tagihan").hide();
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-jenis_tagihan").show();
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".search-kode").hide();
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").hide();
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-jenis").show();
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-nilai").hide();
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-nilai").show();
             }
@@ -1348,8 +1278,8 @@
         var header = [];
         
         switch(par){
-            case 'nis[]': 
-                var par2 = "nis2[]";
+            case 'kode_tagihan[]': 
+                var par2 = "jenis_tagihan[]";
             break;
         }
         
@@ -1365,10 +1295,10 @@
     });
     
     
-    $('#input-tagihan').on('keydown','.inp-kode, .inp-nis2, .inp-nama, .inp-nilai',function(e){
+    $('#input-tagihan').on('keydown','.inp-kode, .inp-jenis, .inp-nilai',function(e){
         var code = (e.keyCode ? e.keyCode : e.which);
-        var nxt = ['.inp-kode','.inp-nis2','.inp-nama','.inp-nilai'];
-        var nxt2 = ['.td-kode','.td-nis2','.td-nama','.td-nilai'];
+        var nxt = ['.inp-kode','.inp-jenis', '.inp-nilai'];
+        var nxt2 = ['.td-kode','.td-jenis', '.td-nilai'];
         if (code == 13 || code == 9) {
             e.preventDefault();
             var idx = $(this).closest('td').index()-1;
@@ -1379,10 +1309,9 @@
                 case 0:
                     var noidx = $(this).parents("tr").find(".no-nilai").text();
                     var kode = $(this).val();
-                    var target1 = "niske"+noidx;
-                    var target2 = "nis2ke"+noidx;
-                    var target3 = "nmsiswake"+noidx;
-                    getSiswa(kode,target1,target2,target3,'tab');                    
+                    var target1 = "kodeke"+noidx;
+                    var target2 = "jeniske"+noidx;
+                    getSiswa(kode,target1,target2,'tab');                    
                     break;
                 case 1:
                     $("#input-tagihan td").removeClass("px-0 py-0 aktif");
@@ -1435,18 +1364,16 @@
     });
 
     $('#form-tambah').on('click', '.add-row', function(){
-        var kode_pp =$('#kode_pp').val();
-        var kode_kelas =$('#kode_kelas').val();
-        if(kode_pp != "" && kode_kelas != ""){
+        var nim =$('#nim').val();
+        if(nim != ""){
 
             var no=$('#input-tagihan .row-nilai:last').index();
             no=no+2;
             var input = "";
             input += "<tr class='row-nilai'>";
             input += "<td class='no-nilai text-center'>"+no+"</td>";
-            input += "<td ><span class='td-kode tdniske"+no+" tooltip-span'></span><input type='text' id='niskode"+no+"' name='nis[]' class='form-control inp-kode niske"+no+" hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-nis hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-            input += "<td ><span class='td-nis2 tdnis2ke"+no+" tooltip-span'></span><input type='text' name='nis2[]' class='form-control inp-nis2 nis2ke"+no+" hidden'  value='' readonly></td>";
-            input += "<td ><span class='td-nama tdnmsiswake"+no+" tooltip-span'></span><input type='text' name='nama_siswa[]' class='form-control inp-nama nmsiswake"+no+" hidden'  value='' readonly></td>";
+            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'></span><input type='text' id='kode"+no+"' name='kode_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'></span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value=''></td>";
             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'></span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='' required></td>";
             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
             input += "</tr>";
@@ -1467,7 +1394,7 @@
             $('#input-tagihan tbody tr:last').find("td:eq(1)").addClass('px-0 py-0 aktif');
             $('#input-tagihan tbody tr:last').find(".inp-kode").show();
             $('#input-tagihan tbody tr:last').find(".td-kode").hide();
-            $('#input-tagihan tbody tr:last').find(".search-nis").show();
+            $('#input-tagihan tbody tr:last').find(".search-kode").show();
             $('#input-tagihan tbody tr:last').find(".inp-kode").focus();
 
             $('.tooltip-span').tooltip({
@@ -1476,64 +1403,10 @@
                 }
             });
         }else{
-            alert('Harap pilih terlebih dahulu Kode PP dan Kode Kelas untuk menambah baris siswa !');
+            alert('Harap pilih terlebih dahulu NIS Siswa');
         }
 
     });
-
-    // $('.nav-control').on('click', '#copy-row', function(){
-    //     if($(".selected-row").length != 1){
-    //         alert('Harap pilih row yang akan dicopy terlebih dahulu!');
-    //         return false;
-    //     }else{
-    //         var kode_akun = $('#input-tagihan tbody tr.selected-row').find(".inp-kode").val();
-    //         var nama_akun = $('#input-tagihan tbody tr.selected-row').find(".inp-nama").val();
-    //         var dc = $('#input-tagihan tbody tr.selected-row').find(".td-dc").text();
-    //         var keterangan = $('#input-tagihan tbody tr.selected-row').find(".inp-ket").val();
-    //         var nilai = $('#input-tagihan tbody tr.selected-row').find(".inp-nilai").val();
-    //         var kode_pp = $('#input-tagihan tbody tr.selected-row').find(".inp-pp").val();
-    //         var nama_pp = $('#input-tagihan tbody tr.selected-row').find(".inp-nama_pp").val();
-    //         var no=$('#input-tagihan .row-jurnal:last').index();
-    //         no=no+2;
-    //         var input = "";
-    //         input += "<tr class='row-jurnal'>";
-    //         input += "<td class='no-jurnal text-center'>"+no+"</td>";
-    //         input += "<td ><span class='td-kode tdakunke"+no+" tooltip-span'>"+kode_akun+"</span><input type='text' name='kode_akun[]' class='form-control inp-kode akunke"+no+" hidden' value='"+kode_akun+"' required='' style='z-index: 1;position: relative;' id='akunkode"+no+"'><a href='#' class='search-item search-akun hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-    //         input += "<td><span class='td-nama tdnmakunke"+no+" tooltip-span'>"+nama_akun+"</span><input type='text' name='nama_akun[]' class='form-control inp-nama nmakunke"+no+" hidden'  value='"+nama_akun+"' readonly></td>";
-    //         input += "<td><span class='td-dc tddcke"+no+" tooltip-span'>"+dc+"</span><select hidden name='dc[]' class='form-control inp-dc dcke"+no+"' value='"+dc+"' required><option value='D'>D</option><option value='C'>C</option></select></td>";
-    //         input += "<td><span class='td-ket tdketke"+no+" tooltip-span'>"+keterangan+"</span><input type='text' name='keterangan[]' class='form-control inp-ket ketke"+no+" hidden'  value='"+keterangan+"' required></td>";
-    //         input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+nilai+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+nilai+"' required></td>";
-    //         input += "<td><span class='td-pp tdppke"+no+" tooltip-span'>"+kode_pp+"</span><input type='text' id='ppkode"+no+"' name='kode_pp[]' class='form-control inp-pp ppke"+no+" hidden' value='"+kode_pp+"' required=''  style='z-index: 1;position: relative;'><a href='#' class='search-item search-pp hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-    //         input += "<td><span class='td-nama_pp tdnmppke"+no+" tooltip-span'>"+nama_pp+"</span><input type='text' name='nama_pp[]' class='form-control inp-nama_pp nmppke"+no+" hidden'  value='"+nama_pp+"' readonly></td>";
-    //         input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
-    //         input += "</tr>";
-    //         $('#input-tagihan tbody').append(input);
-    //         $('.dcke'+no).selectize({
-    //             selectOnTab:true,
-    //             onChange: function(value) {
-    //                 $('.tddcke'+no).text(value);
-    //                 hitungTotal();
-    //             }
-    //         });
-    //         $('.selectize-control.dcke'+no).addClass('hidden');
-    //         $('.nilke'+no).inputmask("numeric", {
-    //             radixPoint: ",",
-    //             groupSeparator: ".",
-    //             digits: 2,
-    //             autoGroup: true,
-    //             rightAlign: true,
-    //             oncleared: function () { self.Value(''); }
-    //         });
-    //         hitungTotal();
-    //         $('.tooltip-span').tooltip({
-    //             title: function(){
-    //                 return $(this).text();
-    //             }
-    //         })
-    //         $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-    //     }
-
-    // });
 
     $('#input-tagihan').on('click', 'td', function(){
         var idx = $(this).index();
@@ -1546,52 +1419,40 @@
                 $('#input-tagihan td').removeClass('px-0 py-0 aktif');
                 $(this).addClass('px-0 py-0 aktif');
         
-                var nis = $(this).parents("tr").find(".inp-kode").val();
-                var nama = $(this).parents("tr").find(".inp-nama").val();
+                var kode_tagihan = $(this).parents("tr").find(".inp-kode").val();
+                var jenis_tagihan = $(this).parents("tr").find(".inp-jenis").val();
                 var nilai = $(this).parents("tr").find(".inp-nilai").val();
-                var nis2 = $(this).parents("tr").find(".inp-nis2").val();
                 var no = $(this).parents("tr").find(".no-nilai").text();
 
-                $(this).parents("tr").find(".inp-kode").val(nis);
-                $(this).parents("tr").find(".td-kode").text(nis);
+                $(this).parents("tr").find(".inp-kode").val(kode_tagihan);
+                $(this).parents("tr").find(".td-kode").text(kode_tagihan);
                 if(idx == 1){
                     $(this).parents("tr").find(".inp-kode").show();
                     $(this).parents("tr").find(".td-kode").hide();
-                    $(this).parents("tr").find(".search-nis").show();
+                    $(this).parents("tr").find(".search-kode").show();
                     $(this).parents("tr").find(".inp-kode").focus();
                 }else{
                     $(this).parents("tr").find(".inp-kode").hide();
                     $(this).parents("tr").find(".td-kode").show();
-                    $(this).parents("tr").find(".search-nis").hide();
+                    $(this).parents("tr").find(".search-kode").hide();
                     
-                }
-        
-                $(this).parents("tr").find(".inp-nis2").val(nis2);
-                $(this).parents("tr").find(".td-nis2").text(nis2);
-                if(idx == 2){
-                    $(this).parents("tr").find(".inp-nis2").show();
-                    $(this).parents("tr").find(".td-nis2").hide();
-                    $(this).parents("tr").find(".inp-nis2").focus();
-                }else{
-                    $(this).parents("tr").find(".inp-nis2").hide();
-                    $(this).parents("tr").find(".td-nis2").show();
                 }
 
-                $(this).parents("tr").find(".inp-nama").val(nama);
-                $(this).parents("tr").find(".td-nama").text(nama);
-                if(idx == 3){
-                    $(this).parents("tr").find(".inp-nama").show();
-                    $(this).parents("tr").find(".td-nama").hide();
-                    $(this).parents("tr").find(".inp-nama").focus();
+                $(this).parents("tr").find(".inp-jenis").val(jenis_tagihan);
+                $(this).parents("tr").find(".td-jenis").text(jenis_tagihan);
+                if(idx == 2){
+                    $(this).parents("tr").find(".inp-jenis").show();
+                    $(this).parents("tr").find(".td-jenis").hide();
+                    $(this).parents("tr").find(".inp-jenis").focus();
                 }else{
                     
-                    $(this).parents("tr").find(".inp-nama").hide();
-                    $(this).parents("tr").find(".td-nama").show();
+                    $(this).parents("tr").find(".inp-jenis").hide();
+                    $(this).parents("tr").find(".td-jenis").show();
                 }
         
                 $(this).parents("tr").find(".inp-nilai").val(nilai);
                 $(this).parents("tr").find(".td-nilai").text(nilai);
-                if(idx == 4){
+                if(idx == 3){
                     $(this).parents("tr").find(".inp-nilai").show();
                     $(this).parents("tr").find(".td-nilai").hide();
                     $(this).parents("tr").find(".inp-nilai").focus();
@@ -1600,8 +1461,8 @@
                     $(this).parents("tr").find(".td-nilai").show();
                 }
                 hitungTotalRow();
-                var nis2 = $(this).parents("tr").find(".inp-nis2").val();
-                console.log(nis2);
+                var jenis_tagihan = $(this).parents("tr").find(".inp-jenis").val();
+                console.log(jenis_tagihan);
             }
         }
     });
@@ -1687,7 +1548,7 @@
                     return xhr;
                 },
                 type: 'POST',
-                url: "{{ url('sekolah-trans/import-excel') }}",
+                url: "{{ url('dev-trans/import-excel') }}",
                 dataType: 'json',
                 data: formData,
                 // async:false,
@@ -1715,7 +1576,7 @@
                             var nik_user = "{{ Session::get('nikUser') }}";
                             var nik = "{{ Session::get('userLog') }}";
 
-                            var link = "{{ config('api.url').'sekolah/penilaian-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=non&kode_pp="+$('#kode_pp').val()+"&kode_kelas="+$('#kode_kelas').val()+"&kode_matpel="+$('.info-name_kode_matpel > span ').text()+"&kode_jenis="+$('#kode_jenis').val()+"&kode_kd="+$('#kode_kd').val()+"&kode_sem="+$('#kode_sem option:selected').text()+"&flag_kelas="+$('#flag_kelas').val()+"&kode_matpel2="+$('.info-code_kode_matpel').text();
+                            var link = "{{ config('api.url').'dev/penilaian-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=non&kode_pp="+$('#kode_pp').val()+"&kode_kelas="+$('#kode_kelas').val()+"&kode_matpel="+$('.info-name_kode_matpel > span ').text()+"&kode_jenis="+$('#kode_jenis').val()+"&kode_kd="+$('#kode_kd').val()+"&kode_sem="+$('#kode_sem option:selected').text()+"&flag_kelas="+$('#flag_kelas').val()+"&kode_matpel2="+$('.info-code_kode_matpel').text();
 
                             $('.pesan-upload-judul').html('Gagal upload!');
                             $('.pesan-upload-judul').removeClass('text-success');
@@ -1724,7 +1585,7 @@
                         }
                     }
                     else if(!result.data.status && result.data.message == 'Unauthorized'){
-                        window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                        window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                     }
                     else{
                         Swal.fire({
@@ -1751,7 +1612,7 @@
                         var msg = "Internal server error";
                     }else if(jqXHR.status == 401){
                         var msg = "Unauthorized";
-                        window.location="{{ url('/sekolah-auth/sesi-habis') }}";
+                        window.location="{{ url('/dev-auth/sesi-habis') }}";
                     }else if(jqXHR.status == 405){
                         var msg = "Route not valid. Page not found";
                     }
@@ -1768,12 +1629,6 @@
         }
     });
 
-    $('#form-tambah').on('change', '#kode_pp', function(){
-        var par = $(this).val();
-        getPP(par);  
-        getTA(par);
-    });
-
     $('.info-icon-hapus').click(function(){
         var par = $(this).closest('div').find('input').attr('name');
         $('#'+par).val('');
@@ -1783,40 +1638,6 @@
         $('.info-name_'+par).addClass('hidden');
         $(this).addClass('hidden');
     });
-
-
-    $('#form-tambah').on('change', '#kode_ta', function(){
-        var par = $(this).val();
-        var pp = $('#kode_pp').val();
-        getTA(par,pp);
-    });
-
-    $('#form-tambah').on('change', '#kode_kelas', function(){
-        var pp = $('#kode_pp').val();
-        var par = $(this).val();
-        getKelas(par,pp);
-    });
-
-    $('#form-tambah').on('change', '#kode_matpel', function(){
-        var par = $(this).val();
-        var pp = $('#kode_pp').val();
-        getMatpel(par,pp);
-    });
-
-    $('#form-tambah').on('change', '#kode_jenis', function(){
-        var par = $(this).val();
-        var pp = $('#kode_pp').val();
-        getJenisPenilaian(par,pp);
-    });
-
-    $('#form-tambah').on('change', '#kode_kd', function(){
-        var par = $(this).val();
-        var pp = $('#kode_pp').val();
-        var matpel = $('#kode_matpel').val();
-        var kelas = $('#kode_kelas').val();
-        getKD(par,pp,matpel,kelas);
-    });
-
     
     $('.custom-file-input').change(function(){
         var fileName = $(this).val();
@@ -1827,7 +1648,7 @@
     $('#process-upload').click(function(e){
         $.ajax({
             type: 'GET',
-            url: "{{ url('sekolah-trans/nilai-tmp') }}",
+            url: "{{ url('dev-trans/nilai-tmp') }}",
             dataType: 'json',
             data:{'kode_pp':$('#kode_pp').val()},
             async:false,
@@ -1841,9 +1662,8 @@
                             var line =result.detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
-                            input += "<td ><span class='td-kode tdniske"+no+" tooltip-span'>"+line.nis+"</span><input type='text' id='niskode"+no+"' name='nis[]' class='form-control inp-kode niske"+no+" hidden' value='"+line.nis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-nis hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-nis2 tdnis2ke"+no+" tooltip-span'>"+line.nis2+"</span><input type='text' name='nis2[]' class='form-control inp-nis2 nis2ke"+no+" hidden'  value='"+line.nis2+"' readonly></td>";
-                            input += "<td ><span class='td-nama tdnmsiswake"+no+" tooltip-span'>"+line.nama+"</span><input type='text' name='nama_siswa[]' class='form-control inp-nama nmsiswake"+no+" hidden'  value='"+line.nama+"' readonly></td>";
+                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_tagihan+"</span><input type='text' id='kode"+no+"' name='kode_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_tagihan+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
@@ -1874,7 +1694,7 @@
                     $('#modal-import').modal('hide');
                 }
                 else if(!result.status && result.message == 'Unauthorized'){
-                    window.location.href = "{{ url('sekolah-auth/sesi-habis') }}";
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }else{
                     alert('error');
                 }
@@ -1886,7 +1706,7 @@
                     var msg = "Internal server error";
                 }else if(jqXHR.status == 401){
                     var msg = "Unauthorized";
-                    window.location="{{ url('/sekolah-auth/sesi-habis') }}";
+                    window.location="{{ url('/dev-auth/sesi-habis') }}";
                 }else if(jqXHR.status == 405){
                     var msg = "Route not valid. Page not found";
                 }
@@ -1894,15 +1714,6 @@
             }
         });
     });
-
-    $('#download-template').click(function(){
-        var kode_lokasi = "{{ Session::get('lokasi') }}";
-        var nik_user = "{{ Session::get('nikUser') }}";
-        var nik = "{{ Session::get('userLog') }}";
-        var link = "{{ config('api.url').'sekolah/penilaian-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template&kode_pp="+$('#kode_pp').val()+"&kode_kelas="+$('#kode_kelas').val()+"&kode_matpel="+$('.info-name_kode_matpel > span ').text()+"&kode_jenis="+$('#kode_jenis').val()+"&kode_kd="+$('#kode_kd').val()+"&kode_sem="+$('#kode_sem option:selected').text()+"&flag_kelas="+$('#flag_kelas').val()+"&kode_matpel2="+$('.info-code_kode_matpel').text();
-        window.open(link, '_blank'); 
-    });
-
     
     // FILTER
     $('#modalFilter').on('submit','#form-filter',function(e){
