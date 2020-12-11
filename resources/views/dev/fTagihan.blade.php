@@ -252,12 +252,12 @@
                                                     <div class="input-group-prepend hidden" style="border: 1px solid #d7d7d7;">
                                                         <span class="input-group-text info-code_no_tagihan" readonly="readonly" title="" data-toggle="tooltip" data-placement="top" ></span>
                                                     </div>
-                                                    <input disabled type="text" class="form-control inp-label-no_tagihan" id="no_tagihan" name="no_tagihan" value="" title="">
-                                                    <span class="info-name_no_tagihan hidden">
+                                                    <input readonly type="text" class="form-control inp-label-no_tagihan" id="no_tagihan" name="no_tagihan" value="" title="">
+                                                    <span readonly class="info-name_no_tagihan hidden">
                                                         <span></span> 
                                                     </span>
-                                                    <i class="simple-icon-close float-right info-icon-hapus hidden"></i>
-                                                    <i class="simple-icon-magnifier search-item2" id="search_no_tagihan"></i>
+                                                    <i readonly class="simple-icon-close float-right info-icon-hapus hidden"></i>
+                                                    <i readonly class="simple-icon-magnifier search-item2" id="search_no_tagihan"></i>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 col-sm-12">
@@ -321,8 +321,8 @@
                                             <thead style="background:#F8F8F8">
                                                 <tr>
                                                     <th style="width:5%">No</th>
-                                                    <th style="width:30%">Kode Tagihan</th>
-                                                    <th style="width:35%">Jenis Tagihan</th>
+                                                    <th style="width:30%">Kode Jenis</th>
+                                                    <th style="width:35%">Nama Jenis</th>
                                                     <th style="width:25%">Nilai</th>
                                                     <th width="5%"></th>
                                                 </tr>
@@ -424,9 +424,10 @@
     $('#process-upload').prop('disabled', true);
     
     var $iconLoad = $('.preloader');
-    var $target = "";
-    var $target2 = "";
-    var $target3 = "";
+    var $target   = "";
+    var $target2  = "";
+    var $target3  = "";
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -870,7 +871,7 @@
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
                             input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_jenis+"</span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_jenis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
+                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.nama_jenis+"</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='"+line.nama_jenis+"' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
@@ -1062,7 +1063,7 @@
                                 input += "<tr>";
                                 input += "<td>"+no+"</td>";
                                 input += "<td >"+line.kode_jenis+"</td>";
-                                input += "<td >"+line.jenis_tagihan+"</td>";
+                                input += "<td >"+line.nama_jenis+"</td>";
                                 input += "<td class='text-right'>"+format_number(line.nilai)+"</td>";
                                 input += "</tr>";
                                 no++;
@@ -1101,7 +1102,7 @@
         $('#btn-save').attr('id','btn-update');
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-trans/penilaian-detail') }}",
+            url: "{{ url('dev-trans/tagihan-detail') }}",
             dataType: 'json',
             data:{no_tagihan:id},
             async:false,
@@ -1121,7 +1122,7 @@
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
                             input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_jenis+"</span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_jenis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
+                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.nama_jenis+"</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
@@ -1321,13 +1322,13 @@
             if(!$(row).hasClass('selected-row')) {
                 
                 var kode_jenis = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").val();
-                var jenis_tagihan = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").val();
+                var nama_jenis = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").val();
                 var nilai = $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-nilai").val();
                
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-kode").val(kode_jenis);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-kode").text(kode_jenis);
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").val(jenis_tagihan);
-                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-jenis").text(jenis_tagihan);
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-jenis").val(nama_jenis);
+                $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-jenis").text(nama_jenis);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".inp-nilai").val(nilai);
                 $('#input-tagihan > tbody > tr:eq('+index+') > td').find(".td-nilai").text(nilai);
                 
@@ -1356,7 +1357,7 @@
         
         switch(par){
             case 'kode_jenis[]': 
-                var par2 = "jenis_tagihan[]";
+                var par2 = "nama_jenis[]";
             break;
         }
         
@@ -1450,7 +1451,7 @@
             input += "<tr class='row-nilai'>";
             input += "<td class='no-nilai text-center'>"+no+"</td>";
             input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'></span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'></span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
+            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'></span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'></span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='' required></td>";
             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
             input += "</tr>";
@@ -1497,7 +1498,7 @@
                 $(this).addClass('px-0 py-0 aktif');
         
                 var kode_jenis = $(this).parents("tr").find(".inp-kode").val();
-                var jenis_tagihan = $(this).parents("tr").find(".inp-jenis").val();
+                var nama_jenis = $(this).parents("tr").find(".inp-jenis").val();
                 var nilai = $(this).parents("tr").find(".inp-nilai").val();
                 var no = $(this).parents("tr").find(".no-nilai").text();
 
@@ -1515,8 +1516,8 @@
                     
                 }
 
-                $(this).parents("tr").find(".inp-jenis").val(jenis_tagihan);
-                $(this).parents("tr").find(".td-jenis").text(jenis_tagihan);
+                $(this).parents("tr").find(".inp-jenis").val(nama_jenis);
+                $(this).parents("tr").find(".td-jenis").text(nama_jenis);
                 if(idx == 2){
                     $(this).parents("tr").find(".inp-jenis").show();
                     $(this).parents("tr").find(".td-jenis").hide();
@@ -1538,8 +1539,8 @@
                     $(this).parents("tr").find(".td-nilai").show();
                 }
                 hitungTotalRow();
-                var jenis_tagihan = $(this).parents("tr").find(".inp-jenis").val();
-                console.log(jenis_tagihan);
+                var nama_jenis = $(this).parents("tr").find(".inp-jenis").val();
+                console.log(nama_jenis);
             }
         }
     });
@@ -1740,7 +1741,7 @@
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
                             input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_jenis+"</span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_jenis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.jenis_tagihan+"</span><input type='text' name='jenis_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
+                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.nama_jenis+"</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
                             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";

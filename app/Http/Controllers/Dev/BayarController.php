@@ -16,6 +16,13 @@ class BayarController extends Controller
         }
     }
 
+    public function joinNum($num){
+        // menggabungkan angka yang di-separate(10.000,75) menjadi 10000.00
+        $num = str_replace(".", "", $num);
+        $num = str_replace(",", ".", $num);
+        return $num;
+    }
+
     public function index(Request $request){
         try{
                 
@@ -60,7 +67,7 @@ class BayarController extends Controller
                 $response_data = $response->getBody()->getContents();
             
                 $data = json_decode($response_data,true);
-                $data = $data["data"];
+                $data = $data;
             }
             return response()->json(['daftar' => $data, 'status' => true], 200);
 
@@ -90,7 +97,11 @@ class BayarController extends Controller
                         'nim' => $request->nim,
                         'tanggal' => $request->tanggal,
                         'keterangan' => $request->keterangan,
-                        'periode' => $request->periode
+                        'periode' => $request->periode,
+                        'no_tagihan' => $request->no_tagihan,
+                        'keterangan' => $request->ket_tagihan,
+                        'nilai_t' => $request->nilai_t,
+                        'nilai_b' => $request->nilai_b
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
@@ -103,7 +114,7 @@ class BayarController extends Controller
             } catch (BadResponseException $ex) {
                 $response = $ex->getResponse();
                 $res = json_decode($response->getBody(),true);
-                $data['message'] = $res['message'];
+                $data['message'] = $res;
                 $data['status'] = false;
                 return response()->json(['data' => $data], 500);
             }
@@ -125,10 +136,15 @@ class BayarController extends Controller
                         'Accept'     => 'application/json',
                     ],
                     'form_params' => [
+                        'no_bayar' => $request->no_bayar,
                         'nim' => $request->nim,
                         'tanggal' => $request->tanggal,
                         'keterangan' => $request->keterangan,
-                        'periode' => $request->periode
+                        'periode' => $request->periode,
+                        'no_tagihan' => $request->no_tagihan,
+                        'keterangan' => $request->ket_tagihan,
+                        'nilai_t' => $request->nilai_t,
+                        'nilai_b' => $request->nilai_b
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
@@ -141,7 +157,7 @@ class BayarController extends Controller
             } catch (BadResponseException $ex) {
                 $response = $ex->getResponse();
                 $res = json_decode($response->getBody(),true);
-                $data['message'] = $res['message'];
+                $data['message'] = $res;
                 $data['status'] = false;
                 return response()->json(['data' => $data], 500);
             }
