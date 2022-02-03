@@ -19,9 +19,11 @@
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/glide.core.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap-stars.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/nouislider.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('asset_dore/css/jquery-ui.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/component-custom-switch.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/main.css') }}" />
+    <link rel="stylesheet" href="{{ asset('asset_dore/css/new.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap-float-label.min.css') }}" />
     
     <link rel="stylesheet" href="{{ asset('asset_dore/js/swal/sweetalert2.min.css') }}">
@@ -30,9 +32,23 @@
     
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap-tagsinput.css') }}" />
     <!-- <link rel="stylesheet" href="{{ asset('asset_dore/css/loading.css') }}" /> -->
-    <link rel="stylesheet" href="{{ asset('mainstyle.css') }}" />
+    <link rel="stylesheet" href="{{ asset('mainstyle-esaku.css?version=_').time() }}" />
+    <link rel="stylesheet" href="{{ asset('asset_dore/bottom-sheet/style.css') }}" />
     <style>
-        
+        .menu .main-menu ul li i{
+            font-size: 25px;
+            line-height: 35px;
+        }
+        .menu .main-menu ul li a {
+            height: 70px;
+        }
+        .menu .main-menu ul li.active::after{
+            height: 70px;
+            top: 45%;
+        }
+        .menu .sub-menu ul li a{
+            padding: 4px 0;
+        }
         .logo{
             background:url("{{ asset('img/esaku-landscape.png') }}") no-repeat;
             background-size: 100px;
@@ -46,11 +62,125 @@
             background-size:30px;
             width:30px;
         }
+        a > span.d-inline-block {
+            max-width: 170px !important;
+            height: auto !important;
+        }
+
+        .sub-menu {
+            width: 265px !important;
+        }
+
+        @media (max-width: 1439px) {
+        .sub-menu {
+            width: 265px; } }
+        @media (max-width: 1199px) {
+        .sub-menu {
+            width: 265px; } }
+        @media (max-width: 767px) {
+        .sub-menu {
+            width: 265px; } }
+
+
+        #app-container.sub-hidden .sub-menu,
+        #app-container.menu-sub-hidden .sub-menu,
+        #app-container.menu-hidden .sub-menu {
+        transform: translateX(-265px); }
+        @media (max-width: 1439px) {
+            #app-container.sub-hidden .sub-menu,
+            #app-container.menu-sub-hidden .sub-menu,
+            #app-container.menu-hidden .sub-menu {
+            transform: translateX(-265px); } }
+        @media (max-width: 1199px) {
+            #app-container.sub-hidden .sub-menu,
+            #app-container.menu-sub-hidden .sub-menu,
+            #app-container.menu-hidden .sub-menu {
+            transform: translateX(-265px); } }
+        @media (max-width: 767px) {
+            #app-container.sub-hidden .sub-menu,
+            #app-container.menu-sub-hidden .sub-menu,
+            #app-container.menu-hidden .sub-menu {
+            transform: translateX(-265px); } }
+
+      #app-container.main-hidden.sub-hidden .sub-menu,
+        #app-container.menu-hidden .sub-menu {
+        transform: translateX(-385px); }
+        @media (max-width: 1439px) {
+            #app-container.main-hidden.sub-hidden .sub-menu,
+            #app-container.menu-hidden .sub-menu {
+            transform: translateX(-375px); } }
+        @media (max-width: 1199px) {
+            #app-container.main-hidden.sub-hidden .sub-menu,
+            #app-container.menu-hidden .sub-menu {
+            transform: translateX(-365px); } }
+        @media (max-width: 767px) {
+            #app-container.main-hidden.sub-hidden .sub-menu,
+            #app-container.menu-hidden .sub-menu {
+            transform: translateX(-355px); } }
+
+        #app-container.menu-mobile .sub-menu {
+        transform: translateX(-405px); }
+
+        #app-container.main-show-temporary .sub-menu {
+            transform: translateX(-265px); }
+
+        @media (max-width: 1439px) {
+        #app-container.main-show-temporary .sub-menu {
+            transform: translateX(-265px); } }
+
+        @media (max-width: 1199px) {
+        #app-container.main-show-temporary .sub-menu {
+            transform: translateX(-265px); } }
+
+        @media (max-width: 767px) {
+        #app-container.main-show-temporary .sub-menu {
+            transform: translateX(-265px); } }
+
+        #app-container.sub-show-temporary .sub-menu, #app-container.menu-mobile.sub-show-temporary .sub-menu, #app-container.menu-main-hidden.menu-mobile.main-show-temporary .sub-menu {
+        transform: translateX(0); }
+        .modal-content
+        {
+            border-radius: 0.75rem !important;
+        }
+
+        body{
+            display: unset;
+        }
+        .modal-header
+        {
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            height:49px !important;
+        }
+
+        .modal-header > h6
+        {
+            margin-top: 0.8rem;
+            margin-bottom: 0.8rem;
+            height: unset !important;
+        }
+
+        .close
+        {
+            line-height:1.5;padding: 0 !important;background: none;appearance: unset;opacity: unset;position: relative;
+            right:-40px !important;top:5px !important;margin-right:0 !important;
+        }
+        .close > span
+        {
+            border-radius: 50%;padding: 0 0.45rem 0.1rem 0.45rem;background: white;color: black;font-size: 1.2rem !important;font-weight: lighter;box-shadow:0px 1px 5px 1px #80808054
+        }
+
+        .close > span:hover
+        {
+            color:white;
+            background:red;
+        }
     </style>
     <script>
         var $public_asset = "{{ asset('asset_dore') }}/";
     </script>
     <script src="{{ asset('asset_dore/js/vendor/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('asset_dore/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('asset_dore/highcharts2.js') }}"></script>
     <script src="{{ asset('asset_dore/highcharts-more.js') }}"></script>
     <script src="{{ asset('asset_dore/js/vendor/typeahead.bundle.js') }}"></script>
@@ -140,14 +270,14 @@
 
         <div class="navbar-right" >
             <div class="user d-inline-block mr-3 dropdown">
-                <button class="btn btn-empty p-0" id="btn-admin" type="button" data-toggle="dropdown" aria-haspopup="true"
+                <button class="btn btn-empty p-0" id="btn-admin" type="button" data-toggle="dropdown" aria-haspopup="true" style="padding:0px 0.5rem !important"
                     aria-expanded="false">
                     <span class="name">{{ $nama }}</span>
                     <span id="foto-profile">
                     @if (Session::get('foto') == "" || Session::get('foto') == "-" )
-                    <img alt="Profile Picture" src="{{ asset('asset_dore/img/user.png') }}" style="width:40px;height:40px"/>
+                    <img alt="Profile Picture" src="{{ asset('asset_dore/img/user.png') }}" style="width:30px;height:30px"/>
                     @else
-                    <img alt="Profile Picture" src="{{ config('api.url').'dev/storage/'.Session::get('foto') }}" style="width:40px;height:40px"/>
+                    <img alt="Profile Picture" src="{{ config('api.url').'dev/storage/'.Session::get('foto') }}" style="width:30px;height:30px"/>
                     @endif
                     </span>
                 </button>
@@ -174,7 +304,7 @@
             <div class="header-icons d-inline-block align-middle mr-4">
                 <div class="dropdown position-relative d-inline-block">
                     <button class="header-icon btn btn-empty" type="button" id="notificationButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding:0px 0.5rem !important">
                         <i class="simple-icon-bell icon-notif" style="font-size:17px"></i>
                         <!-- <span class="count"></span> -->
                     </button>
@@ -201,10 +331,10 @@
                         </div>
                     </div>
                 </div>
-                <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="btn-newtab" title="New Tab">
+                <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="btn-newtab" title="New Tab" style="padding:0px 0.5rem !important">
                     <i class="simple-icon-screen-desktop" style="font-size:18px"></i>
                 </button>
-                <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="fullScreenButton" title="Full Screen">
+                <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="fullScreenButton" title="Full Screen" style="padding:0px 0.5rem !important">
                     <i class="simple-icon-size-fullscreen"></i>
                     <i class="simple-icon-size-actual"></i>
                 </button>
@@ -247,8 +377,215 @@
             </div>
         </div>
     </main>
+    <div id="country-selector" class="c-bottom-sheet c-bottom-sheet--list">
+        <div class="c-bottom-sheet__scrim"></div>
+        <div class="c-bottom-sheet__sheet">
+            <div class="c-bottom-sheet__close">
+                <button type="button" aria-label="Close" class="close" id="bottom-sheet-close">
+                <span>×</span>
+                </button>
+            </div>
+            <div class="c-bottom-sheet__handle">
+                <span></span>
+                <span></span>
+            </div>
+            <div id="content-bottom-sheet" style="max-height:75vh;width:100%"></div>
+        </div>
+        <div class="c-bottom-sheet__container">
+
+        </div>
+    </div>
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script>
+        if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
+        var datepicker = $.fn.datepicker.noConflict();
+        $.fn.bootstrapDP = datepicker;
+    }
+
+    class TouchDragListener {
+        constructor({el, touchStartCallback, touchEndCallback, touchMoveCallback, showLog}) {
+            this.el = el;
+            this.touchStartCallback = touchStartCallback;
+            this.touchEndCallback = touchEndCallback;
+            this.touchMoveCallback = touchMoveCallback;
+            this.showLog = showLog;
+
+            this.active = false;
+            this.currentY;
+            this.initialY;
+            this.yOffset = 0;
+
+            this.dragStart = this.dragStart.bind(this);
+            this.dragEnd = this.dragEnd.bind(this);
+            this.drag = this.drag.bind(this);
+
+            this.el.addEventListener("mousedown", this.dragStart);
+            this.el.addEventListener("mouseleave", this.dragEnd);
+            this.el.addEventListener("mouseup", this.dragEnd);
+            this.el.addEventListener("mousemove", this.drag);
+
+            this.el.addEventListener("touchstart", this.dragStart);
+            this.el.addEventListener("touchend", this.dragEnd);
+            this.el.addEventListener("touchmove", this.drag);
+        }
+
+        dragStart(e) {
+            this.active = true;
+            this.el.classList.add("active");
+
+            if (e.type === "touchstart") {
+                this.initialY = e.touches[0].clientY - this.yOffset;
+            } else {
+                this.initialY = e.clientY - this.yOffset;
+            }
+
+            if (!this.touchStartCallback) return;
+
+            this.touchStartCallback({
+                el: this.el,
+                active: this.active,
+                currentY: this.currentY,
+                initialY: this.initialY,
+                yOffset: this.offSetY
+            })
+        }
+
+        dragEnd(e) {
+            this.active = false;
+            this.el.classList.remove("active");
+
+            this.yOffset = 0;
+
+            this.initialY = this.currentY;
+
+            if (!this.touchEndCallback) return;
+
+            this.touchEndCallback({
+                el: this.el,
+                active: this.active,
+                currentY: this.currentY,
+                initialY: this.initialY,
+                yOffset: this.offSetY
+            })
+        }
+        drag(e) {
+            if (!this.active) return;
+            e.preventDefault();
+
+            if (e.type === "touchmove") {
+                this.currentY = e.touches[0].clientY - this.initialY;
+            } else {
+                this.currentY = e.clientY - this.initialY;
+            }
+
+            this.yOffset = this.currentX;
+
+            if (!this.touchMoveCallback) return;
+
+            this.touchMoveCallback({
+                el: this.el,
+                active: this.active,
+                currentY: this.currentY,
+                initialY: this.initialY,
+                yOffset: this.offSetY
+            });
+
+            if (this.showLog) {
+                console.log({
+                    active: this.active,
+                    initialY: this.initialY,
+                    currentY: this.currentY,
+                    offSetY: this.offSetY
+                });
+            }
+        }
+    }
+
+
+    class BottomSheet {
+        constructor(id) {
+            this.id = id;
+            this.el = document.getElementById(id);
+            this.scrim = this.el.querySelector(".c-bottom-sheet__scrim");
+            this.handle = this.el.querySelector(".c-bottom-sheet__handle");
+            this.sheet = this.el.querySelector(".c-bottom-sheet__sheet");
+            this.activate = this.activate.bind(this);
+            this.deactivate = this.deactivate.bind(this);
+
+            this.scrim.addEventListener("click", this.deactivate);
+            this.handle.addEventListener("click", this.deactivate);
+
+            this.sheetListener = new TouchDragListener({
+                el: this.sheet,
+                touchStartCallback: ({el, active, initialY, currentY, yOffset}) => {
+                    el.style.setProperty("--translateY", `translateY(0)`);
+                    el.style.setProperty("transition", `unset`);
+                },
+                touchEndCallback: ({el, active, initialY, currentY, yOffset}) => {
+                    el.style.setProperty(
+                        "transition",
+                        `transform 150ms cubic-bezier(0.4, 0, 0.2, 1)`
+                    );
+                    el.style.setProperty(
+                        "--translateY",
+                        `translateY(${currentY}px)`
+                    );
+                },
+                touchMoveCallback: ({el, active, initialY, currentY, yOffset}) => {
+                    if (currentY <= -40) {
+                        currentY = -41 + currentY / 10;
+                    } else if (currentY <= -60) {
+                        currentY = -60;
+                    } else if (currentY >= 210) {
+                        this.deactivate(currentY);
+                        return;
+                    }
+
+                    el.style.setProperty(
+                        "--translateY",
+                        `translateY(${currentY}px)`
+                    );
+                }
+            });
+
+            this.scrimListener = new TouchDragListener({
+                el: this.scrim,
+                touchMoveCallback: ({el, active, initialY, currentY, yOffset}) => {
+                    if (currentY >= 83) {
+                        this.deactivate();
+                        return;
+                    }
+                }
+            });
+        }
+        activate(e) {
+            if (e) e.preventDefault();
+            this.el.classList.add("active");
+        }
+        deactivate(translateY) {
+            if (!translateY) {
+                this.sheet.style.setProperty("--translateY", `translateY(201px)`);
+            } else {
+                this.sheet.style.setProperty(
+                    "transition",
+                    `transform 150ms cubic-bezier(0.4, 0, 0.2, 1)`
+                );
+                this.sheet.style.setProperty(
+                    "--translateY",
+                    `translateY(${translateY}px)`
+                );
+            }
+
+            this.el.classList.remove("active");
+        }
+    }
+
+    // if (!$.fn.bootstrapMD && $.fn.modal && $.fn.modal.noConflict) {
+    //     var modal = $.fn.modal.noConflict();
+    //     $.fn.bootstrapMD = modal;
+    // }
+    var $form_aktif = "-";
+
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
     
@@ -681,6 +1018,22 @@
             }
         });
     }
+    function jumFilter(){
+        var jum = $("[name^=inp-filter]").filter(function(){
+            return this.value.trim() != '';
+        }).length;
+        if(jum > 0){
+            $('#jum-filter').text(jum);
+            if($('#jum-filter2').length > 0){
+                $('#jum-filter2').text(jum);
+            }
+        }else{
+            $('#jum-filter').text('');
+            if($('#jum-filter2').length > 0){
+                $('#jum-filter2').text('');
+            }
+        }
+    }
 
     var $dtForm = new Array();
     function getFormList() {
@@ -817,11 +1170,6 @@
     $('.dropdown-periode').html("<span class='periode-label'>Periode</span> <span class='periode-app float-right'>"+namaPeriode2("{{ Session::get('periode') }}</span>"));
     $('.dropdown-lokasi').html("<span class='lokasi-label'>Lokasi</span> <span class='periode-app float-right'>{{ Session::get('lokasi') }}</span>");
     
-    if(form !="" || form != "-"){
-        loadForm("{{ url('dev-auth/form')}}/"+form)
-    }
-
-    console.log(form);
     
     $('.sub-menu').on('click','.a_link',function(e){
         e.preventDefault();
@@ -949,7 +1297,7 @@
     }
     
     function setHeightForm(){
-        var header = 70;
+        var header = 62;
         var content = window.innerHeight;
         // var tinggi = content-header-40;
         var title = $('.card-body.form-header').height();
@@ -958,7 +1306,7 @@
         }else{
             title = 68;
         }
-        var height = content-header-title-40;
+        var height = content-header-title;
     
         if($('#saku-form').length > 0){
             

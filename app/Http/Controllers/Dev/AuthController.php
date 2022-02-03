@@ -157,9 +157,13 @@
                                 $forms = str_replace("_","/", $main_menu[$i]['form']);
                                 $this_lv = $main_menu[$i]['level_menu']; 
                                 $forms = explode("/",$forms);
-                                if(ISSET($forms[2])){
+                                if (isset($forms[2])) {
                                     $this_link = $forms[2];
-                                }else{
+        
+                                    if (isset($forms[3])) {
+                                        $this_link = $forms[2] . '_' . $forms[3];
+                                    }
+                                } else {
                                     $this_link = "";
                                 }
                                 

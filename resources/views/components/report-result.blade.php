@@ -1,9 +1,9 @@
 <div class="row mt-2 hidden scroll" id="saku-report">
     <div class="col-12 pr-0">
-        <div class="card {{ $padding }}" style="min-height:200px">
+        <div class="card {{ $padding }}" style="min-height:calc(100vh - 195px)">
             <div class="border-bottom px-0 py-3 mb-2 navigation-lap hidden">
                 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
-                    <ol class="breadcrumb py-0 my-0">
+                    <ol class="breadcrumb px-0 py-0 my-0">
                         <li class="breadcrumb-item active">
                             {{ $judul }}
                         </li>

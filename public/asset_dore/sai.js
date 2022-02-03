@@ -37,23 +37,38 @@ function DelDecimal(x){
     return Math.round(x);
 }
 
-function sepNumX(x){
-    if (typeof x === 'undefined' || !x) { 
-        return 0;
-    }else{
-        if(x < 0){
-            var x = parseFloat(x).toFixed(0);
-        }
+// function sepNumX(x){
+//     if (typeof x === 'undefined' || !x) { 
+//         return 0;
+//     }else{
+//         if(x < 0){
+//             var x = parseFloat(x).toFixed(0);
+//         }
         
-        var parts = x.toString().split(",");
-        parts[0] = parts[0].replace(/([0-9])(?=([0-9]{3})+$)/g,"$1.");
-        return parts.join(".");
+//         var parts = x.toString().split(",");
+//         parts[0] = parts[0].replace(/([0-9])(?=([0-9]{3})+$)/g,"$1.");
+//         return parts.join(".");
+//     }
+// }
+
+function sepNum(x){
+    if(!isNaN(x)){
+        if (typeof x === undefined || !x || x == 0) { 
+            return 0;
+        }else if(!isFinite(x)){
+            return 0;
+        }else{
+            var x = parseFloat(x).toFixed(0);
+            var parts = x.toString().split('.');
+            parts[0] = parts[0].replace(/([0-9])(?=([0-9]{3})+$)/g,'$1.');
+            return parts.join(',');
+        }
+    }else{
+        return 0;
     }
 }
 
-function namaPeriode(periode){
-    var bulan = periode.substr(4,2);
-    var tahun = periode.substr(0,4);
+function namaBulan(bulan){
     switch (bulan){
         case 1 : case '1' : case '01': bulan = "Januari"; break;
         case 2 : case '2' : case '02': bulan = "Februari"; break;
@@ -70,7 +85,34 @@ function namaPeriode(periode){
         default: bulan = null;
     }
 
-    return bulan+' '+tahun;
+    return bulan;
+}
+
+function namaPeriode(periode){
+    if(periode != null){
+
+        var bulan = periode.substr(4,2);
+        var tahun = periode.substr(0,4);
+        switch (bulan){
+            case 1 : case '1' : case '01': bulan = "Januari"; break;
+            case 2 : case '2' : case '02': bulan = "Februari"; break;
+            case 3 : case '3' : case '03': bulan = "Maret"; break;
+            case 4 : case '4' : case '04': bulan = "April"; break;
+            case 5 : case '5' : case '05': bulan = "Mei"; break;
+            case 6 : case '6' : case '06': bulan = "Juni"; break;
+            case 7 : case '7' : case '07': bulan = "Juli"; break;
+            case 8 : case '8' : case '08': bulan = "Agustus"; break;
+            case 9 : case '9' : case '09': bulan = "September"; break;
+            case 10 : case '10' : case '10': bulan = "Oktober"; break;
+            case 11 : case '11' : case '11': bulan = "November"; break;
+            case 12 : case '12' : case '12': bulan = "Desember"; break;
+            default: bulan = null;
+        }
+    
+        return bulan+' '+tahun;
+    }else{
+        return '-';
+    }
 }
 
 function namaPeriodeBulan(periode){
@@ -162,6 +204,30 @@ function sepNum(x,prefix=null){
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
     }
+}
+
+function number_format(number,decimal=0,style = {}){
+
+    if(decimal == 0){
+        number = parseFloat(number);
+    }else{
+        number = parseFloat(number).toFixed(decimal);
+    }
+    if(isNaN(number)){
+        number = 0;
+    }
+    Object.assign(style,{ 
+        minimumFractionDigits: decimal
+    });
+    formatter = new Intl.NumberFormat(['ban', 'id'],style);
+    return formatter.format(number); ;
+}
+
+function reverse_format(str_num){
+    var parts = str_num.split(',');
+    number = parts.join('');
+    number = number.replace('Rp', '');
+    return +number;
 }
 
 function toSatuan(num, satuan, pembagi, dec_places){
@@ -337,6 +403,7 @@ function generateFormat(format, str){
         case 'sepNum2': var formated_str = sepNum2(str); break;
         case 'sepNumKanan': var formated_str = "<p align='right'>"+sepNum(str)+"</p>"; break;
         case 'sepNum2Kanan': var formated_str = "<p align='right'>"+sepNum2(str)+"</p>"; break;
+        case 'sepNum2Kanan%': var formated_str = "<p align='right'>"+sepNum2(str)+"%</p>"; break;
         case 'toRp': var formated_str = toRp(str); break;
         case 'toNilai': var formated_str = toNilai(str); break;
     }
@@ -597,7 +664,6 @@ function saiPostLoad(post_url, cancel_url, formData, table_refresh_target_id, su
             xhr.upload.addEventListener("progress", function (evt) {
                 if (evt.lengthComputable) {
                     var percentComplete = evt.loaded / evt.total;
-                    console.log(percentComplete);
                     $('#report-load-bar').attr('aria-valuenow', percentComplete * 100).css({
                         width: percentComplete * 100 + '%'
                     }).html(parseFloat(percentComplete * 100).toFixed(2) + '%');
@@ -609,7 +675,6 @@ function saiPostLoad(post_url, cancel_url, formData, table_refresh_target_id, su
             xhr.addEventListener("progress", function (evt) {
                 if (evt.lengthComputable) {
                     var percentComplete = evt.loaded / evt.total;
-                    console.log(percentComplete);
                     $('#report-load-bar').css({
                         width: percentComplete * 100 + '%'
                     });
@@ -689,6 +754,85 @@ function saiPostLoad(post_url, cancel_url, formData, table_refresh_target_id, su
             $('#report-load-bar').attr('aria-valuenow', 0).css({
                 width: 0 + '%'
             }).html(parseFloat(0 * 100).toFixed(2) + '%');
+        }
+    });
+}
+
+function saiPostGrid(post_url, cancel_url, formData, table_refresh_target_id, success_callback, failed_callback, clear){
+    if (typeof clear === 'undefined') { clear = true; }
+    if (typeof table_refresh_target_id === 'undefined') { table_refresh_target_id = null; }
+    if (typeof success_callback === 'undefined') { success_callback = null; }
+    if (typeof failed_callback === 'undefined') { failed_callback = null; }
+    var status = true;
+    $('#grid-load').show();
+    $.ajax({
+        url: post_url,
+        data: formData,
+        type: "post",
+        dataType: "json",
+        contentType: false,       // The content type used when sending data to the server.
+        cache: false,             // To unable request pages to be cached
+        processData:false, 
+        success: function (data) {
+            if(data.auth_status == 1){
+                if(typeof data.alert !== 'undefined'){
+                    alert("Auth success : "+data.alert);
+                }
+                
+                if(success_callback != null){
+                    success_callback(data);
+                }else{
+                    if(data.status == 1){
+                        // clear input dan validation box jika berhasil
+                        if(table_refresh_target_id != null){
+                            $(table_refresh_target_id).DataTable().ajax.reload();
+                        }
+                        
+                        if(clear){
+                            // if(confirm('Bersihkan input?')){
+                            clearInput();
+                            // }
+                        }
+    
+                        if(data.edit){
+                            if(cancel_url == null){
+                                location.reload();
+                            }else{
+                                window.location = cancel_url;
+                            }
+                            // for(i = 0; i < $('.selectize').length; i++){
+                            //     $('.selectize')[i].selectize.setValue('');
+                            //     alert($('.selectize')[i].selectize.getValue());
+                            //     if selectize.length == null ?
+                            // }
+                        }else{
+                            $('.nav-tabs a[href="#sai-container-daftar"]').tab('show');
+                        }
+                    }
+                }
+
+                if(failed_callback != null){
+                    failed_callback(data);
+                }else{
+                    if (data.status == 3){
+                        // https://stackoverflow.com/a/26166303
+                        var error_array = Object.keys(data.error_input).map(function (key) { return data.error_input[key]; });
+    
+                        // append input element error
+                        var error_list = "<div class='alert alert-danger' style='padding:0px; padding-top:5px; padding-bottom:5px; margin:0px; color: #a94442; background-color: #f2dede; border-color: #ebccd1;'><ul>";
+                        for(i = 0; i<error_array.length; i++){
+                            error_list += '<li>'+error_array[i]+'</li>';
+                        }
+                        error_list += "</ul></div>";
+                        $('#validation-box').html(error_list);
+                    }
+                }
+            }else{
+                alert("Auth Failed : "+data.error);
+            }
+        },
+        complete:function(xhr){
+            $('#grid-load').hide();
         }
     });
 }

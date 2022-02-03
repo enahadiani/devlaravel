@@ -13,14 +13,19 @@ use Illuminate\Support\Facades\Session;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/form/{id}', function ($id) {
     if(isset($id)){
-
         if(!Session::has('isLoggedIn')){
             // return redirect('dash-telu/login');
             return view('dev.sesi');
         }else{
-            return view('dev.'.$id);
+            $tmp = explode("_",$id);
+            if(isset($tmp[1])){
+                return view('dev.'.$tmp[0].'.'.$tmp[1]);
+            }else{
+                return view('dev.'.$id);
+            }
         }
     }else{
         return view('dev.blankform');

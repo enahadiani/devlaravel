@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap.rtl.only.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('asset_dore/css/vendor/bootstrap-float-label.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('asset_dore/css/main.css') }}" />        
-    <!-- <link rel="stylesheet" href="{{ asset('asset_dore/css/loading.css') }}" /> -->
+    <link rel="stylesheet" href="{{ asset('asset_dore/css/main.css') }}" />       
+    <link rel="stylesheet" href="{{ asset('asset_dore/css/new.css?version=_').time() }}" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
         body {
@@ -48,9 +48,6 @@
             font-size: 1.25rem !important;
         }
 
-        button,label{
-            font-size: 0.75rem !important;
-        }
 
         p,li,ul,a,input,select,textarea,span[class*="info-code"],span[class*="info-name"],.selectize-input,span{
             font-size: 0.875rem !important;
@@ -68,9 +65,6 @@
         }
         .form-side{
             margin: 0 auto;
-        }
-        input{
-            border-radius: 10px !important;
         }
         /* button{
             border-radius: 15px !important;
@@ -95,30 +89,17 @@
         
         #btn-eye
         {
-            position: absolute;
-            top: 26px;
-            right: 18px;left: unset;width: 40px;height: 40px;background: url("{{ asset('img/hide.svg') }}") no-repeat;background-blend-mode: lighten;background-size: 22px;background-position-x: center;background-position-y: center;opacity: 0.5;cursor: pointer;
+            top: 0px;right: 10px;left: unset;width: 40px;height: 40px;background: url("{{ asset('img/hide.svg') }}") no-repeat;background-blend-mode: lighten;background-size: 22px;background-position-x: center;background-position-y: center;opacity: 0.5;cursor: pointer;
         }
-
         #btn-lihat
         {
             position: absolute;
-            top: 36px;
-            font-size: 0.75rem !important;
-            right: 18px;left: unset;width: 40px;height: 40px; opacity: 0.5;cursor: pointer;
+            top: 30px;
+            font-size: 14px !important;
+            right: 25px;left: unset;
+            height: 40px; opacity: 0.5;cursor: pointer;
         }
-
-        .btn{
-            border-radius: 8px !important;
-        }
-
-        .form-control {
-            padding: 0.1rem 0.5rem; 
-            height: calc(1.3rem + 1rem);
-            border-radius:0.5rem !important;
-            
-        }
-
+        
         .auth-card .form-side {
             width: 50%;
             padding: 80px; }
