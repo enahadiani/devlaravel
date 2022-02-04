@@ -93,15 +93,7 @@ class BayarController extends Controller
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
-                    'form_params' => [
-                        'nim' => $request->nim,
-                        'tanggal' => $request->tanggal,
-                        'keterangan' => $request->keterangan,
-                        'periode' => $request->periode,
-                        'no_tagihan' => $request->no_tagihan,
-                        'keterangan' => $request->ket_tagihan,
-                        'nilai' => $request->nilai
-                    ]
+                    'form_params' => $request->all()
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
                     $response_data = $response->getBody()->getContents();
@@ -134,16 +126,7 @@ class BayarController extends Controller
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
-                    'form_params' => [
-                        'no_bayar' => $request->no_bayar,
-                        'nim' => $request->nim,
-                        'tanggal' => $request->tanggal,
-                        'keterangan' => $request->keterangan,
-                        'periode' => $request->periode,
-                        'no_tagihan' => $request->no_tagihan,
-                        'keterangan' => $request->ket_tagihan,
-                        'nilai' => $request->nilai
-                    ]
+                    'form_params' => $request->all()
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
                     $response_data = $response->getBody()->getContents();
