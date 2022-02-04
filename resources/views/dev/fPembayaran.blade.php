@@ -325,8 +325,7 @@
                                                     <th style="width:5%">No</th>
                                                     <th style="width:25%">Kode Tagihan</th>
                                                     <th style="width:25%">Jenis Tagihan</th>
-                                                    <th style="width:20%">Nilai T</th>
-                                                    <th style="width:20%">Nilai B</th>
+                                                    <th style="width:20%">Nilai </th>
                                                     <th width="5%"></th>
                                                 </tr>
                                             </thead>

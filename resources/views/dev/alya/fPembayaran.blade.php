@@ -311,9 +311,9 @@
                                                 <tr>
                                                     <th style="width:5%">No</th>
                                                     <th style="width:25%">Kode Tagihan</th>
-                                                    <th style="width:25%">Jenis Tagihan</th>
-                                                    <th style="width:20%">Nilai T</th>
-                                                    <th style="width:20%">Nilai B</th>
+                                                    <th style="width:25%">Jenis Tagihan</th>                                             
+                                                    <th style="width:20%">Nilai</th>
+                                                    <!-- <th style="width:20%">Nilai B</th> -->
                                                     <th width="5%"></th>
                                                 </tr>
                                             </thead>
@@ -591,7 +591,7 @@
                 $target4 = "";
                 parameter = {nim:$('#nim').val()};
             break;
-            case 'kode_jenis[]': 
+            case 'no_tagihan[]': 
                 header = ['Kode Tagihan', 'Keterangan'];
                 var toUrl = "{{ url('dev-trans/tagihan') }}";
                 var columns = [
@@ -1275,6 +1275,75 @@
             }
         }
     });
+
+    $('#input-tagihan').on('keydown','.inp-kode, .inp-jenis, .inp-nilai, .inp-nilai1',function(e){
+        var code = (e.keyCode ? e.keyCode : e.which);
+        var nxt = ['.inp-kode','.inp-jenis', '.inp-nilai1', '.inp-nilai'];
+        var nxt2 = ['.td-kode','.td-jenis', '.td-nilai1', '.td-nilai'];
+        if (code == 13 || code == 9) {
+            e.preventDefault();
+            var idx = $(this).closest('td').index()-1;
+            var idx_next = idx+1;
+            var kunci = $(this).closest('td').index()+1;
+            var isi = $(this).val();
+            switch (idx) {
+                case 0:
+                    var noidx = $(this).parents("tr").find(".no-nilai").text();
+                    var kode = $(this).val();
+                    var target1 = "kodeke"+noidx;
+                    var target2 = "jeniske"+noidx;
+                    getSiswa(kode,target1,target2,'tab');                    
+                    break;
+                case 1:
+                    $("#input-tagihan td").removeClass("px-0 py-0 aktif");
+                    $(this).parents("tr").find("td:eq("+kunci+")").addClass("px-0 py-0 aktif");
+                    $(this).closest('tr').find(nxt[idx]).hide();
+                    $(this).closest('tr').find(nxt2[idx]).show();
+
+                    $(this).closest('tr').find(nxt[idx_next]).show();
+                    $(this).closest('tr').find(nxt2[idx_next]).hide();
+                    $(this).closest('tr').find(nxt[idx_next]).focus();                    
+                    break;
+                case 2:
+                    $("#input-tagihan td").removeClass("px-0 py-0 aktif");
+                    $(this).parents("tr").find("td:eq("+kunci+")").addClass("px-0 py-0 aktif");
+                    $(this).closest('tr').find(nxt[idx]).hide();
+                    $(this).closest('tr').find(nxt2[idx]).show();
+
+                    $(this).closest('tr').find(nxt[idx_next]).show();
+                    $(this).closest('tr').find(nxt2[idx_next]).hide();
+                    $(this).closest('tr').find(nxt[idx_next]).focus();                    
+                    break;
+                case 3:
+                    if(isi != "" && isi != 0){
+                        $("#input-tagihan td").removeClass("px-0 py-0 aktif");
+                        $(this).parents("tr").find("td:eq("+kunci+")").addClass("px-0 py-0 aktif");
+                        $(this).closest('tr').find(nxt[idx]).val(isi);
+                        $(this).closest('tr').find(nxt2[idx]).text(isi);
+                        $(this).closest('tr').find(nxt[idx]).hide();
+                        $(this).closest('tr').find(nxt2[idx]).show();
+                        var cek = $(this).parents('tr').next('tr').find('.td-kode');
+                        if(cek.length > 0){
+                            cek.click();
+                        }else{
+                            $('.add-row').click();
+                        }
+                        hitungTotalRow();
+                    }else{
+                        alert('Nilai yang dimasukkan tidak valid');
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }else if(code == 38){
+            e.preventDefault();
+            var idx = nxt.indexOf(e.target.id);
+            idx--;
+        }
+    });
+
      $('#form-tambah').on('click', '.add-row', function(){
         var nim =$('#nim').val();
         if(nim != ""){
@@ -1284,9 +1353,10 @@
             var input = "";
             input += "<tr class='row-nilai'>";
             input += "<td class='no-nilai text-center'>"+no+"</td>";
-            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'></span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'></span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
+            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'></span><input type='text' id='kode"+no+"' name='no_tagihan[]' class='form-control inp-kode kodeke"+no+" hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'></span><input type='text' name='ket_tagihan[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='' readonly></td>";
             input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'></span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='' required></td>";
+            // input += "<td class='text-right'><span class='td-nilai tdnilkeb"+no+" tooltip-span'></span><input type='text' name='nilai_b' class='form-control inp-nilai nilkeb"+no+" hidden'  value='' required></td>";
             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
             input += "</tr>";
             $('#input-tagihan tbody').append(input);
@@ -1331,13 +1401,13 @@
                 $('#input-tagihan td').removeClass('px-0 py-0 aktif');
                 $(this).addClass('px-0 py-0 aktif');
         
-                var kode_jenis = $(this).parents("tr").find(".inp-kode").val();
-                var nama_jenis = $(this).parents("tr").find(".inp-jenis").val();
+                var no_tagihan = $(this).parents("tr").find(".inp-kode").val();
+                var keterangan = $(this).parents("tr").find(".inp-jenis").val();
                 var nilai = $(this).parents("tr").find(".inp-nilai").val();
                 var no = $(this).parents("tr").find(".no-nilai").text();
 
-                $(this).parents("tr").find(".inp-kode").val(kode_jenis);
-                $(this).parents("tr").find(".td-kode").text(kode_jenis);
+                $(this).parents("tr").find(".inp-kode").val(no_tagihan);
+                $(this).parents("tr").find(".td-kode").text(no_tagihan);
                 if(idx == 1){
                     $(this).parents("tr").find(".inp-kode").show();
                     $(this).parents("tr").find(".td-kode").hide();
@@ -1350,8 +1420,8 @@
                     
                 }
 
-                $(this).parents("tr").find(".inp-jenis").val(nama_jenis);
-                $(this).parents("tr").find(".td-jenis").text(nama_jenis);
+                $(this).parents("tr").find(".inp-jenis").val(keterangan);
+                $(this).parents("tr").find(".td-jenis").text(keterangan);
                 if(idx == 2){
                     $(this).parents("tr").find(".inp-jenis").show();
                     $(this).parents("tr").find(".td-jenis").hide();
@@ -1373,10 +1443,31 @@
                     $(this).parents("tr").find(".td-nilai").show();
                 }
                 hitungTotalRow();
-                var nama_jenis = $(this).parents("tr").find(".inp-jenis").val();
-                console.log(nama_jenis);
+                var keterangan = $(this).parents("tr").find(".inp-jenis").val();
+                console.log(keterangan);
             }
         }
+    });
+
+    $('.currency').inputmask("numeric", {
+        radixPoint: ",",
+        groupSeparator: ".",
+        digits: 2,
+        autoGroup: true,
+        rightAlign: true,
+        oncleared: function () { self.Value(''); }
+    });
+
+    $('#input-tagihan').on('click', '.hapus-item', function(){
+        $(this).closest('tr').remove();
+        no=1;
+        $('.row-nilai').each(function(){
+            var nom = $(this).closest('tr').find('.no-nilai');
+            nom.html(no);
+            no++;
+        });
+        hitungTotalRow();
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
     });
     // END ENTER FIELD FORM
 
@@ -1437,24 +1528,6 @@
             case 'no_tagihan[]': 
                 var par2 = "ket_tagihan[]";
             break;
-           
-            case 'kode_jur[]': 
-                header = ['Kode Jurusan', 'Nama'];
-                var toUrl = "{{ url('dev-master/jurusan') }}";
-                var columns = [
-                    { data: 'kode_jur' },
-                    { data: 'nama' }
-                ];
-                var judul = "Daftar Jurusan";
-                var pilih = "Siswa";
-                var jTarget1 = "val";
-                var jTarget2 = "val";
-                $target = "."+$target;
-                $target3 = ".td"+$target2;
-                $target2 = "."+$target2;
-                $target4 = ".td-nilai";
-                parameter = {kode_jenis:$('#kode_jur').val()};
-            break;
         }
         
         var tmp = $(this).closest('tr').find('input[name="'+par+'"]').attr('class');
@@ -1467,5 +1540,6 @@
         
         showFilter(par,target1,target2);
     });
+    
     
 </script>

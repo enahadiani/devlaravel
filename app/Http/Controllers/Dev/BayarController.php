@@ -100,8 +100,7 @@ class BayarController extends Controller
                         'periode' => $request->periode,
                         'no_tagihan' => $request->no_tagihan,
                         'keterangan' => $request->ket_tagihan,
-                        'nilai_t' => $request->nilai_t,
-                        'nilai_b' => $request->nilai_b
+                        'nilai' => $request->nilai
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
@@ -143,8 +142,7 @@ class BayarController extends Controller
                         'periode' => $request->periode,
                         'no_tagihan' => $request->no_tagihan,
                         'keterangan' => $request->ket_tagihan,
-                        'nilai_t' => $request->nilai_t,
-                        'nilai_b' => $request->nilai_b
+                        'nilai' => $request->nilai
                     ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
