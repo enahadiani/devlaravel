@@ -171,7 +171,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
-                    <h6 style="position:absolute;top: 25px;">Data Jenis</h6>
+                    <h6 style="position:absolute;top: 25px;">Data Tagihan</h6>
                     <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
                 </div>
                 <div class="separator mb-2"></div>
@@ -208,7 +208,7 @@
                                     <th>NIS</th>
                                     <th>Tanggal</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Tgl Input</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -246,7 +246,14 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-12 col-sm-12">
                                         <div class="row">
-                                           
+                                                <div class="input-group">
+                                                   
+                                                    <input readonly type="hidden" class="form-control inp-label-no_bayar" id="no_tagihan" name="no_tagihan" value="" title="">
+                                                    <span readonly class="info-name_no_tagihan hidden">
+                                                        <span></span> 
+                                                    </span>
+                                                    <i readonly class="simple-icon-close float-right info-icon-hapus hidden"></i>
+                                                </div>
                                             <div class="col-md-3 col-sm-12">
                                                 <label for="nim">NIS</label>
                                                 <div class="input-group">
@@ -372,7 +379,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:600px">
             <div class="modal-content" style="border-radius:0.75em">
                 <div class="modal-header py-0" style="display:block;">
-                    <h6 class="modal-title py-2" style="position: absolute;">Preview Data Siswa<span id="modal-preview-nama"></span><span id="modal-preview-id" style="display:none"></span><span id="modal-preview-kode" style="display:none"></span> </h6>
+                    <h6 class="modal-title py-2" style="position: absolute;">Preview Data Transaksi Tagihan<span id="modal-preview-nama"></span><span id="modal-preview-id" style="display:none"></span><span id="modal-preview-kode" style="display:none"></span> </h6>
                     <button type="button" class="close float-right ml-3" data-dismiss="modal" aria-label="Close" style="line-height:3.5">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -403,9 +410,13 @@
     </div>
 <!-- END MODAL PREVIEW -->    
 
+
+
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
+
+    
     
     $('#process-upload').addClass('disabled');
     $('#process-upload').prop('disabled', true);
@@ -563,6 +574,8 @@
     });
 
     // END LIST DATA
+
+   
 
     // CBBL
 
@@ -843,8 +856,8 @@
                     $('#id').val('edit');
                     $('#method').val('put');
                     $('#no_bukti').val(id);
-                    // $('#no_tagihan').attr('readonly', true);
-                    $('#no_tagihan').val(result.data[0].no_tagih);
+                    $('#no_tagihan').attr('readonly', true);
+                    $('#no_tagihan').val(result.data[0].no_tagihan);
                     $('#keterangan').val(result.data[0].keterangan);
                     $('#periode').val(result.data[0].periode);
                     $('#tanggal').val(result.data[0].tanggal);
@@ -857,9 +870,9 @@
                             var line =result.detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>"+no+"</td>";
-                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+line.kode_jenis+"</span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_jenis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+line.nama_jenis+"</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='"+line.nama_jenis+"' readonly></td>";
-                            input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+format_number(line.nilai)+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
+                            input += "<td ><span class='td-kode tdkodeke"+no+" tooltip-span'>"+result.detail[i].kode_jenis+"</span><input type='text' id='kode"+no+"' name='kode_jenis[]' class='form-control inp-kode kodeke"+no+" hidden' value='"+line.kode_jenis+"' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-jenis tdjeniske"+no+" tooltip-span'>"+result.detail[i].nama_jenis+"</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske"+no+" hidden'  value='"+line.nama_jenis+"' readonly></td>";
+                            input += "<td class='text-right'><span class='td-nilai tdnilke"+no+" tooltip-span'>"+result.detail[i].nilai+"</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke"+no+" hidden'  value='"+parseInt(line.nilai)+"' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
                             no++;
@@ -983,11 +996,13 @@
     });
     // END BUTTON UPDATE
 
+
     // PREVIEW DATA
     $('#table-data tbody').on('click','td',function(e){
         if($(this).index() != 4){
 
             var id = $(this).closest('tr').find('td').eq(0).html();
+            var data = dataTable.row(this).data();
             $.ajax({
                 type: 'GET',
                 url: "{{ url('dev-trans/tagihan-detail') }}",
@@ -1015,23 +1030,18 @@
                             <td>tanggal</td>
                             <td>`+result.data[0].tanggal+`</td>
                         </tr>
-                        <tr>
-                            <td>Status</td>
-                            <td>`+result.data[0].status+`</td>
-                        </tr>
-                        <tr>
-                            <td>Tgl Input</td>
-                            <td>`+result.data[0].tgl_input+`</td>
-                        </tr>
+                      
                         <tr>
                             <td colspan='2'>
                                 <table id='table-ju-preview' class='table table-bordered'>
                                     <thead>
                                         <tr>
                                             <th style="width:5%">No</th>
-                                            <th style="width:30%">Kode Tagihan</th>
-                                            <th style="width:35%">Jenis Tagihan</th>
+                                            <th style="width:30%">Kode Jenis</th>
+                                            <th style="width:30%">Nama Jenis</th>
                                             <th style="width:30%">Nilai</th>
+                                           
+                                         
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1041,17 +1051,18 @@
                         </tr>`;
                         
                         $('#table-preview tbody').html(html);
-                        var det = ``;
+                        // var det = ``;
                         if(result.detail.length > 0){
                             var input = '';
                             var no=1;
                             for(var i=0; i<result.detail.length; i++){
-                                var line =result.detail[i];
+                                // var line =result.detail[i];
                                 input += "<tr>";
                                 input += "<td>"+no+"</td>";
-                                input += "<td >"+line.kode_jenis+"</td>";
-                                input += "<td >"+line.nama_jenis+"</td>";
-                                input += "<td class='text-right'>"+format_number(line.nilai)+"</td>";
+                                input += "<td >"+result.detail[i].kode_jenis+"</td>";
+                                input += "<td >"+result.detail[i].nama_jenis+"</td>";
+                                // input += "<td >"+result.detail[i].nilai+"</td>";
+                                input += "<td class='text-right'>"+result.detail[i].nilai+"</td>";
                                 input += "</tr>";
                                 no++;
                             }
@@ -1059,6 +1070,7 @@
                         }
                         $('#modal-preview-id').text(id);
                         $('#modal-preview').modal('show');
+                        
                     }
                     else if(!result.status && result.message == 'Unauthorized'){
                         window.location.href = "{{ url('dev-auth/sesi-habis') }}";
@@ -1068,6 +1080,8 @@
             
         }
     });
+
+    // End Preview Detail
 
     $('.modal-header').on('click','#btn-delete2',function(e){
         var id = $('#modal-preview-id').text();
