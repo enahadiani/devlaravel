@@ -69,7 +69,7 @@ class BayarController extends Controller
                 $data = json_decode($response_data,true);
                 $data = $data;
             }
-            return response()->json(['daftar' => $data, 'status' => true], 200);
+            return response()->json(['data' => $data], 200);
 
         } catch (BadResponseException $ex) {
             $response = $ex->getResponse();
@@ -93,7 +93,16 @@ class BayarController extends Controller
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
-                    'form_params' => $request->all()
+                    'form_params' => [
+                        'nim' => $request->nim,
+                        'tanggal' => $request->tanggal,
+                        'keterangan' => $request->keterangan,
+                        'periode' => $request->periode,
+                        'no_tagihan' => $request->no_tagihan,
+                        'nama_jenis' => $request->ket_tagihan,
+                        'nilai' => $request->nilai_t,
+                        'nilai' => $request->nilai_b
+                    ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
                     $response_data = $response->getBody()->getContents();
@@ -126,7 +135,17 @@ class BayarController extends Controller
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
-                    'form_params' => $request->all()
+                    'form_params' => [
+                        'no_bayar' => $request->no_bayar,
+                        'nim' => $request->nim,
+                        'tanggal' => $request->tanggal,
+                        'keterangan' => $request->keterangan,
+                        'periode' => $request->periode,
+                        'no_tagihan' => $request->no_tagihan,
+                        'nama_jenis' => $request->ket_tagihan,
+                        'nilai' => $request->nilai_t,
+                        'nilai' => $request->nilai_b
+                    ]
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
                     $response_data = $response->getBody()->getContents();
