@@ -195,7 +195,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
-                <h6 style="position:absolute;top: 25px;">Data Jenis</h6>
+                <h6 style="position:absolute;top: 25px;">Data Transaksi Pembayaran</h6>
                 <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
             </div>
             <div class="separator mb-2"></div>
@@ -1154,9 +1154,9 @@
         $('#judul-form').html('Edit Data Pembayaran Siswa');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
-
         $('#btn-save').attr('type', 'button');
         $('#btn-save').attr('id', 'btn-update');
+        $iconLoad.show();
         $.ajax({
             type: 'GET',
             url: "{{ url('dev-trans/bayar-detail') }}",
@@ -1170,20 +1170,25 @@
                 if (result.status) {
                     $('#id').val('edit');
                     $('#method').val('put');
-                    $('#no_bayar').val(id);
-                    $('#nim').val(result.data[0].nim, result.daftar[0].nama);
+                    $('#no_bukti').val(id);
+                    $('#no_bayar').attr('readonly', true);
+                    $('#no_bayar').val(result.data[0].no_bayar);
+                    $('#keterangan').val(result.data[0].keterangan);
+                    $('#periode').val(result.data[0].periode);
+                    $('#tanggal').val(result.data[0].tanggal);
+                    $('#nim').val(result.data[0].nim);
 
-                    if (result.data_detail.length > 0) {
+                    if (result.detail.length > 0) {
                         var input = '';
                         var no = 1;
-                        for (var i = 0; i < result.data_detail.length; i++) {
-                            var line = result.data_detail[i];
+                        for (var i = 0; i < result.detail.length; i++) {
+                            var line = result.detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>" + no + "</td>";
-                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + result.detail[i].no_tagihan + "</span><input type='text' id='kode" + no + "' name='no_tagihan[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + result.detail[i].no_tagihan + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + result.detail[i].ket_tagihan + "</span><input type='text' name='ket_tagihan[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='" + result.detail[i].ket_tagihan + "' readonly></td>";
-                            input += "<td class='text-right'><span class='td-nilai_t tdniltke" + no + " tooltip-span'>" + format_number(result.detail[i].nilai_t) + "</span><input type='text' name='nilai_t[]' class='form-control inp-nilai_t niltke" + no + " hidden'  value='" + parseInt(result.detail[i].nilai_t) + "' required></td>";
-                            input += "<td class='text-right'><span class='td-nilai_b tdnilbke" + no + " tooltip-span'>" + format_number(result.detail[i].nilai_b) + "</span><input type='text' name='nilai_b[]' class='form-control inp-nilai_b nilbke" + no + " hidden'  value='" + parseInt(result.detail[i].nilai_b) + "' required></td>";
+                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + result.detail[i].no_tagihan + "</span><input type='text' id='kode" + no + "' name='no_tagihan[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + line.no_tagihan + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + result.detail[i].keterangan + "</span><input type='text' name='ket_tagihan[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='" + line.ket_tagihan + "' readonly></td>";
+                            input += "<td class='text-right'><span class='td-nilai_t tdniltke" + no + " tooltip-span'>" + result.detail[i].nilai_t + "</span><input type='text' name='nilai_t[]' class='form-control inp-nilai_t niltke" + no + " hidden'  value='" + parseInt(line.nilai_t) + "' required></td>";
+                            input += "<td class='text-right'><span class='td-nilai_b tdnilbke" + no + " tooltip-span'>" + result.detail[i].nilai_b + "</span><input type='text' name='nilai_b[]' class='form-control inp-nilai_b nilbke" + no + " hidden'  value='" + parseInt(line.nilai_b) + "' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
                             no++;
@@ -1195,8 +1200,8 @@
                             }
                         })
                         no = 1;
-                        for (var i = 0; i < result.data_detail.length; i++) {
-                            var line = result.data_detail[i];
+                        for (var i = 0; i < result.detail.length; i++) {
+                            var line = result.detail[i];
                             $('.nilke' + no).inputmask("numeric", {
                                 radixPoint: ",",
                                 groupSeparator: ".",
@@ -1211,16 +1216,22 @@
                         }
 
                     }
+
                     hitungTotalRow();
-                    $('#modal-preview').modal('hide');
+                    // $('#row-id').show();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
+                    $('#modal-preview').modal('hide');
+                    showInfoField('nim', result.daftar[0].nim, result.daftar[0].nama);
+                    showInfoField('no_tagihan', result.daftar[0].no_tagihan, result.daftar[0].nama);
                 } else if (!result.status && result.message == 'Unauthorized') {
                     window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
+                $iconLoad.hide();
             }
         });
     });
+    // END BUTTON EDIT
 
     $('.modal-header').on('click', '#btn-cetak', function(e) {
         e.stopPropagation();
