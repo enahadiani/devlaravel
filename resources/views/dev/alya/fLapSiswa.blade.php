@@ -12,7 +12,7 @@
                                     <h6>Filter</h6>
                                     <div id="inputFilter">
                                         <!-- COMPONENT -->
-                                        <x-inp-filter kode="kode_pp" nama="PP" selected="3" :option="array('3')"/>
+                                        <x-inp-filter kode="no_tagihan" nama="No Tagihan" selected="3" :option="array('3')"/>
                                         <x-inp-filter kode="kode_ta" nama="Tahun Ajaran" selected="3" :option="array('3')"/>
                                         <x-inp-filter kode="kode_kelas" nama="Kelas" selected="1" :option="array('1','2','3','i')"/>
                                         <!-- END COMPONENT -->
@@ -46,7 +46,7 @@
                 'X-CSRF-TOKEN': $('meta[name="-token"]').attr('content')
             }
         });
-        var $kode_pp = {
+        var $no_tagihan = {
             type : "=",
             from : "{{ Session::get('kodePP') }}",
             fromname : "{{ Session::get('kodePP') }}",
@@ -85,7 +85,7 @@
 
         // $('#show').selectize();
 
-        $('#kode_pp-from').val("{{ Session::get('kodePP') }}");
+        $('#no_tagihan-from').val("{{ Session::get('kodePP') }}");
         $('#kode_ta-from').val("{{ Session::get('kode_ta') }}");
 
         $('#btn-filter').click(function(e){
@@ -124,14 +124,14 @@
         $('.selectize').selectize();
 
         $('#inputFilter').reportFilter({
-            kode : ['kode_pp','kode_ta','kode_kelas'],
-            nama : ['PP','Tahun Ajaran','Kelas'],
+            kode : ['no_tagihan','kode_ta','kode_kelas'],
+            nama : ['Tagihan','Tahun Ajaran','Kelas'],
             header : [['Kode', 'Nama'],['Kode','Nama'],['Kode','Nama']],
             headerpilih : [['Kode', 'Nama','Action'],['Kode', 'Nama','Action'],['Kode', 'Nama','Action']],
             columns: [
                 [
-                    { data: 'kode_pp' },
-                    { data: 'nama' }
+                    { data: 'no_tagihan' },
+                    { data: 'nim' }
                 ],[
                     { data: 'kode_ta' },
                     { data: 'nama' }
@@ -142,16 +142,16 @@
             ],
             url :["{{ url('dev-report/filter-pp') }}","{{ url('dev-report/filter-ta') }}","{{ url('dev-report/filter-kelas') }}"],
             parameter:[{},{
-                'kode_pp[0]' : $kode_pp.type,
-                'kode_pp[1]' : $kode_pp.from,
-                'kode_pp[2]' : $kode_pp.to,
+                'no_tagihan[0]' : $no_tagihan.type,
+                'no_tagihan[1]' : $no_tagihan.from,
+                'no_tagihan[2]' : $no_tagihan.to,
                 'flag_aktif[0]' : '=',
                 'flag_aktif[1]' : '1',
                 'flag_aktif[2]' : ''
             },{
-                'kode_pp[0]' : $kode_pp.type,
-                'kode_pp[1]' : $kode_pp.from,
-                'kode_pp[2]' : $kode_pp.to,
+                'no_tagihan[0]' : $no_tagihan.type,
+                'no_tagihan[1]' : $no_tagihan.from,
+                'no_tagihan[2]' : $no_tagihan.to,
                 'flag_aktif[0]' : '=',
                 'flag_aktif[1]' : '1',
                 'flag_aktif[2]' : ''
@@ -164,14 +164,14 @@
         $('#inputFilter').on('change','input',function(e){
             setTimeout(() => {
                 $('#inputFilter').reportFilter({
-                    kode : ['kode_pp','kode_ta','kode_kelas'],
+                    kode : ['no_tagihan','kode_ta','kode_kelas'],
                     nama : ['PP','Tahun Ajaran','Kelas'],
                     header : [['Kode', 'Nama'],['Kode','Nama'],['Kode','Nama']],
                     headerpilih : [['Kode', 'Nama','Action'],['Kode', 'Nama','Action'],['Kode', 'Nama','Action']],
                     columns: [
                         [
-                            { data: 'kode_pp' },
-                            { data: 'nama' }
+                            { data: 'no_tagihan' },
+                            { data: 'nim' }
                         ],[
                             { data: 'kode_ta' },
                             { data: 'nama' }
@@ -182,16 +182,16 @@
                     ],
                     url :["{{ url('dev-report/filter-pp') }}","{{ url('dev-report/filter-ta') }}","{{ url('dev-report/filter-kelas') }}"],
                     parameter:[{},{
-                        'kode_pp[0]' : $kode_pp.type,
-                        'kode_pp[1]' : $kode_pp.from,
-                        'kode_pp[2]' : $kode_pp.to,
+                        'no_tagihan[0]' : $no_tagihan.type,
+                        'no_tagihan[1]' : $no_tagihan.from,
+                        'no_tagihan[2]' : $no_tagihan.to,
                         'flag_aktif[0]' : '=',
                         'flag_aktif[1]' : '1',
                         'flag_aktif[2]' : ''
                     },{
-                        'kode_pp[0]' : $kode_pp.type,
-                        'kode_pp[1]' : $kode_pp.from,
-                        'kode_pp[2]' : $kode_pp.to,
+                        'no_tagihan[0]' : $no_tagihan.type,
+                        'no_tagihan[1]' : $no_tagihan.from,
+                        'no_tagihan[2]' : $no_tagihan.to,
                         'flag_aktif[0]' : '=',
                         'flag_aktif[1]' : '1',
                         'flag_aktif[2]' : ''
@@ -208,9 +208,9 @@
         $('#form-filter').submit(function(e){
             e.preventDefault();
             $formData = new FormData();
-            $formData.append("kode_pp[]",$kode_pp.type);
-            $formData.append("kode_pp[]",$kode_pp.from);
-            $formData.append("kode_pp[]",$kode_pp.to);
+            $formData.append("no_tagihan[]",$no_tagihan.type);
+            $formData.append("no_tagihan[]",$no_tagihan.from);
+            $formData.append("no_tagihan[]",$no_tagihan.to);
             $formData.append("kode_ta[]",$kode_ta.type);
             $formData.append("kode_ta[]",$kode_ta.from);
             $formData.append("kode_ta[]",$kode_ta.to);
@@ -228,9 +228,9 @@
 
         $('#show').change(function(e){
             $formData = new FormData();
-            $formData.append("kode_pp[]",$kode_pp.type);
-            $formData.append("kode_pp[]",$kode_pp.from);
-            $formData.append("kode_pp[]",$kode_pp.to);
+            $formData.append("no_tagihan[]",$no_tagihan.type);
+            $formData.append("no_tagihan[]",$no_tagihan.from);
+            $formData.append("no_tagihan[]",$no_tagihan.to);
             $formData.append("kode_ta[]",$kode_ta.type);
             $formData.append("kode_ta[]",$kode_ta.from);
             $formData.append("kode_ta[]",$kode_ta.to);
@@ -277,9 +277,9 @@
         $('#modalEmail').on('submit','#formEmail',function(e){
             e.preventDefault();
             var formData = new FormData(this);
-            $formData.append("kode_pp[]",$kode_pp.type);
-            $formData.append("kode_pp[]",$kode_pp.from);
-            $formData.append("kode_pp[]",$kode_pp.to);
+            $formData.append("no_tagihan[]",$no_tagihan.type);
+            $formData.append("no_tagihan[]",$no_tagihan.from);
+            $formData.append("no_tagihan[]",$no_tagihan.to);
             $formData.append("kode_ta[]",$kode_ta.type);
             $formData.append("kode_ta[]",$kode_ta.from);
             $formData.append("kode_ta[]",$kode_ta.to);

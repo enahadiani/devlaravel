@@ -947,7 +947,7 @@
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
-
+                    $('#modal-preview').modal('hide');
                     showInfoField('nim', result.daftar[0].nim, result.daftar[0].nama);
                     showInfoField('no_tagihan', result.daftar[0].no_tagihan, result.daftar[0].nama);
                 } else if (!result.status && result.message == 'Unauthorized') {
@@ -997,6 +997,7 @@
             kode: id,
             type: 'hapus'
         });
+        $('#modal-preview').modal('hide');
     });
     // END HAPUS DATA
 

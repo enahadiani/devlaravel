@@ -1164,18 +1164,19 @@
 
     $('.modal-header').on('click', '#btn-edit2', function() {
         var id = $('#modal-preview-id').text();
+
         $('#judul-form').html('Edit Data Tagihan Siswa');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
-
         $('#btn-save').attr('type', 'button');
         $('#btn-save').attr('id', 'btn-update');
+
         $.ajax({
             type: 'GET',
             url: "{{ url('dev-trans/tagihan-detail') }}",
             dataType: 'json',
             data: {
-                no_tagihan: id
+                'no_tagihan':id
             },
             async: false,
             success: function(res) {
@@ -1193,9 +1194,9 @@
                             var line = result.data_detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>" + no + "</td>";
-                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + result.detail[i].kode_jenis + "</span><input type='text' id='kode" + no + "' name='kode_jenis[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + line.kode_jenis + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + result.detail[i].nama_jenis + "</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='" + line.nama_jenis + "' readonly></td>";
-                            input += "<td class='text-right'><span class='td-nilai tdnilke" + no + " tooltip-span'>" + result.detail[i].nilai + "</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke" + no + " hidden'  value='" + parseInt(line.nilai) + "' required></td>";
+                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + result.data_detail[i].kode_jenis + "</span><input type='text' id='kode" + no + "' name='kode_jenis[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + result.data_detail[i].kode_jenis + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + result.data_detail[i].nama_jenis + "</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='" + result.data_detail[i].nama_jenis + "' readonly></td>";
+                            input += "<td class='text-right'><span class='td-nilai tdnilke" + no + " tooltip-span'>" + result.data_detail[i].nilai + "</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke" + no + " hidden'  value='" + parseInt(result.data_detail[i].nilai) + "' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
                             no++;

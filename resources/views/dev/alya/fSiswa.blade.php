@@ -938,7 +938,9 @@
             type: 'GET',
             url: "{{ url('dev-master/siswa-detail') }}",
             dataType: 'json',
-            data:{'nim':id},
+            data:{
+                'nim':id
+            },
             async:false,
             success:function(result){
                 if(result.status){
