@@ -7,7 +7,7 @@
 </style>
 <script type="text/javascript">
     function drawLap(formData){
-        saiPostLoad('sekolah-report/lap-siswa', null, formData, null, function(res){
+        saiPostLoad('dev-report/lap-siswa', null, formData, null, function(res){
            if(res.result.length > 0){
 
                 $('#pagination').html('');
@@ -15,7 +15,7 @@
                 generatePaginationDore('pagination',show,res);
               
            }else{
-                $('#saku-report #canvasPreview').load("{{ url('sekolah-auth/form/blank') }}");
+                $('#saku-report #canvasPreview').load("{{ url('dev-auth/form/blank') }}");
            }
        });
    }
@@ -30,7 +30,7 @@
             }else{
                 $('.navigation-lap').addClass('hidden');
             }
-            var logo = "{{ asset('img/tarbak30x30.png') }}";
+            // var logo = "{{ asset('img/tarbak30x30.png') }}";
             
             var html=`<div align='center'>
             <style>
@@ -49,31 +49,17 @@
             html += `
             <table class='table table-borderless table-kop' style='width:90%'>
                 <tr>
-                    <td rowspan='4' colspan='2' style='width:20%'><img src='`+logo+`' class='logo-lap'></td>
-                    <td style='width:60%;text-align:center' >SEKOLAH DASAR TARUNA BAKTI</td>
+                  
+                    <td style='width:60%;text-align:center' >cek</td>
                     <td style='width:10%'>&nbsp;</td>
                     <td style='width:10%'>&nbsp;</td>
                 </tr>
-                <tr>
-                    <td style=';text-align:center'>Jl.L.L.R.E. Martadinata No.52 Bandung 40115</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style=';text-align:center'>Telp. (022) 4261571</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style=';text-align:center'>Website: www.tarunabakti.or.id &nbsp; Email: tarbak52@gmail.com</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
+               
             </table>
             `;
             kode_ta = $kode_ta;
             var ta = kode_ta.from;
-            html+=judul_lap("DAFTAR SISWA AKTIF",ta,'KELAS '+line.kode_kelas);
+            html+=judul_lap("DAFTAR SISWA",ta,'KELAS '+line.kode_kelas);
             html+=`<table class='table table-bordered' style='width:90%'>
                 <thead bgcolor='#CCCCCC'>
                     <tr>

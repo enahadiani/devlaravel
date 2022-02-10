@@ -613,6 +613,15 @@
 
     // END LIST DATA
 
+    $('#download-template').click(function(){
+        alert('test')
+        var kode_lokasi = "{{ Session::get('lokasi') }}";
+        var nik_user = "{{ Session::get('nikUser') }}";
+        var nik = "{{ Session::get('userLog') }}";
+        //database
+        var link = "{{ config('api.url').'dev-trans/tagihan-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template";
+        window.open(link, '_blank'); 
+    });
 
 
     // CBBL

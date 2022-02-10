@@ -594,6 +594,14 @@
         $('.info-name_'+kode).closest('div').find('.info-icon-hapus').removeClass('hidden');
     }
 
+    $('#download-template').click(function(){
+        var kode_lokasi = "{{ Session::get('lokasi') }}";
+        var nik_user = "{{ Session::get('nikUser') }}";
+        var nik = "{{ Session::get('userLog') }}";
+        var link = "{{ config('api.url').'dev/penilaian-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template&no_tagihan="+$('#kode_pp').val()+"&kode_kelas="+$('#kode_kelas').val()+"&kode_matpel="+$('.info-name_kode_matpel > span ').text()+"&kode_jenis="+$('#kode_jenis').val()+"&kode_kd="+$('#kode_kd').val()+"&kode_sem="+$('#kode_sem option:selected').text()+"&flag_kelas="+$('#flag_kelas').val()+"&kode_matpel2="+$('.info-code_kode_matpel').text();
+        window.open(link, '_blank'); 
+    });
+
    //SHOW SEARCH-MODAL
     function showFilter(param,target1,target2){
         var par = param;

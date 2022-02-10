@@ -12,7 +12,7 @@
                                     <h6>Filter</h6>
                                     <div id="inputFilter">
                                         <!-- COMPONENT -->
-                                        <x-inp-filter kode="nim" nama="NIM" selected="3" :option="array('1','2','3','i')"/>
+                                        <x-inp-filter kode="nis" nama="NIM" selected="1" :option="array('1','2','3','i')"/>
                                         <x-inp-filter kode="kode_jur" nama="Jurusan" selected="3" :option="array('1','2','3','i')"/>
                                         <!-- <x-inp-filter kode="kode_kelas" nama="Kelas" selected="1" :option="array('1','2','3','i')"/> -->
                                         <!-- END COMPONENT -->
@@ -64,7 +64,7 @@
 
         
 
-        var $aktif = "";
+        // var $aktif = "";
 
         function fnSpasi(level)
         {
@@ -120,8 +120,12 @@
         $('#inputFilter').reportFilter({
             kode : ['nim','kode_jur'],
             nama : ['NIS','Jurusan'],
-            header : [['NIS', 'Nama Siswa'],['Kode Jurusan','Nama Jurusan']],
-            headerpilih : [['NIS', 'Nama Siswa','Action'],['Kode Jurusan', 'Nama Jurusan','Action']],
+            header : [
+                ['NIS', 'Nama Siswa'],
+                ['Kode Jurusan','Nama Jurusan']],
+            headerpilih : [
+                ['NIS', 'Nama Siswa','Action'],
+                ['Kode Jurusan', 'Nama Jurusan','Action']],
             columns: [
                 [
                     { data: 'nim' },
@@ -131,23 +135,11 @@
                     { data: 'nama' }
                 ]
             ],
-            url :["{{ url('dev-report/filter-nim') }}","{{ url('dev-report/filter-jur') }}"],
-            parameter:[{},{
-                'nim[0]' : $nim.type,
-                'nim[1]' : $nim.from,
-                'nim[2]' : $nim.to,
-                'flag_aktif[0]' : '=',
-                'flag_aktif[1]' : '1',
-                'flag_aktif[2]' : ''
-            },{
-                'nim[0]' : $nim.type,
-                'nim[1]' : $nim.from,
-                'nim[2]' : $nim.to,
-                'flag_aktif[0]' : '=',
-                'flag_aktif[1]' : '1',
-                'flag_aktif[2]' : ''
-            }],
-            orderby:[[],[],[]],
+            url :[
+                "{{ url('dev-report/filter-nim') }}",
+                "{{ url('dev-report/filter-jur') }}"],
+            parameter:[],
+            orderby:[[],[]],
             width:[['30%','70%'],['30%','70%'],['30%','70%']],
             display:['kode','kode','kode']
         });
@@ -156,10 +148,14 @@
             setTimeout(() => {
                 $('#inputFilter').reportFilter({
                     kode : ['nim','kode_jur'],
-                    nama : ['NIS','Jurusan'],
-                    header : [['NIS', 'Nama Siswa'],['Kode Jurusan','Nama Jurusan']],
-                    headerpilih : [['NIS', 'Nama Siswa','Action'],['Kode Jurusan', 'Nama Jurusan','Action']],
-                    columns: [
+            nama : ['NIS','Jurusan'],
+            header : [
+                ['NIS', 'Nama Siswa'],
+                ['Kode Jurusan','Nama Jurusan']],
+            headerpilih : [
+                ['NIS', 'Nama Siswa','Action'],
+                ['Kode Jurusan', 'Nama Jurusan','Action']],
+            columns: [
                 [
                     { data: 'nim' },
                     { data: 'nama' }
@@ -168,23 +164,11 @@
                     { data: 'nama' }
                 ]
             ],
-            url :["{{ url('dev-report/filter-nim') }}","{{ url('dev-report/filter-jur') }}"],
-            parameter:[{},{
-                'nim[0]' : $nim.type,
-                'nim[1]' : $nim.from,
-                'nim[2]' : $nim.to,
-                'flag_aktif[0]' : '=',
-                'flag_aktif[1]' : '1',
-                'flag_aktif[2]' : ''
-            },{
-                'nim[0]' : $nim.type,
-                'nim[1]' : $nim.from,
-                'nim[2]' : $nim.to,
-                'flag_aktif[0]' : '=',
-                'flag_aktif[1]' : '1',
-                'flag_aktif[2]' : ''
-            }],
-            orderby:[[],[],[]],
+            url :[
+                "{{ url('dev-report/filter-nim') }}",
+                "{{ url('dev-report/filter-jur') }}"],
+            parameter:[],
+            orderby:[[],[]],
             width:[['30%','70%'],['30%','70%'],['30%','70%']],
             display:['kode','kode','kode']
         });
@@ -197,6 +181,7 @@
             $formData.append("nim[]",$nim.type);
             $formData.append("nim[]",$nim.from);
             $formData.append("nim[]",$nim.to);
+
             $formData.append("kode_jur[]",$kode_jur.type);
             $formData.append("kode_jur[]",$kode_jur.from);
             $formData.append("kode_jur[]",$kode_jur.to);
@@ -204,7 +189,7 @@
                 console.log(pair[0]+ ', '+ pair[1]); 
             }
             $('#saku-report').removeClass('hidden');
-            xurl = "{{ url('dev-auth/form/rptSiswa') }}";
+            xurl = "{{ url('dev-auth/form/alya_rptSiswa') }}";
             $('#saku-report #canvasPreview').load(xurl);
             setHeightReport();
         });
@@ -217,9 +202,6 @@
             $formData.append("kode_jur[]",$kode_jur.type);
             $formData.append("kode_jur[]",$kode_jur.from);
             $formData.append("kode_jur[]",$kode_jur.to);
-            $formData.append("kode_kelas[]",$kode_kelas.type);
-            $formData.append("kode_kelas[]",$kode_kelas.from);
-            $formData.append("kode_kelas[]",$kode_kelas.to);
             for(var pair of $formData.entries()) {
                 console.log(pair[0]+ ', '+ pair[1]); 
             }
@@ -291,8 +273,9 @@
                 fail: function(xhr, textStatus, errorThrown){
                     alert('request failed:'+textStatus);
                 }
+                
             });
             
         });
 
-    </script>
+    }

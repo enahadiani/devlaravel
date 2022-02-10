@@ -36,7 +36,7 @@
         public function getFilterJurusan(Request $request) {
             $client = new Client();
 
-            $response = $client->request('GET',  config('api.url').'dev/jurusan',[
+            $response = $client->request('GET',  config('api.url').'dev/jurusann',[
                 'headers' => [
                     'Authorization' => 'Bearer '.Session::get('token'),
                     'Accept'     => 'application/json',
