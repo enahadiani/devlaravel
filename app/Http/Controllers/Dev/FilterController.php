@@ -18,10 +18,15 @@
         public function getFilterNIM(Request $request) {
             $client = new Client();
 
-            $response = $client->request('GET',  config('api.url').'dev/siswa',[
+            $response = $client->request('GET',  config('api.url').'dev/filter-nim',[
                 'headers' => [
                     'Authorization' => 'Bearer '.Session::get('token'),
                     'Accept'     => 'application/json',
+                ],
+                'query' => [
+                    'nim' => $request->nim,
+                    'nama' => $request->nama,
+                    'flag_aktif' => $request->flag_aktif
                 ]
             ]);
 
@@ -36,7 +41,7 @@
         public function getFilterJurusan(Request $request) {
             $client = new Client();
 
-            $response = $client->request('GET',  config('api.url').'dev/jurusann',[
+            $response = $client->request('GET',  config('api.url').'dev/filter-jurusan',[
                 'headers' => [
                     'Authorization' => 'Bearer '.Session::get('token'),
                     'Accept'     => 'application/json',

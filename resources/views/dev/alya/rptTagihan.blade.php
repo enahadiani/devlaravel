@@ -7,7 +7,7 @@
 </style>
 <script type="text/javascript">
     function drawLap(formData){
-        saiPostLoad('dev-report/dev-lap-siswa', null, formData, null, function(res){
+        saiPostLoad('dev-report/dev-lap-tagihan', null, formData, null, function(res){
            if(res.result.length > 0){
 
                 $('#pagination').html('');
@@ -50,10 +50,12 @@
                 <thead bgcolor='#CCCCCC'>
                     <tr>
                         <th width='5%'>NO</th>
-                        <th width='10%'>NIM</th>
-                        <th width='25%'>Nama Siswa</th>
-                        <th width='25%'>Kode Jurusan</th>
-                        <th width='25%'>Nama Jurusan</th>
+                        <th width='10%'>NO TAGIHAN</th>
+                        <th width='25%'>TANGGAL</th>
+                        <th width='25%'>NIM</th>
+                        <th width='25%'>KETERANGAN</th>
+                        <th width='25%'>NAMA</th>
+                        <th width='25%'>PERIODE</th>
                    </tr>
                 </thead>`;
             var no =1;
@@ -61,10 +63,12 @@
                 var line = data[i];
                 html+=`<tr>
                     <td>`+no+`</td>
+                    <td>`+line.no_tagihan+`</td>
+                    <td>`+line.tanggal+`</td>
                     <td>`+line.nim+`</td>
+                    <td>`+line.keterangan+`</td>
                     <td>`+line.nama+`</td>
-                    <td>`+line.kode_jur+`</td>
-                    <td>`+line.nama_jur+`</td>
+                    <td>`+line.periode+`</td>
                     </tr>`;
                 no++;
             }

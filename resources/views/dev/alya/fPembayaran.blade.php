@@ -1075,8 +1075,12 @@
                             <td>` + result.data[0].keterangan + `</td>
                         </tr>
                         <tr>
-                            <td>tanggal</td>
+                            <td>Tanggal</td>
                             <td>` + result.data[0].tanggal + `</td>
+                        </tr>
+                        <tr>
+                            <td>Periode</td>
+                            <td>` + result.data[0].periode + `</td>
                         </tr>
                         <tr>
                              <td>Status</td>
@@ -1583,6 +1587,206 @@
     });
     // END ENTER FIELD FORM
 
+// IMPORT EXCEL
+$('#import-excel').click(function(e){
+    $('.custom-file-input').val('');
+    $('.custom-file-label').text('File upload');
+    $('.pesan-upload .pesan-upload-judul').html('');
+    $('.pesan-upload .pesan-upload-isi').html('')
+    $('.pesan-upload').hide();
+    $('#modal-import').modal('show');
+});
+
+$("#form-import").validate({
+    rules: {
+        file: {required: true, accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"}
+    },
+    messages: {
+        file: {required: 'Harus diisi!', accept: 'Hanya import dari file excel.'}
+    },
+    errorElement: "label",
+    submitHandler: function (form) {
+
+        var formData = new FormData(form);
+        for(var pair of formData.entries()) {
+            console.log(pair[0]+ ', '+ pair[1]);
+        }
+        $('.pesan-upload').show();
+        $('.pesan-upload-judul').html('Proses upload...');
+        $('.pesan-upload-judul').removeClass('text-success');
+        $('.pesan-upload-judul').removeClass('text-danger');
+        $('.progress').removeClass('hidden');
+        $('.progress-bar').attr('aria-valuenow', 0).css({
+            width: 0 + '%'
+        }).html(parseFloat(0 * 100).toFixed(2) + '%');
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        $('.progress-bar').attr('aria-valuenow', percentComplete * 100).css({
+                            width: percentComplete * 100 + '%'
+                        }).html(parseFloat(percentComplete * 100).toFixed(2) + '%');
+                    }
+                }, false);
+                xhr.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        $('.progress-bar').css({
+                            width: percentComplete * 100 + '%'
+                        });
+                    }
+                }, false);
+                return xhr;
+            },
+            type: 'POST',
+            url: "{{ url('dev-trans/dev-pembayaran-upload') }}",
+            dataType: 'json',
+            data: formData,
+            // async:false,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(result){
+                if(result.data.status){
+                    if(result.data.validate){
+                        $('#process-upload').removeClass('disabled');
+                        $('#process-upload').prop('disabled', false);
+                        $('#process-upload').removeClass('btn-light');
+                        $('#process-upload').addClass('btn-primary');
+                        $('.pesan-upload-judul').html('Berhasil upload!');
+                        $('.pesan-upload-judul').removeClass('text-danger');
+                        $('.pesan-upload-judul').addClass('text-success');
+                        $('.pesan-upload-isi').html('File berhasil diupload!');
+                    }else{
+                        if(!$('#process-upload').hasClass('disabled')){
+                            $('#process-upload').addClass('disabled');
+                            $('#process-upload').prop('disabled', true);
+                        }
+
+                        var kode_lokasi = "{{ Session::get('lokasi') }}";
+                        var nik_user = "{{ Session::get('nikUser') }}";
+                        var nik = "{{ Session::get('userLog') }}";
+
+                        var link = "{{ config('api.url').'dev-trans/pembayaran-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=non";
+
+                        $('.pesan-upload-judul').html('Gagal upload!');
+                        $('.pesan-upload-judul').removeClass('text-success');
+                        $('.pesan-upload-judul').addClass('text-danger');
+                        $('.pesan-upload-isi').html("Terdapat kesalahan dalam mengisi format upload data. Download berkas untuk melihat kesalahan.<a href='"+link+"' target='_blank' class='text-primary' id='btn-download-file' >Download disini</a>");
+                    }
+                }
+                else if(!result.data.status && result.data.message == 'Unauthorized'){
+                    window.location.href = "{{ url('esaku-auth/sesi-habis') }}";
+                }
+                else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        footer: '<a href>'+result.data.message+'</a>'
+                    })
+                    $('.pesan-upload-judul').html('Gagal upload!');
+                }
+
+            },
+            fail: function(xhr, textStatus, errorThrown){
+                alert('request failed:'+textStatus);
+            },
+            complete: function (xhr) {
+                $('.progress').addClass('hidden');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('.progress').addClass('hidden');
+                if(jqXHR.status == 422){
+                    var msg = jqXHR.responseText;
+                }else if(jqXHR.status == 500) {
+                    var msg = "Internal server error";
+                }else if(jqXHR.status == 401){
+                    var msg = "Unauthorized";
+                    window.location="{{ url('/esaku-auth/sesi-habis') }}";
+                }else if(jqXHR.status == 405){
+                    var msg = "Route not valid. Page not found";
+                }
+                $('.pesan-upload-judul').html('Gagal upload!');
+                $('.pesan-upload-isi').html(msg);
+
+            }
+        });
+
+    },
+    errorPlacement: function (error, element) {
+        $('#label-file').html(error);
+        $('#label-file').addClass('error');
+    }
+});
+
+$('.custom-file-input').change(function(){
+    var fileName = $(this).val();
+    $('.custom-file-label').html(fileName);
+    $('#form-import').submit();
+})
+
+$('#process-upload').click(function(e){
+    $.ajax({
+        type: 'GET',
+        url: "{{ url('dev-trans/dev-pembayaran-load') }}",
+        dataType: 'json',
+        async:false,
+        success:function(res){
+            var result= res.data;
+            dataTable.clear().draw();
+            if(result.status){
+                if(typeof result.data !== 'undefined' && result.data.length>0){
+                    dataTable.rows.add(result.data).draw(false);
+
+                    $('#btn-save').removeClass('disabled');
+                    $('#btn-save').prop('disabled', false);
+                }else{
+                    if(!$('#btn-save').hasClass('disabled')){
+                        $('#btn-save').addClass('disabled');
+                        $('#btn-save').prop('disabled', true);
+                    }
+                }
+                $('#modal-import').modal('hide');
+            }
+            else if(!result.status && result.message == 'Unauthorized'){
+                window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+            }else{
+                alert('error');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            if(jqXHR.status == 422){
+                var msg = jqXHR.responseText;
+            }else if(jqXHR.status == 500) {
+                var msg = "Internal server error";
+            }else if(jqXHR.status == 401){
+                var msg = "Unauthorized";
+                window.location="{{ url('/dev-auth/sesi-habis') }}";
+            }else if(jqXHR.status == 405){
+                var msg = "Route not valid. Page not found";
+            }
+
+        }
+    });
+});
+// END IMPORT EXCEL
+
+    //Download Template
+
+    $('#download-template').click(function(){
+        alert('test')
+        var kode_lokasi = "{{ Session::get('lokasi') }}";
+        var nik_user = "{{ Session::get('nikUser') }}";
+        var nik = "{{ Session::get('userLog') }}";
+        //database
+        var link = "{{ config('api.url').'dev/pembayaran-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template&no_bayar="+$('#no_bayar').val()+"&nis="+$('#nis').val()+"&kode_jenis="+$('#kode_jenis').text();
+        window.open(link, '_blank'); 
+    });
+
+    //
     $('#form-tambah').on('click', '.search-item2', function() {
         if ($(this).css('cursor') == "not-allowed") {
             return false;

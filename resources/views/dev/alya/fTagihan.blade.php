@@ -1099,8 +1099,12 @@
                             <td>` + result.data[0].keterangan + `</td>
                         </tr>
                         <tr>
-                            <td>tanggal</td>
+                            <td>Tanggal</td>
                             <td>` + result.data[0].tanggal + `</td>
+                        </tr>
+                        <tr>
+                            <td>Periode</td>
+                            <td>` + result.data[0].periode + `</td>
                         </tr>
                         <tr>
                              <td>Status</td>
