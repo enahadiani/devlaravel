@@ -47,12 +47,13 @@
             `;
                    
             html+=`
-            <h3>Laporan Pembayaran</h3>
+            <h6> Laporan Pembayaran </h6>
+                <hr>
             <table class='table table-bordered' style='width:90%'>
                 <thead bgcolor='#CCCCCC'>
                     <tr>
                         <th width='5%'>NO</th>
-                        <th width='10%'>NO bayar</th>
+                        <th width='10%'>NO BAYAR</th>
                         <th width='25%'>TANGGAL</th>
                         <th width='25%'>NIM</th>
                         <th width='25%'>KETERANGAN</th>

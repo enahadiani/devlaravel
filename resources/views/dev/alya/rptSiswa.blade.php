@@ -45,8 +45,11 @@
             </style>
            
             `;
-            html+=judul_lap("DAFTAR LAPORAN SISWA");           
-            html+=`<table class='table table-bordered' style='width:90%'>
+                 
+            html+=`
+                <h6> Daftar Laporan Siswa </h6>
+                <hr>
+                <table class='table table-bordered' style='width:90%'>
                 <thead bgcolor='#CCCCCC'>
                     <tr>
                         <th width='5%'>NO</th>

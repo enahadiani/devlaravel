@@ -47,15 +47,16 @@
             `;
                
             html+=`
+            <h6> LAPORAN TAGIHAN </h6>
+                <hr>
             <div class='ml-2 mr-2' style='overflow-x: scroll;'>
             <table class='table table-bordered' style='width:90%'>
                 <thead bgcolor='#CCCCCC'>
                     <tr>
                         <th width='5%'>NO</th>
-                        <th width='25%'>No Tagihan</th>
-                        <th width='25%'>Tanggal</th>
-                        <th width='25%'>Keterangan</th>
-                        <th width='25%'>Periode</th>
+                        <th width='25%'>NO TAGIHAN</th>
+                        <th width='25%'>TANGGAL</th>
+                        <th width='25%'>PERIODE</th>
                    </tr>
                 </thead>`;
             var no =1;
@@ -65,7 +66,6 @@
                     <td>`+no+`</td>
                     <td>`+line.no_tagihan+`</td>
                     <td>`+line.tanggal+`</td>
-                    <td>`+line.keterangan+`</td>
                     <td>`+line.periode+`</td>
                     </tr>`;
                 no++;
