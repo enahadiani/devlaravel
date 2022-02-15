@@ -192,4 +192,67 @@ class BayarController extends Controller
                 return response()->json(['data' => $data], 200);
             }
     }
+
+    public function getFilterBayar(Request $request) {
+        $client = new Client();
+
+        $response = $client->request('GET',  config('api.url').'dev/filter-bayar',[
+            'headers' => [
+                'Authorization' => 'Bearer '.Session::get('token'),
+                'Accept'     => 'application/json',
+            ],
+            'query' => [
+                'no_bayar' => $request->no_bayar,
+                'keterangan' => $request->keterangan,
+                'flag_aktif' => $request->flag_aktif,
+            ]
+        ]);
+
+        if ($response->getStatusCode() == 200) { // 200 OK
+            $response_data = $response->getBody()->getContents();
+        
+            $data = json_decode($response_data,true);
+        }
+        return response()->json(['daftar' => $data['data'], 'status' => true], 200);
+    }
+
+    public function getDataBayar(Request $request)
+    {
+        try {
+            $client = new Client();
+            $response = $client->request('GET',  config('api.url') . 'dev/lap-bayar', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . Session::get('token'),
+                    'Accept'     => 'application/json',
+                ],
+                'query' => [
+                    'no_bayar' => $request->input('no_bayar'),
+                    'tanggal' => $request->input('tanggal'),
+                    'nim' => $request->input('nim'),
+                    'keterangan' => $request->input('keterangan'),
+                    'nama' => $request->input('nama'),
+                    'periode' => $request->input('periode'),
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) { // 200 OK
+                $response_data = $response->getBody()->getContents();
+
+                $res = json_decode($response_data, true);
+                $data = $res['data'];
+            }
+
+            if (isset($request->back)) {
+                $back = true;
+            } else {
+                $back = false;
+            }
+
+            return response()->json(['result' => $data, 'status' => true, 'auth_status' => 1, 'periode' => 0, 'res' => $res, 'back' => $back], 200);
+        } catch (BadResponseException $ex) {
+            $response = $ex->getResponse();
+            $res = json_decode($response->getBody(), true);
+            return response()->json(['message' => $res["message"], 'status' => false, 'auth_status' => 2], 200);
+        }
+    }
 }

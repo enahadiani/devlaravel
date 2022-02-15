@@ -45,26 +45,22 @@
             </style>
            
             `;
-               
-            html+=`
-            <div class='ml-2 mr-2' style='overflow-x: scroll;'>
-            <table class='table table-bordered' style='width:90%'>
+                    
+            html+=`<table class='table table-bordered' style='width:90%'>
                 <thead bgcolor='#CCCCCC'>
                     <tr>
                         <th width='5%'>NO</th>
-                        <th width='25%'>No Tagihan</th>
-                        <th width='25%'>Tanggal</th>
-                        <th width='25%'>Keterangan</th>
-                        <th width='25%'>Periode</th>
+                        <th width='10%'>NIM</th>
+                        <th width='25%'>Nama</th>
                    </tr>
                 </thead>`;
             var no =1;
             for(var i=0;i<data.length;i++){
                 var line = data[i];
-                html+=`<tr class="report-link tagihan" style="cursor: pointer;" data-tagihan="${line.no_tagihan}">
+                html+=`<tr>
                     <td>`+no+`</td>
-                    <td>`+line.no_tagihan+`</td>
-                    <td>`+line.tanggal+`</td>
+                    <td>`+line.nim+`</td>
+                    <td>`+line.nama+`</td>
                     <td>`+line.keterangan+`</td>
                     <td>`+line.periode+`</td>
                     </tr>`;
@@ -72,7 +68,6 @@
             }
             html+=`
                 </table>
-                </div>
             </div>`;
         }
         $('#canvasPreview').html(html);

@@ -12,8 +12,8 @@
                                 <h6>Filter</h6>
                                 <div id="inputFilter">
                                     <!-- COMPONENT -->
-                                    <x-inp-filter kode="nim" nama="NIM" selected="3" :option="array('1','2','3','i')" />
                                     <x-inp-filter kode="no_tagihan" nama="No Tagihan" selected="3" :option="array('1','2','3','i')" />
+                                    <x-inp-filter kode="nim" nama="NIM" selected="3" :option="array('1','2','3','i')" />
                                     <!-- <x-inp-filter kode="kode_kelas" nama="Kelas" selected="1" :option="array('1','2','3','i')"/> -->
                                     <!-- END COMPONENT -->
                                 </div>
@@ -285,7 +285,63 @@ $('#show').change(function(e){
             console.log(pair[0]+ ', '+ pair[1]);
         }
         $('#dev-report').removeClass('hidden');
-        xurl = "{{ url('dev-auth/form/rptTagihan') }}";
+        xurl = "{{ url('dev-auth/form/alya_rptTagihan') }}";
         $('#dev-report #canvasPreview').load(xurl);
-    });
+
+
+$('#saku-report #canvasPreview').on('click', '.tagihan', function(e){
+    e.preventDefault();
+    var nim = $(this).data('tagihan');
+    var back = true;
+
+    $formData = new FormData();
+    $formData.append("no_tagihan[]",$no_tagihan.type);
+    $formData.append("no_tagihan[]",$no_tagihan.from);
+    $formData.append("no_tagihan[]",$no_tagihan.to);
+
+    $formData.append("keterangan[]",$keterangan.type);
+    $formData.append("keterangan[]",$keterangan.from);
+    $formData.append("keterangan[]",$keterangan.to);
+
+
+    $formData.delete('back');
+    $formData.append('back', back);
+    $('.breadcrumb').html('');
+    $('.breadcrumb').append(`
+        <li class="breadcrumb-item">
+            <a href="#" class="klik-report" data-href="laporan-tagihan" aria-param="">Laporan Data Tagihan</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="tagihan" aria-param="`+nim+`">Tagihan</li>
+    `);
+    xurl ="{{ url('dev-auth/form/alya_rptTagihanDetail') }}";
+    $('#saku-report #canvasPreview').load(xurl);
+});
+
+$('.navigation-lap').on('click', '#btn-back', function(e){
+    e.preventDefault();
+    $formData = new FormData();
+    $formData.append("no_tagihan[]",$no_tagihan.type);
+    $formData.append("no_tagihan[]",$no_tagihan.from);
+    $formData.append("no_tagihan[]",$no_tagihan.to);
+
+    $formData.append("keterangan[]",$keterangan.type);
+    $formData.append("keterangan[]",$keterangan.from);
+    $formData.append("keterangan[]",$keterangan.to);
+
+    var aktif = $('.breadcrumb-item.active').attr('aria-current');
+    var tmp = $('.breadcrumb-item.active').attr('aria-param').split("|");
+    var param = tmp[0];
+    if(aktif == "tagihan"){
+        $formData.delete('back');
+        xurl = "{{ url('dev-auth/form/alya_rptTagihan') }}";
+        $('.breadcrumb').html('');
+        $('.breadcrumb').append(`
+            <li class="breadcrumb-item active" aria-current="laporan-tagihan" aria-param="">Laporan Data Tagihan</li>
+        `);
+        $('.navigation-lap').addClass('hidden');
+    }
+    $('#saku-report #canvasPreview').load(xurl);
+});
+
+});
 </script>

@@ -7,7 +7,7 @@
 </style>
 <script type="text/javascript">
     function drawLap(formData){
-        saiPostLoad('dev-report/dev-lap-tagihan', null, formData, null, function(res){
+        saiPostLoad('dev-report/dev-lap-bayar', null, formData, null, function(res){
            if(res.result.length > 0){
 
                 $('#pagination').html('');
@@ -45,34 +45,37 @@
             </style>
            
             `;
-               
+                   
             html+=`
-            <div class='ml-2 mr-2' style='overflow-x: scroll;'>
+            <h3>Laporan Pembayaran</h3>
             <table class='table table-bordered' style='width:90%'>
                 <thead bgcolor='#CCCCCC'>
                     <tr>
                         <th width='5%'>NO</th>
-                        <th width='25%'>No Tagihan</th>
-                        <th width='25%'>Tanggal</th>
-                        <th width='25%'>Keterangan</th>
-                        <th width='25%'>Periode</th>
+                        <th width='10%'>NO bayar</th>
+                        <th width='25%'>TANGGAL</th>
+                        <th width='25%'>NIM</th>
+                        <th width='25%'>KETERANGAN</th>
+                        <th width='25%'>NAMA</th>
+                        <th width='25%'>PERIODE</th>
                    </tr>
                 </thead>`;
             var no =1;
             for(var i=0;i<data.length;i++){
                 var line = data[i];
-                html+=`<tr class="report-link tagihan" style="cursor: pointer;" data-tagihan="${line.no_tagihan}">
+                html+=`<tr>
                     <td>`+no+`</td>
-                    <td>`+line.no_tagihan+`</td>
+                    <td>`+line.no_bayar+`</td>
                     <td>`+line.tanggal+`</td>
+                    <td>`+line.nim+`</td>
                     <td>`+line.keterangan+`</td>
+                    <td>`+line.nama+`</td>
                     <td>`+line.periode+`</td>
                     </tr>`;
                 no++;
             }
             html+=`
                 </table>
-                </div>
             </div>`;
         }
         $('#canvasPreview').html(html);
