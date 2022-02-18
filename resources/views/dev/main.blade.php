@@ -1362,7 +1362,7 @@
             loadForm("{{ url('dev-auth/form') }}/blankform");
         }
     });
-    var $theme = "dore.light.blueolympic.min.css";
+    var $theme = "dore.light.redruby.min.css";
  
     </script>
     <script src="{{ asset('asset_dore/js/scripts.js') }}"></script>
