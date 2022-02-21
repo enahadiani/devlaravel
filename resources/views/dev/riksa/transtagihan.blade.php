@@ -1,9 +1,3 @@
-<link rel="stylesheet" href="{{ asset('trans.css?version=_').time() }}" />
-    <link rel="stylesheet" href="{{ asset('form.css') }}" />
-    <!-- LIST DATA -->
-    <x-list-data judul="Data Tagihan" tambah="true" :thead="array('No Tagihan','NIS','Tanggal','Status','Action')" :thwidth="array(15,15,15,20,15)" :thclass="array('','','','','','text-center')" />
-    <!-- END LIST DATA -->
-
 <!-- CSS tambahan -->
 <style>
     th,
@@ -197,11 +191,11 @@
 </style>
 
 <!-- DATATABLES -->
-<!-- <div class="row" id="saku-datatable">
+<div class="row" id="saku-datatable">
     <div class="col-12">
         <div class="card">
             <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
-                <h6 style="position:absolute;top: 25px;">Data Tagihan</h6>
+                <h6 style="position:absolute;top: 25px;">Data Tagihan Siswa</h6>
                 <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
             </div>
             <div class="separator mb-2"></div>
@@ -249,7 +243,7 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>
 <!-- END DATATABLES -->
 
 <!-- FORM INPUT -->
@@ -259,10 +253,8 @@
             <div class="card" style=''>
                 <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
                     <h6 id="judul-form" style="position:absolute;top:25px"></h6>
-                    <button type="button" id="btn-kembali" aria-label="Kembali" class="btn btn-back">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <button type="submit" id="btn-save" class="btn btn-primary float-right"><i class="fa fa-save"></i> Simpan</button>
+                    <button type="submit" class="btn btn-primary ml-2" style="float:right;" id="btn-save"><i class="fa fa-save"></i> Simpan</button>
+                    <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;"><i class="fa fa-undo"></i> Keluar</button>
                 </div>
                 <div class="separator"></div>
                 <div class="card-body form-body" style='background:#f8f8f8;padding: 0 !important;border-bottom-left-radius: .75rem;border-bottom-right-radius: .75rem;'>
@@ -314,7 +306,7 @@
                                 <div class="form-group col-md-12 col-sm-12">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
-                                            <label for="keterangan">Keterangan</label>
+                                            <label for="keterangan">Keterangan Tagihan</label>
                                             <textarea id="keterangan" name="keterangan" class="form-control" style="height:50px"></textarea>
                                         </div>
                                     </div>
@@ -355,7 +347,7 @@
                                             <tbody>
                                             </tbody>
                                         </table>
-                                        <a type="button" href="#" data-id="0" title="add-row" class="add-row btn btn-light2 btn-block btn-sm" class="saicon icon-tambah mr-1" >Tambah Baris</a>
+                                        <a type="button" href="#" data-id="0" title="add-row" class="add-row btn btn-light2 btn-block btn-sm">Tambah Baris</a>
                                     </div>
                                 </div>
                                 <!-- <div class="tab-pane" id="data-dok" role="tabpanel">
@@ -553,7 +545,7 @@
                 }
             },
             {
-                "targets": [5],
+                "targets": [4],
                 "visible": false,
                 "searchable": false
             },

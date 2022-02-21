@@ -1,9 +1,3 @@
-<link rel="stylesheet" href="{{ asset('trans.css?version=_').time() }}" />
-    <link rel="stylesheet" href="{{ asset('form.css') }}" />
-    <!-- LIST DATA -->
-    <x-list-data judul="Data Tagihan" tambah="true" :thead="array('No Tagihan','NIS','Tanggal','Status','Action')" :thwidth="array(15,15,15,20,15)" :thclass="array('','','','','','text-center')" />
-    <!-- END LIST DATA -->
-
 <!-- CSS tambahan -->
 <style>
     th,
@@ -197,11 +191,11 @@
 </style>
 
 <!-- DATATABLES -->
-<!-- <div class="row" id="saku-datatable">
+<div class="row" id="saku-datatable">
     <div class="col-12">
         <div class="card">
             <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
-                <h6 style="position:absolute;top: 25px;">Data Tagihan</h6>
+                <h6 style="position:absolute;top: 25px;">Data Transaksi Pembayaran</h6>
                 <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
             </div>
             <div class="separator mb-2"></div>
@@ -233,11 +227,13 @@
                     <table id="table-data" style='width:100%'>
                         <thead>
                             <tr>
-                                <th>No Tagihan</th>
+                                <th>No Bayar</th>
                                 <th>NIS</th>
                                 <th>Tanggal</th>
+                                <th>Keterangan</th>
+                                <th>Periode</th>
                                 <th>Status</th>
-                                <th>Tgl Input</th>
+                                <th></th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -249,7 +245,7 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>
 <!-- END DATATABLES -->
 
 <!-- FORM INPUT -->
@@ -259,10 +255,8 @@
             <div class="card" style=''>
                 <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
                     <h6 id="judul-form" style="position:absolute;top:25px"></h6>
-                    <button type="button" id="btn-kembali" aria-label="Kembali" class="btn btn-back">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <button type="submit" id="btn-save" class="btn btn-primary float-right"><i class="fa fa-save"></i> Simpan</button>
+                    <button type="submit" class="btn btn-primary ml-2" style="float:right;" id="btn-save"><i class="fa fa-save"></i> Simpan</button>
+                    <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;"><i class="fa fa-undo"></i> Keluar</button>
                 </div>
                 <div class="separator"></div>
                 <div class="card-body form-body" style='background:#f8f8f8;padding: 0 !important;border-bottom-left-radius: .75rem;border-bottom-right-radius: .75rem;'>
@@ -279,14 +273,14 @@
                                     <div class="row">
                                         <div class="input-group">
 
-                                            <input readonly type="hidden" class="form-control inp-label-no_tagihan" id="no_tagihan" name="no_tagihan" value="" title="">
-                                            <span readonly class="info-name_no_tagihan hidden">
+                                            <input readonly type="hidden" class="form-control inp-label-no_bayar" id="no_bayar" name="no_bayar" value="" title="">
+                                            <span readonly class="info-name_no_bayar hidden">
                                                 <span></span>
                                             </span>
                                             <i readonly class="simple-icon-close float-right info-icon-hapus hidden"></i>
                                         </div>
                                         <div class="col-md-3 col-sm-12">
-                                            <label for="nim">NIS</label> 
+                                            <label for="nim">NIS</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend hidden" style="border: 1px solid #d7d7d7;">
                                                     <span class="input-group-text info-code_nim" readonly="readonly" title="" data-toggle="tooltip" data-placement="top"></span>
@@ -346,38 +340,19 @@
                                             <thead style="background:#F8F8F8">
                                                 <tr>
                                                     <th style="width:5%">No</th>
-                                                    <th style="width:30%">Kode Jenis</th>
-                                                    <th style="width:35%">Nama Jenis</th>
-                                                    <th style="width:25%">Nilai</th>
+                                                    <th style="width:25%">Kode Tagihan</th>
+                                                    <th style="width:25%">Jenis Tagihan</th>
+                                                    <th style="width:20%">Nilai Tagihan</th>
+                                                    <th style="width:20%">Nilai Bayar</th>
                                                     <th width="5%"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             </tbody>
                                         </table>
-                                        <a type="button" href="#" data-id="0" title="add-row" class="add-row btn btn-light2 btn-block btn-sm" class="saicon icon-tambah mr-1" >Tambah Baris</a>
+                                        <a type="button" href="#" data-id="0" title="add-row" class="add-row btn btn-light2 btn-block btn-sm">Tambah Baris</a>
                                     </div>
                                 </div>
-                                <!-- <div class="tab-pane" id="data-dok" role="tabpanel">
-                                        <div class='col-xs-12' style='min-height:420px; margin:0px; padding:0px;'>
-                                            <table class="table table-bordered table-condensed" id="input-dok" style='width:100%'>
-                                                <thead>
-                                                    <tr>
-                                                        <th width="5%">No</th>
-                                                        <th width="10%">NIS</th>
-                                                        <th width="20%">Nama</th>
-                                                        <th width="20%">Nama Dokumen</th>
-                                                        <th width="20%">Nama File Upload</th>
-                                                        <th width="20%">Upload File</th>
-                                                        <th width="5%"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                            <a type="button" href="#" data-id="0" title="add-row-dok" class="add-row-dok btn btn-light2 btn-block btn-sm">Tambah Baris</a>
-                                        </div>
-                                    </div> -->
                             </div>
                         </div>
                     </div>
@@ -442,13 +417,10 @@
     </div>
 <!-- END MODAL PREVIEW -->  
 
-
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
-    $('#process-upload').addClass('disabled');
-    $('#process-upload').prop('disabled', true);
-
+    setHeightForm();
     var $iconLoad = $('.preloader');
     var $target = "";
     var $target2 = "";
@@ -486,25 +458,27 @@
     }
 
 
-    // function last_add(param,isi){
-    //     var rowIndexes = [];
-    //     dataTable.rows( function ( idx, data, node ) {             
-    //         if(data[param] === isi){
-    //             rowIndexes.push(idx);                  
-    //         }
-    //         return false;
-    //     }); 
-    //     dataTable.row(rowIndexes).select();
-    //     $('.selected td:eq(0)').addClass('last-add');
-    //     setTimeout(function() {
-    //         $('.selected td:eq(0)').removeClass('last-add');
-    //         dataTable.row(rowIndexes).deselect();
-    //     }, 1000 * 60 * 10);
-    // }
+    function last_add(param, isi) {
+        var rowIndexes = [];
+        dataTable.rows(function(idx, data, node) {
+            if (data[param] === isi) {
+                rowIndexes.push(idx);
+            }
+            return false;
+        });
+        dataTable.row(rowIndexes).select();
+        $('.selected td:eq(0)').addClass('last-add');
+        setTimeout(function() {
+            $('.selected td:eq(0)').removeClass('last-add');
+            dataTable.row(rowIndexes).deselect();
+        }, 1000 * 60 * 10);
+    }
 
     // END FUNCTION TAMBAHAN
 
     // INISIASI AWAL FORM
+
+    $('[id^=label]').attr('readonly', true);
 
     var scrollform = document.querySelector('.form-body');
     var psscrollform = new PerfectScrollbar(scrollform);
@@ -512,13 +486,8 @@
     var scroll = document.querySelector('#content-preview');
     var psscroll = new PerfectScrollbar(scroll);
 
-    $('.selectize').selectize();
-    $('[id^=label]').attr('readonly', true);
-    // END 
-
-    // LIST DATA
-    var action_html = "<a href='#' title='Edit' id='btn-edit'><i class='simple-icon-pencil' style='font-size:18px'></i></a> &nbsp;&nbsp;&nbsp; <a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";
-
+    // TD ACTION
+    var action_html = "<a href='#' title='Edit' id='btn-edit'><i class='simple-icon-pencil' style='font-size:18px'></i></a> &nbsp;&nbsp;&nbsp; <a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";    var action_html = "<a href='#' title='Edit' id='btn-edit'><i class='simple-icon-pencil' style='font-size:18px'></i></a> &nbsp;&nbsp;&nbsp; <a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";
     //DATA TABLE
     var dataTable = $('#table-data').DataTable({
         destroy: true,
@@ -526,10 +495,10 @@
         sDom: 't<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
         "ordering": true,
         "order": [
-            [4, "desc"]
+            [6, "desc"]
         ],
         'ajax': {
-            'url': "{{url('dev-trans/tagihan')}}",
+            'url': "{{url('dev-trans/bayar')}}",
             'async': false,
             'type': 'GET',
             'dataSrc': function(json) {
@@ -553,31 +522,24 @@
                 }
             },
             {
-                "targets": [5],
+                "targets": [6],
                 "visible": false,
                 "searchable": false
             },
             {
-                'targets': 5,
+                'targets': 7,
                 data: null,
                 'defaultContent': action_html
             }
         ],
-        'columns': [{
-                data: 'no_tagihan'
-            },
-            {
-                data: 'nim'
-            },
-            {
-                data: 'tanggal'
-            },
-            {
-                data: 'status'
-            },
-            {
-                data: 'tgl_input'
-            }
+        'columns': [
+            { data: 'no_bayar' },
+            { data: 'nim' },
+            { data: 'tanggal' },
+            { data: 'keterangan' },
+            { data: 'periode' },
+            { data: 'status' },
+            { data: 'tgl_input'}
         ],
         drawCallback: function() {
             $($(".dataTables_wrapper .pagination li:first-of-type"))
@@ -586,6 +548,7 @@
             $($(".dataTables_wrapper .pagination li:last-of-type"))
                 .find("a")
                 .addClass("next");
+
             $(".dataTables_wrapper .pagination").addClass("pagination-sm");
         },
         language: {
@@ -610,47 +573,34 @@
     });
     $.fn.DataTable.ext.pager.numbers_length = 5;
 
+    //SEARCH DATA
     $("#searchData").on("keyup", function(event) {
         dataTable.search($(this).val()).draw();
     });
 
+    //PAGE COUNT
     $("#page-count").on("change", function(event) {
         var selText = $(this).val();
         dataTable.page.len(parseInt(selText)).draw();
     });
 
-    // END LIST DATA
-
-    $('#download-template').click(function(){
-        alert('test')
-        var kode_lokasi = "{{ Session::get('lokasi') }}";
-        var nik_user = "{{ Session::get('nikUser') }}";
-        var nik = "{{ Session::get('userLog') }}";
-        //database
-        var link = "{{ config('api.url').'dev-trans/tagihan-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template";
-        window.open(link, '_blank'); 
-    });
-
-
     // CBBL
 
-    function showInfoField(kode, isi_kode, isi_nama) {
-        $('#' + kode).val(isi_kode);
-        $('#' + kode).attr('style', 'border-left:0;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important');
-        $('.info-code_' + kode).text(isi_kode).parent('div').removeClass('hidden');
-        $('.info-code_' + kode).attr('title', isi_nama);
-        $('.info-name_' + kode).removeClass('hidden');
-        $('.info-name_' + kode).attr('title', isi_nama);
-        $('.info-name_' + kode + ' span').text(isi_nama);
-        var width = $('#' + kode).width() - $('#search_' + kode).width() - 10;
-        var height = $('#' + kode).height();
-        var pos = $('#' + kode).position();
-        $('.info-name_' + kode).width(width).css({
-            'left': pos.left,
-            'height': height
-        });
-        $('.info-name_' + kode).closest('div').find('.info-icon-hapus').removeClass('hidden');
+    function showInfoField(kode,isi_kode,isi_nama){
+        $('#'+kode).val(isi_kode);
+        $('#'+kode).attr('style','border-left:0;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important');
+        $('.info-code_'+kode).text(isi_kode).parent('div').removeClass('hidden');
+        $('.info-code_'+kode).attr('title',isi_nama);
+        $('.info-name_'+kode).removeClass('hidden');
+        $('.info-name_'+kode).attr('title',isi_nama);
+        $('.info-name_'+kode+' span').text(isi_nama);
+        var width = $('#'+kode).width()-$('#search_'+kode).width()-10;
+        var height =$('#'+kode).height();
+        var pos =$('#'+kode).position();
+        $('.info-name_'+kode).width(width).css({'left':pos.left,'height':height});
+        $('.info-name_'+kode).closest('div').find('.info-icon-hapus').removeClass('hidden');
     }
+
 
     //SHOW SEARCH-MODAL
     function showFilter(param, target1, target2) {
@@ -667,12 +617,9 @@
             case 'nim':
                 header = ['NIS', 'Nama'];
                 var toUrl = "{{ url('dev-master/siswa') }}";
-                var columns = [{
-                        data: 'nim'
-                    },
-                    {
-                        data: 'nama'
-                    }
+                var columns = [
+                    {data: 'nim' },
+                    {data: 'nama'}
                 ];
                 var judul = "Daftar Siswa";
                 var pilih = "Siswa";
@@ -686,31 +633,26 @@
                     nim: $('#nim').val()
                 };
                 break;
-            case 'kode_jenis[]':
-                header = ['Kode Jenis', 'Nama'];
-                var toUrl = "{{ url('dev-master/jenis') }}";
-                var columns = [{
-                        data: 'kode_jenis'
-                    },
-                    {
-                        data: 'nama'
-                    }
+            case 'no_tagihan[]':
+                header = ['Kode Tagihan', 'Keterangan'];
+                var toUrl = "{{ url('dev-trans/tagihan') }}";
+                var columns = [
+                    {data: 'no_tagihan'},
+                    {data: 'keterangan'}
                 ];
                 var judul = "Daftar Jenis Tagihan";
                 var pilih = "Siswa";
                 var jTarget1 = "val";
                 var jTarget2 = "val";
-                $target = "." + $target;
-                $target3 = ".td" + $target2;
-                $target2 = "." + $target2;
+                $target = "."+$target;
+                $target3 = ".td"+$target2;
+                $target2 = "."+$target2;
                 $target4 = ".td-nilai";
-                parameter = {
-                    kode_jenis: $('#kode_jenis').val()
-                };
-                break;
+                parameter = {no_tagihan:$('#no_tagihan').val()};
+            break;
         }
         var header_html = '';
-        var width = ["30%", "70%"];
+        var width = ["40%", "60%"];
         for (i = 0; i < header.length; i++) {
             header_html += "<th style='width:" + width[i] + "'>" + header[i] + "</th>";
         }
@@ -826,15 +768,15 @@
         });
     }
 
-    function getJenis(id) {
+    function getTagihan(id) {
         var tmp = id.split(" - ");
         kode = tmp[0];
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-master/jenis') }}",
+            url: "{{ url('dev-trans/tagihan') }}",
             dataType: 'json',
             data: {
-                kode_jenis: kode
+                no_tagihan: kode
             },
             async: false,
             success: function(result) {
@@ -880,7 +822,7 @@
                         $('.' + target2).val('');
                         $('.td' + target2).text('');
                         $('.' + target1).focus();
-                        alert('Jenis Tagihan tidak valid');
+                        alert('Tagihan tidak valid');
                     }
                 }
             }
@@ -913,16 +855,16 @@
         var id = $(this).closest('tr').find('td').eq(0).html();
         $('#btn-save').attr('type', 'button');
         $('#btn-save').attr('id', 'btn-update');
-        $('#judul-form').html('Edit Data Tagihan Siswa');
+        $('#judul-form').html('Edit Data Pembayaran Siswa');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
         $iconLoad.show();
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-trans/tagihan-detail') }}",
+            url: "{{ url('dev-trans/bayar-detail') }}",
             dataType: 'json',
             data: {
-                no_tagihan: id
+                no_bayar: id
             },
             async: false,
             success: function(res) {
@@ -931,8 +873,8 @@
                     $('#id').val('edit');
                     $('#method').val('put');
                     $('#no_bukti').val(id);
-                    $('#no_tagihan').attr('readonly', true);
-                    $('#no_tagihan').val(result.data[0].no_tagihan);
+                    $('#no_bayar').attr('readonly', true);
+                    $('#no_bayar').val(result.data[0].no_bayar);
                     $('#keterangan').val(result.data[0].keterangan);
                     $('#periode').val(result.data[0].periode);
                     $('#tanggal').val(result.data[0].tanggal);
@@ -945,9 +887,10 @@
                             var line = result.detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>" + no + "</td>";
-                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + result.detail[i].kode_jenis + "</span><input type='text' id='kode" + no + "' name='kode_jenis[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + line.kode_jenis + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + result.detail[i].nama_jenis + "</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='" + line.nama_jenis + "' readonly></td>";
-                            input += "<td class='text-right'><span class='td-nilai tdnilke" + no + " tooltip-span'>" + result.detail[i].nilai + "</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke" + no + " hidden'  value='" + parseInt(line.nilai) + "' required></td>";
+                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + result.detail[i].no_tagihan + "</span><input type='text' id='kode" + no + "' name='no_tagihan[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + line.no_tagihan + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + result.detail[i].keterangan + "</span><input type='text' name='ket_tagihan[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='" + line.ket_tagihan + "' readonly></td>";
+                            input += "<td class='text-right'><span class='td-nilai_t tdniltke" + no + " tooltip-span'>" + result.detail[i].nilai_t + "</span><input type='text' name='nilai_t[]' class='form-control inp-nilai_t niltke" + no + " hidden'  value='" + parseInt(line.nilai_t) + "' required></td>";
+                            input += "<td class='text-right'><span class='td-nilai_b tdnilbke" + no + " tooltip-span'>" + result.detail[i].nilai_b + "</span><input type='text' name='nilai_b[]' class='form-control inp-nilai_b nilbke" + no + " hidden'  value='" + parseInt(line.nilai_b) + "' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
                             no++;
@@ -980,9 +923,9 @@
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
-
+                    $('#modal-preview').modal('hide');
                     showInfoField('nim', result.daftar[0].nim, result.daftar[0].nama);
-                    showInfoField('kode_jenis', result.daftar[0].kode_jenis, result.daftar[0].nama);
+                    showInfoField('no_tagihan', result.daftar[0].no_tagihan, result.daftar[0].nama);
                 } else if (!result.status && result.message == 'Unauthorized') {
                     window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
@@ -996,10 +939,10 @@
     function hapusData(id, kode) {
         $.ajax({
             type: 'DELETE',
-            url: "{{ url('dev-trans/tagihan') }}",
+            url: "{{ url('dev-trans/bayar') }}",
             dataType: 'json',
             data: {
-                no_tagihan: id
+                no_bayar: id
             },
             async: false,
             success: function(result) {
@@ -1030,6 +973,7 @@
             kode: id,
             type: 'hapus'
         });
+        $('#modal-preview').modal('hide');
     });
     // END HAPUS DATA
 
@@ -1037,7 +981,7 @@
     $('#saku-datatable').on('click', '#btn-tambah', function() {
         $('#row-id').hide();
         $('#method').val('post');
-        $('#judul-form').html('Tambah Data Tagihan Siswa');
+        $('#judul-form').html('Tambah Data Pembayaran Siswa');
         $('#btn-update').attr('id', 'btn-save');
         $('#btn-save').attr('type', 'submit');
         $('#form-tambah')[0].reset();
@@ -1083,9 +1027,9 @@
             var data = dataTable.row(this).data();
             $.ajax({
                 type: 'GET',
-                url: "{{ url('dev-trans/tagihan-detail') }}",
+                url: "{{ url('dev-trans/bayar-detail') }}",
                 data: {
-                    no_tagihan: id
+                    no_bayar: id
                 },
                 dataType: 'json',
                 async: false,
@@ -1095,8 +1039,8 @@
 
                         var html =
                             `<tr>
-                            <td style='border:none'>No Tagihan</td>
-                            <td style='border:none'>` + result.data[0].no_tagihan + `</td>
+                            <td style='border:none'>No Bayar</td>
+                            <td style='border:none'>` + result.data[0].no_bayar + `</td>
                         </tr>
                         <tr>
                             <td>NIS Siswa</td>
@@ -1128,9 +1072,10 @@
                                     <thead>
                                         <tr>
                                             <th style="width:5%">No</th>
-                                            <th style="width:30%">Kode Jenis</th>
-                                            <th style="width:30%">Nama Jenis</th>
-                                            <th style="width:30%">Nilai</th>
+                                            <th style="width:30%">Kode Tagihan</th>
+                                            <th style="width:30%">Jenis Tagihan</th>
+                                            <th style="width:30%">Nilai Tagihan</th>
+                                            <th style="width:30%">Nilai Bayar</th>
                                            
                                          
                                         </tr>
@@ -1150,10 +1095,10 @@
                                 // var line =result.detail[i];
                                 input += "<tr>";
                                 input += "<td>" + no + "</td>";
-                                input += "<td >" + result.detail[i].kode_jenis + "</td>";
-                                input += "<td >" + result.detail[i].nama_jenis + "</td>";
-                                // input += "<td >"+result.detail[i].nilai+"</td>";
-                                input += "<td class='text-right'>" + result.detail[i].nilai + "</td>";
+                                input += "<td >" + result.detail[i].no_tagihan + "</td>";
+                                input += "<td >" + result.detail[i].keterangan + "</td>";
+                                input += "<td class='text-right'>" + result.detail[i].nilai_t + "</td>";
+                                input += "<td class='text-right'>" + result.detail[i].nilai_b + "</td>";
                                 input += "</tr>";
                                 no++;
                             }
@@ -1173,6 +1118,7 @@
 
     // End Preview Detail
 
+
     $('.modal-header').on('click', '#btn-delete2', function(e) {
         var id = $('#modal-preview-id').text();
         $('#modal-preview').modal('hide');
@@ -1184,9 +1130,8 @@
     });
 
     $('.modal-header').on('click', '#btn-edit2', function() {
-        var id= $('#modal-preview-id').text();
-
-        $('#judul-form').html('Edit Data Tagihan Siswa');
+        var id = $('#modal-preview-id').text();
+        $('#judul-form').html('Edit Data Pembayaran Siswa');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
         $('#btn-save').attr('type', 'button');
@@ -1194,10 +1139,10 @@
         $iconLoad.show();
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-trans/tagihan-detail') }}",
+            url: "{{ url('dev-trans/bayar-detail') }}",
             dataType: 'json',
             data: {
-                no_tagihan: id
+                no_bayar: id
             },
             async: false,
             success: function(res) {
@@ -1206,8 +1151,8 @@
                     $('#id').val('edit');
                     $('#method').val('put');
                     $('#no_bukti').val(id);
-                    $('#no_tagihan').attr('readonly', true);
-                    $('#no_tagihan').val(result.data[0].no_tagihan);
+                    $('#no_bayar').attr('readonly', true);
+                    $('#no_bayar').val(result.data[0].no_bayar);
                     $('#keterangan').val(result.data[0].keterangan);
                     $('#periode').val(result.data[0].periode);
                     $('#tanggal').val(result.data[0].tanggal);
@@ -1220,9 +1165,10 @@
                             var line = result.detail[i];
                             input += "<tr class='row-nilai'>";
                             input += "<td class='no-nilai text-center'>" + no + "</td>";
-                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + result.detail[i].kode_jenis + "</span><input type='text' id='kode" + no + "' name='kode_jenis[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + line.kode_jenis + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + result.detail[i].nama_jenis + "</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='" + line.nama_jenis + "' readonly></td>";
-                            input += "<td class='text-right'><span class='td-nilai tdnilke" + no + " tooltip-span'>" + result.detail[i].nilai + "</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke" + no + " hidden'  value='" + parseInt(line.nilai) + "' required></td>";
+                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + result.detail[i].no_tagihan + "</span><input type='text' id='kode" + no + "' name='no_tagihan[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + line.no_tagihan + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + result.detail[i].keterangan + "</span><input type='text' name='ket_tagihan[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='" + line.ket_tagihan + "' readonly></td>";
+                            input += "<td class='text-right'><span class='td-nilai_t tdniltke" + no + " tooltip-span'>" + result.detail[i].nilai_t + "</span><input type='text' name='nilai_t[]' class='form-control inp-nilai_t niltke" + no + " hidden'  value='" + parseInt(line.nilai_t) + "' required></td>";
+                            input += "<td class='text-right'><span class='td-nilai_b tdnilbke" + no + " tooltip-span'>" + result.detail[i].nilai_b + "</span><input type='text' name='nilai_b[]' class='form-control inp-nilai_b nilbke" + no + " hidden'  value='" + parseInt(line.nilai_b) + "' required></td>";
                             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                             input += "</tr>";
                             no++;
@@ -1257,7 +1203,7 @@
                     $('#saku-form').show();
                     $('#modal-preview').modal('hide');
                     showInfoField('nim', result.daftar[0].nim, result.daftar[0].nama);
-                    showInfoField('kode_jenis', result.daftar[0].kode_jenis, result.daftar[0].nama);
+                    showInfoField('no_tagihan', result.daftar[0].no_tagihan, result.daftar[0].nama);
                 } else if (!result.status && result.message == 'Unauthorized') {
                     window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
@@ -1265,6 +1211,7 @@
             }
         });
     });
+    // END BUTTON EDIT
 
     $('.modal-header').on('click', '#btn-cetak', function(e) {
         e.stopPropagation();
@@ -1299,9 +1246,9 @@
             var id = $('#nim').val();
             // $iconLoad.show();
             if (param == "edit") {
-                var url = "{{ url('dev-trans/tagihan') }}";
+                var url = "{{ url('dev-trans/bayar') }}";
             } else {
-                var url = "{{ url('dev-trans/tagihan') }}";
+                var url = "{{ url('dev-trans/bayar') }}";
             }
             for (var pair of formData.entries()) {
                 console.log(pair[0] + ', ' + pair[1]);
@@ -1327,7 +1274,7 @@
                             $('#form-tambah').validate().resetForm();
                             $('#row-id').hide();
                             $('#method').val('post');
-                            $('#judul-form').html('Tambah Data Tagihan Siswa');
+                            $('#judul-form').html('Tambah Data Pembayaran Siswa');
                             $('#id').val('');
                             $('#input-tagihan tbody').html('');
                             $('[id^=label]').html('');
@@ -1402,83 +1349,11 @@
             }
         }
     });
-    // END ENTER FIELD FORM
 
-    $('#form-tambah').on('click', '.search-item2', function() {
-        if ($(this).css('cursor') == "not-allowed") {
-            return false;
-        }
-        var par = $(this).closest('div').find('input').attr('name');
-        showFilter(par);
-    });
-
-    // $('#form-tambah').on('change', '#nik_periksa', function(){
-    //     var par = $(this).val();
-    //     getNIKPeriksa(par);
-    // });
-
-    // GRID JURNAL
-
-    function hideUnselectedRow() {
-        $('#input-tagihan > tbody > tr').each(function(index, row) {
-            if (!$(row).hasClass('selected-row')) {
-
-                var kode_jenis = $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-kode").val();
-                var nama_jenis = $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-jenis").val();
-                var nilai = $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai").val();
-
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-kode").val(kode_jenis);
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-kode").text(kode_jenis);
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-jenis").val(nama_jenis);
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-jenis").text(nama_jenis);
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai").val(nilai);
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-nilai").text(nilai);
-
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-kode").hide();
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-kode").show();
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".search-kode").hide();
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-jenis").hide();
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-jenis").show();
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai").hide();
-                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-nilai").show();
-            }
-        })
-    }
-
-    $('#input-tagihan tbody').on('click', 'tr', function() {
-        $(this).addClass('selected-row');
-        $('#input-tagihan tbody tr').not(this).removeClass('selected-row');
-        hideUnselectedRow();
-    });
-
-    $('#input-tagihan').on('click', '.search-item', function() {
-        var par = $(this).closest('td').find('input').attr('name');
-
-        var modul = '';
-        var header = [];
-
-        switch (par) {
-            case 'kode_jenis[]':
-                var par2 = "nama_jenis[]";
-                break;
-        }
-
-        var tmp = $(this).closest('tr').find('input[name="' + par + '"]').attr('class');
-        var tmp2 = tmp.split(" ");
-        target1 = tmp2[2];
-
-        tmp = $(this).closest('tr').find('input[name="' + par2 + '"]').attr('class');
-        tmp2 = tmp.split(" ");
-        target2 = tmp2[2];
-
-        showFilter(par, target1, target2);
-    });
-
-
-    $('#input-tagihan').on('keydown', '.inp-kode, .inp-jenis, .inp-nilai', function(e) {
+    $('#input-tagihan').on('keydown', '.inp-kode, .inp-jenis, .inp-nilai, .inp-nilai_t, .inp-nilai_b', function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        var nxt = ['.inp-kode', '.inp-jenis', '.inp-nilai'];
-        var nxt2 = ['.td-kode', '.td-jenis', '.td-nilai'];
+        var nxt = ['.inp-kode', '.inp-jenis', '.inp-nilai_t', '.inp-nilai_b', '.inp-nilai'];
+        var nxt2 = ['.td-kode', '.td-jenis', '.td-nilai_t', '.td-nilai_b', '.td-nilai'];
         if (code == 13 || code == 9) {
             e.preventDefault();
             var idx = $(this).closest('td').index() - 1;
@@ -1552,9 +1427,10 @@
             var input = "";
             input += "<tr class='row-nilai'>";
             input += "<td class='no-nilai text-center'>" + no + "</td>";
-            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'></span><input type='text' id='kode" + no + "' name='kode_jenis[]' class='form-control inp-kode kodeke" + no + " hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'></span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='' readonly></td>";
-            input += "<td class='text-right'><span class='td-nilai tdnilke" + no + " tooltip-span'></span><input type='text' name='nilai[]' class='form-control inp-nilai nilke" + no + " hidden'  value='' required></td>";
+            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'></span><input type='text' id='kode" + no + "' name='no_tagihan[]' class='form-control inp-kode kodeke" + no + " hidden' value='' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
+            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'></span><input type='text' name='ket_tagihan[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='' readonly></td>";
+            input += "<td class='text-right'><span class='td-nilai_t tdniltke" + no + " tooltip-span'></span><input type='text' name='nilai_t[]' class='form-control inp-nilai_t niltke" + no + " hidden'  value='' required></td>";
+            input += "<td class='text-right'><span class='td-nilai_b tdnilbke" + no + " tooltip-span'></span><input type='text' name='nilai_b[]' class='form-control inp-nilai_b nilbke" + no + " hidden'  value='' required></td>";
             input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
             input += "</tr>";
             $('#input-tagihan tbody').append(input);
@@ -1601,13 +1477,14 @@
                 $('#input-tagihan td').removeClass('px-0 py-0 aktif');
                 $(this).addClass('px-0 py-0 aktif');
 
-                var kode_jenis = $(this).parents("tr").find(".inp-kode").val();
-                var nama_jenis = $(this).parents("tr").find(".inp-jenis").val();
-                var nilai = $(this).parents("tr").find(".inp-nilai").val();
+                var no_tagihan = $(this).parents("tr").find(".inp-kode").val();
+                var keterangan = $(this).parents("tr").find(".inp-jenis").val();
+                var nilai = $(this).parents("tr").find(".inp-nilai_t").val();
+                var nilai = $(this).parents("tr").find(".inp-nilai_b").val();
                 var no = $(this).parents("tr").find(".no-nilai").text();
 
-                $(this).parents("tr").find(".inp-kode").val(kode_jenis);
-                $(this).parents("tr").find(".td-kode").text(kode_jenis);
+                $(this).parents("tr").find(".inp-kode").val(no_tagihan);
+                $(this).parents("tr").find(".td-kode").text(no_tagihan);
                 if (idx == 1) {
                     $(this).parents("tr").find(".inp-kode").show();
                     $(this).parents("tr").find(".td-kode").hide();
@@ -1620,8 +1497,8 @@
 
                 }
 
-                $(this).parents("tr").find(".inp-jenis").val(nama_jenis);
-                $(this).parents("tr").find(".td-jenis").text(nama_jenis);
+                $(this).parents("tr").find(".inp-jenis").val(keterangan);
+                $(this).parents("tr").find(".td-jenis").text(keterangan);
                 if (idx == 2) {
                     $(this).parents("tr").find(".inp-jenis").show();
                     $(this).parents("tr").find(".td-jenis").hide();
@@ -1632,19 +1509,30 @@
                     $(this).parents("tr").find(".td-jenis").show();
                 }
 
-                $(this).parents("tr").find(".inp-nilai").val(nilai);
-                $(this).parents("tr").find(".td-nilai").text(nilai);
+                $(this).parents("tr").find(".inp-nilai_t").val(nilai);
+                $(this).parents("tr").find(".td-nilai_t").text(nilai);
                 if (idx == 3) {
-                    $(this).parents("tr").find(".inp-nilai").show();
-                    $(this).parents("tr").find(".td-nilai").hide();
-                    $(this).parents("tr").find(".inp-nilai").focus();
+                    $(this).parents("tr").find(".inp-nilai_t").show();
+                    $(this).parents("tr").find(".td-nilai_t").hide();
+                    $(this).parents("tr").find(".inp-nilai_t").focus();
                 } else {
-                    $(this).parents("tr").find(".inp-nilai").hide();
-                    $(this).parents("tr").find(".td-nilai").show();
+                    $(this).parents("tr").find(".inp-nilai_t").hide();
+                    $(this).parents("tr").find(".td-nilai_t").show();
+                }
+
+                $(this).parents("tr").find(".inp-nilai_b").val(nilai);
+                $(this).parents("tr").find(".td-nilai_b").text(nilai);
+                if (idx == 3) {
+                    $(this).parents("tr").find(".inp-nilai_b").show();
+                    $(this).parents("tr").find(".td-nilai_b").hide();
+                    $(this).parents("tr").find(".inp-nilai_b").focus();
+                } else {
+                    $(this).parents("tr").find(".inp-nilai_b").hide();
+                    $(this).parents("tr").find(".td-nilai_b").show();
                 }
                 hitungTotalRow();
-                var nama_jenis = $(this).parents("tr").find(".inp-jenis").val();
-                console.log(nama_jenis);
+                var keterangan = $(this).parents("tr").find(".inp-jenis").val();
+                console.log(keterangan);
             }
         }
     });
@@ -1673,287 +1561,275 @@
             scrollTop: $(document).height()
         }, 1000);
     });
+    // END ENTER FIELD FORM
 
-    // IMPORT EXCEL
+// IMPORT EXCEL
+$('#import-excel').click(function(e){
+    $('.custom-file-input').val('');
+    $('.custom-file-label').text('File upload');
+    $('.pesan-upload .pesan-upload-judul').html('');
+    $('.pesan-upload .pesan-upload-isi').html('')
+    $('.pesan-upload').hide();
+    $('#modal-import').modal('show');
+});
 
-    $('#import-excel').click(function(e) {
-        $('.custom-file-input').val('');
-        $('.custom-file-label').text('File upload');
-        $('.pesan-upload .pesan-upload-judul').html('');
-        $('.pesan-upload .pesan-upload-isi').html('')
-        $('.pesan-upload').hide();
-        $('#modal-import').modal('show');
-    });
+$("#form-import").validate({
+    rules: {
+        file: {required: true, accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"}
+    },
+    messages: {
+        file: {required: 'Harus diisi!', accept: 'Hanya import dari file excel.'}
+    },
+    errorElement: "label",
+    submitHandler: function (form) {
 
-    $("#form-import").validate({
-        rules: {
-            file: {
-                required: true,
-                accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-            }
-        },
-        messages: {
-            file: {
-                required: 'Harus diisi!',
-                accept: 'Hanya import dari file excel.'
-            }
-        },
-        errorElement: "label",
-        submitHandler: function(form) {
-
-            var formData = new FormData(form);
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ', ' + pair[1]);
-            }
-            formData.append('kode_pp', $('#kode_pp').val());
-            formData.append('kode_kelas', $('#kode_kelas').val());
-            $('.pesan-upload').show();
-            $('.pesan-upload-judul').html('Proses upload...');
-            $('.pesan-upload-judul').removeClass('text-success');
-            $('.pesan-upload-judul').removeClass('text-danger');
-            $('.progress').removeClass('hidden');
-            $('.progress-bar').attr('aria-valuenow', 0).css({
-                width: 0 + '%'
-            }).html(parseFloat(0 * 100).toFixed(2) + '%');
-            $.ajax({
-                xhr: function() {
-                    var xhr = new window.XMLHttpRequest();
-                    xhr.upload.addEventListener("progress", function(evt) {
-                        if (evt.lengthComputable) {
-                            var percentComplete = evt.loaded / evt.total;
-                            $('.progress-bar').attr('aria-valuenow', percentComplete * 100).css({
-                                width: percentComplete * 100 + '%'
-                            }).html(parseFloat(percentComplete * 100).toFixed(2) + '%');
-                            // if (percentComplete === 1) {
-                            //     $('.progress').addClass('hidden');
-                            // }
-                        }
-                    }, false);
-                    xhr.addEventListener("progress", function(evt) {
-                        if (evt.lengthComputable) {
-                            var percentComplete = evt.loaded / evt.total;
-                            $('.progress-bar').css({
-                                width: percentComplete * 100 + '%'
-                            });
-                        }
-                    }, false);
-                    return xhr;
-                },
-                type: 'POST',
-                url: "{{ url('dev-trans/import-excel') }}",
-                dataType: 'json',
-                data: formData,
-                // async:false,
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(result) {
-                    if (result.data.status) {
-                        if (result.data.validate) {
-                            $('#process-upload').removeClass('disabled');
-                            $('#process-upload').prop('disabled', false);
-                            $('#process-upload').removeClass('btn-light');
-                            $('#process-upload').addClass('btn-primary');
-                            $('.pesan-upload-judul').html('Berhasil upload!');
-                            $('.pesan-upload-judul').removeClass('text-danger');
-                            $('.pesan-upload-judul').addClass('text-success');
-                            $('.pesan-upload-isi').html('File berhasil diupload!');
-                        } else {
-                            if (!$('#process-upload').hasClass('disabled')) {
-                                $('#process-upload').addClass('disabled');
-                                $('#process-upload').prop('disabled', true);
-                            }
-
-                            var kode_lokasi = "{{ Session::get('lokasi') }}";
-                            var nik_user = "{{ Session::get('nikUser') }}";
-                            var nik = "{{ Session::get('userLog') }}";
-
-                            var link = "{{ config('api.url').'dev/penilaian-export' }}?kode_lokasi=" + kode_lokasi + "&nik_user=" + nik_user + "&nik=" + nik + "&type=non&kode_pp=" + $('#kode_pp').val() + "&kode_kelas=" + $('#kode_kelas').val() + "&kode_matpel=" + $('.info-name_kode_matpel > span ').text() + "&kode_jenis=" + $('#kode_jenis').val() + "&kode_kd=" + $('#kode_kd').val() + "&kode_sem=" + $('#kode_sem option:selected').text() + "&flag_kelas=" + $('#flag_kelas').val() + "&kode_matpel2=" + $('.info-code_kode_matpel').text();
-
-                            $('.pesan-upload-judul').html('Gagal upload!');
-                            $('.pesan-upload-judul').removeClass('text-success');
-                            $('.pesan-upload-judul').addClass('text-danger');
-                            $('.pesan-upload-isi').html("Terdapat kesalahan dalam mengisi format upload data. Download berkas untuk melihat kesalahan.<a href='" + link + "' target='_blank' class='text-primary' id='btn-download-file' >Download disini</a>");
-                        }
-                    } else if (!result.data.status && result.data.message == 'Unauthorized') {
-                        window.location.href = "{{ url('dev-auth/sesi-habis') }}";
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                            footer: '<a href>' + result.data.message + '</a>'
-                        })
-                        $('.pesan-upload-judul').html('Gagal upload!');
-                    }
-
-                },
-                fail: function(xhr, textStatus, errorThrown) {
-                    alert('request failed:' + textStatus);
-                },
-                complete: function(xhr) {
-                    $('.progress').addClass('hidden');
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    $('.progress').addClass('hidden');
-                    if (jqXHR.status == 422) {
-                        var msg = jqXHR.responseText;
-                    } else if (jqXHR.status == 500) {
-                        var msg = "Internal server error";
-                    } else if (jqXHR.status == 401) {
-                        var msg = "Unauthorized";
-                        window.location = "{{ url('/dev-auth/sesi-habis') }}";
-                    } else if (jqXHR.status == 405) {
-                        var msg = "Route not valid. Page not found";
-                    }
-                    $('.pesan-upload-judul').html('Gagal upload!');
-                    $('.pesan-upload-isi').html(msg);
-
-                }
-            });
-
-        },
-        errorPlacement: function(error, element) {
-            $('#label-file').html(error);
-            $('#label-file').addClass('error');
+        var formData = new FormData(form);
+        for(var pair of formData.entries()) {
+            console.log(pair[0]+ ', '+ pair[1]);
         }
-    });
-
-    $('.info-icon-hapus').click(function() {
-        var par = $(this).closest('div').find('input').attr('name');
-        $('#' + par).val('');
-        $('#' + par).attr('readonly', false);
-        $('#' + par).attr('style', 'border-top-left-radius: 0.5rem !important;border-bottom-left-radius: 0.5rem !important');
-        $('.info-code_' + par).parent('div').addClass('hidden');
-        $('.info-name_' + par).addClass('hidden');
-        $(this).addClass('hidden');
-    });
-
-    $('.custom-file-input').change(function() {
-        var fileName = $(this).val();
-        $('.custom-file-label').html(fileName);
-        $('#form-import').submit();
-    })
-
-    $('#process-upload').click(function(e) {
+        $('.pesan-upload').show();
+        $('.pesan-upload-judul').html('Proses upload...');
+        $('.pesan-upload-judul').removeClass('text-success');
+        $('.pesan-upload-judul').removeClass('text-danger');
+        $('.progress').removeClass('hidden');
+        $('.progress-bar').attr('aria-valuenow', 0).css({
+            width: 0 + '%'
+        }).html(parseFloat(0 * 100).toFixed(2) + '%');
         $.ajax({
-            type: 'GET',
-            url: "{{ url('dev-trans/nilai-tmp') }}",
-            dataType: 'json',
-            data: {
-                'kode_pp': $('#kode_pp').val()
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        $('.progress-bar').attr('aria-valuenow', percentComplete * 100).css({
+                            width: percentComplete * 100 + '%'
+                        }).html(parseFloat(percentComplete * 100).toFixed(2) + '%');
+                    }
+                }, false);
+                xhr.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        $('.progress-bar').css({
+                            width: percentComplete * 100 + '%'
+                        });
+                    }
+                }, false);
+                return xhr;
             },
-            async: false,
-            success: function(res) {
-                var result = res.data;
-                if (result.status) {
-                    if (result.detail.length > 0) {
-                        var input = '';
-                        var no = 1;
-                        for (var i = 0; i < result.detail.length; i++) {
-                            var line = result.detail[i];
-                            input += "<tr class='row-nilai'>";
-                            input += "<td class='no-nilai text-center'>" + no + "</td>";
-                            input += "<td ><span class='td-kode tdkodeke" + no + " tooltip-span'>" + line.kode_jenis + "</span><input type='text' id='kode" + no + "' name='kode_jenis[]' class='form-control inp-kode kodeke" + no + " hidden' value='" + line.kode_jenis + "' required='' style='z-index: 1;position: relative;'><a href='#' class='search-item search-kode hidden' style='position: absolute;z-index: 2;margin-top:0.6rem;margin-left:-25px'><i class='simple-icon-magnifier' style='font-size: 16px;'></i></a></td>";
-                            input += "<td ><span class='td-jenis tdjeniske" + no + " tooltip-span'>" + line.nama_jenis + "</span><input type='text' name='nama_jenis[]' class='form-control inp-jenis jeniske" + no + " hidden'  value='' readonly></td>";
-                            input += "<td class='text-right'><span class='td-nilai tdnilke" + no + " tooltip-span'>" + format_number(line.nilai) + "</span><input type='text' name='nilai[]' class='form-control inp-nilai nilke" + no + " hidden'  value='" + parseInt(line.nilai) + "' required></td>";
-                            input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
-                            input += "</tr>";
-                            no++;
-                        }
-                        $('#input-tagihan tbody').html(input);
-                        $('.tooltip-span').tooltip({
-                            title: function() {
-                                return $(this).text();
-                            }
-                        })
-                        no = 1;
-                        for (var i = 0; i < result.detail.length; i++) {
-                            var line = result.detail[i];
-                            $('.nilke' + no).inputmask("numeric", {
-                                radixPoint: ",",
-                                groupSeparator: ".",
-                                digits: 2,
-                                autoGroup: true,
-                                rightAlign: true,
-                                oncleared: function() {
-                                    self.Value('');
-                                }
-                            });
-                            no++;
+            type: 'POST',
+            url: "{{ url('dev-trans/dev-pembayaran-upload') }}",
+            dataType: 'json',
+            data: formData,
+            // async:false,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(result){
+                if(result.data.status){
+                    if(result.data.validate){
+                        $('#process-upload').removeClass('disabled');
+                        $('#process-upload').prop('disabled', false);
+                        $('#process-upload').removeClass('btn-light');
+                        $('#process-upload').addClass('btn-primary');
+                        $('.pesan-upload-judul').html('Berhasil upload!');
+                        $('.pesan-upload-judul').removeClass('text-danger');
+                        $('.pesan-upload-judul').addClass('text-success');
+                        $('.pesan-upload-isi').html('File berhasil diupload!');
+                    }else{
+                        if(!$('#process-upload').hasClass('disabled')){
+                            $('#process-upload').addClass('disabled');
+                            $('#process-upload').prop('disabled', true);
                         }
 
+                        var kode_lokasi = "{{ Session::get('lokasi') }}";
+                        var nik_user = "{{ Session::get('nikUser') }}";
+                        var nik = "{{ Session::get('userLog') }}";
+
+                        var link = "{{ config('api.url').'dev-trans/pembayaran-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=non";
+
+                        $('.pesan-upload-judul').html('Gagal upload!');
+                        $('.pesan-upload-judul').removeClass('text-success');
+                        $('.pesan-upload-judul').addClass('text-danger');
+                        $('.pesan-upload-isi').html("Terdapat kesalahan dalam mengisi format upload data. Download berkas untuk melihat kesalahan.<a href='"+link+"' target='_blank' class='text-primary' id='btn-download-file' >Download disini</a>");
                     }
-                    hitungTotalRow();
-                    $('#modal-import').modal('hide');
-                } else if (!result.status && result.message == 'Unauthorized') {
-                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
-                } else {
-                    alert('error');
                 }
+                else if(!result.data.status && result.data.message == 'Unauthorized'){
+                    window.location.href = "{{ url('esaku-auth/sesi-habis') }}";
+                }
+                else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        footer: '<a href>'+result.data.message+'</a>'
+                    })
+                    $('.pesan-upload-judul').html('Gagal upload!');
+                }
+
+            },
+            fail: function(xhr, textStatus, errorThrown){
+                alert('request failed:'+textStatus);
+            },
+            complete: function (xhr) {
+                $('.progress').addClass('hidden');
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status == 422) {
+                $('.progress').addClass('hidden');
+                if(jqXHR.status == 422){
                     var msg = jqXHR.responseText;
-                } else if (jqXHR.status == 500) {
+                }else if(jqXHR.status == 500) {
                     var msg = "Internal server error";
-                } else if (jqXHR.status == 401) {
+                }else if(jqXHR.status == 401){
                     var msg = "Unauthorized";
-                    window.location = "{{ url('/dev-auth/sesi-habis') }}";
-                } else if (jqXHR.status == 405) {
+                    window.location="{{ url('/esaku-auth/sesi-habis') }}";
+                }else if(jqXHR.status == 405){
                     var msg = "Route not valid. Page not found";
                 }
+                $('.pesan-upload-judul').html('Gagal upload!');
+                $('.pesan-upload-isi').html(msg);
 
             }
         });
-    });
 
-    // FILTER
-    $('#modalFilter').on('submit', '#form-filter', function(e) {
-        e.preventDefault();
-        $.fn.dataTable.ext.search.push(
-            function(settings, data, dataIndex) {
-                var tmp = $('#inp-filter_kode_pp').val().split("-");
-                var kode_pp = tmp[0];
-                // var status = $('#inp-filter_status').val();
-                var col_kode_pp = data[6];
-                // var col_status = data[5];
-                if (kode_pp != "") {
-                    if (kode_pp == col_kode_pp) {
-                        return true;
-                    } else {
-                        return false;
+    },
+    errorPlacement: function (error, element) {
+        $('#label-file').html(error);
+        $('#label-file').addClass('error');
+    }
+});
+
+$('.custom-file-input').change(function(){
+    var fileName = $(this).val();
+    $('.custom-file-label').html(fileName);
+    $('#form-import').submit();
+})
+
+$('#process-upload').click(function(e){
+    $.ajax({
+        type: 'GET',
+        url: "{{ url('dev-trans/dev-pembayaran-load') }}",
+        dataType: 'json',
+        async:false,
+        success:function(res){
+            var result= res.data;
+            dataTable.clear().draw();
+            if(result.status){
+                if(typeof result.data !== 'undefined' && result.data.length>0){
+                    dataTable.rows.add(result.data).draw(false);
+
+                    $('#btn-save').removeClass('disabled');
+                    $('#btn-save').prop('disabled', false);
+                }else{
+                    if(!$('#btn-save').hasClass('disabled')){
+                        $('#btn-save').addClass('disabled');
+                        $('#btn-save').prop('disabled', true);
                     }
-                } else {
-                    return true;
                 }
+                $('#modal-import').modal('hide');
             }
-        );
-        dataTable.draw();
-        $.fn.dataTable.ext.search.pop();
-        $('#modalFilter').modal('hide');
+            else if(!result.status && result.message == 'Unauthorized'){
+                window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+            }else{
+                alert('error');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            if(jqXHR.status == 422){
+                var msg = jqXHR.responseText;
+            }else if(jqXHR.status == 500) {
+                var msg = "Internal server error";
+            }else if(jqXHR.status == 401){
+                var msg = "Unauthorized";
+                window.location="{{ url('/dev-auth/sesi-habis') }}";
+            }else if(jqXHR.status == 405){
+                var msg = "Route not valid. Page not found";
+            }
+
+        }
+    });
+});
+// END IMPORT EXCEL     
+
+    //Download Template
+
+    $('#download-template').click(function(){
+        alert('test')
+        var kode_lokasi = "{{ Session::get('lokasi') }}";
+        var nik_user = "{{ Session::get('nikUser') }}";
+        var nik = "{{ Session::get('userLog') }}";
+        //database
+        var link = "{{ config('api.url').'dev/pembayaran-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template&no_bayar="+$('#no_bayar').val()+"&nis="+$('#nis').val()+"&kode_jenis="+$('#kode_jenis').text();
+        window.open(link, '_blank'); 
     });
 
-    $('#btn-reset').click(function(e) {
-        e.preventDefault();
-        $('#inp-filter_kode_pp')[0].selectize.setValue('');
-        $('#inp-filter_status')[0].selectize.setValue('');
-        jumFilter();
+    //
+    $('#form-tambah').on('click', '.search-item2', function() {
+        if ($(this).css('cursor') == "not-allowed") {
+            return false;
+        }
+        var par = $(this).closest('div').find('input').attr('name');
+        showFilter(par);
     });
 
-    $('[name^=inp-filter]').change(function(e) {
-        e.preventDefault();
-        jumFilter();
+    // GRID JURNAL
+
+    function hideUnselectedRow() {
+        $('#input-tagihan > tbody > tr').each(function(index, row) {
+            if (!$(row).hasClass('selected-row')) {
+
+                var no_tagihan = $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-kode").val();
+                var ket_tagihan = $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-jenis").val();
+                var nilai_t = $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai_t").val();
+                var nilai_b = $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai_b").val();
+
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-kode").val(no_tagihan);
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-kode").text(no_tagihan);
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-jenis").val(ket_tagihan);
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-jenis").text(ket_tagihan);
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai_t").val(nilai);
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-nilai_t").text(nilai);
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai_b").val(nilai);
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-nilai_b").text(nilai);
+
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-kode").hide();
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-kode").show();
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".search-kode").hide();
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-jenis").hide();
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-jenis").show();
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai_t").hide();
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-nilai_t").show();
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".inp-nilai_b").hide();
+                $('#input-tagihan > tbody > tr:eq(' + index + ') > td').find(".td-nilai_b").show();
+            }
+        })
+    }
+
+    $('#input-tagihan tbody').on('click', 'tr', function() {
+        $(this).addClass('selected-row');
+        $('#input-tagihan tbody tr').not(this).removeClass('selected-row');
+        hideUnselectedRow();
     });
 
-    $('#filter-btn').click(function() {
-        $('#modalFilter').modal('show');
-    });
+    $('#input-tagihan').on('click', '.search-item', function() {
+        var par = $(this).closest('td').find('input').attr('name');
 
-    $("#btn-close").on("click", function(event) {
-        event.preventDefault();
-        $('#modalFilter').modal('hide');
-    });
+        var modul = '';
+        var header = [];
 
-    $('#btn-tampil').click();
+        switch (par) {
+            case 'no_tagihan[]':
+                var par2 = "ket_tagihan[]";
+                break;
+        }
+
+        var tmp = $(this).closest('tr').find('input[name="' + par + '"]').attr('class');
+        var tmp2 = tmp.split(" ");
+        target1 = tmp2[2];
+
+        tmp = $(this).closest('tr').find('input[name="' + par2 + '"]').attr('class');
+        tmp2 = tmp.split(" ");
+        target2 = tmp2[2];
+
+        showFilter(par, target1, target2);
+    });
 </script>
