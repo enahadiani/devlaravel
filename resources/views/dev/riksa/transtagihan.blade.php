@@ -195,7 +195,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
-                <h6 style="position:absolute;top: 25px;">Data Tagihan</h6>
+                <h6 style="position:absolute;top: 25px;">Data Tagihan Siswa</h6>
                 <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
             </div>
             <div class="separator mb-2"></div>
@@ -306,7 +306,7 @@
                                 <div class="form-group col-md-12 col-sm-12">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
-                                            <label for="keterangan">Keterangan</label>
+                                            <label for="keterangan">Keterangan Tagihan</label>
                                             <textarea id="keterangan" name="keterangan" class="form-control" style="height:50px"></textarea>
                                         </div>
                                     </div>
