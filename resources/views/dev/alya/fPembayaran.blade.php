@@ -1,3 +1,9 @@
+<link rel="stylesheet" href="{{ asset('trans.css?version=_').time() }}" />
+    <link rel="stylesheet" href="{{ asset('form.css') }}" />
+    <!-- LIST DATA -->
+    <x-list-data judul="Data Pembayaran" tambah="true" :thead="array('No Bayar','NIS','Tanggal','Keterangan','Periode','Status','Action')" :thwidth="array(15,15,15,15,20,15,15)" :thclass="array('','','','','','','','text-center')" />
+    <!-- END LIST DATA -->
+
 <!-- CSS tambahan -->
 <style>
     th,
@@ -191,7 +197,7 @@
 </style>
 
 <!-- DATATABLES -->
-<div class="row" id="saku-datatable">
+<!-- <div class="row" id="saku-datatable">
     <div class="col-12">
         <div class="card">
             <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
@@ -245,7 +251,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- END DATATABLES -->
 
 <!-- FORM INPUT -->
@@ -255,8 +261,10 @@
             <div class="card" style=''>
                 <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
                     <h6 id="judul-form" style="position:absolute;top:25px"></h6>
-                    <button type="submit" class="btn btn-primary ml-2" style="float:right;" id="btn-save"><i class="fa fa-save"></i> Simpan</button>
-                    <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;"><i class="fa fa-undo"></i> Keluar</button>
+                    <button type="button" id="btn-kembali" aria-label="Kembali" class="btn btn-back">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <button type="submit" id="btn-save" class="btn btn-primary float-right"><i class="fa fa-save"></i> Simpan</button>
                 </div>
                 <div class="separator"></div>
                 <div class="card-body form-body" style='background:#f8f8f8;padding: 0 !important;border-bottom-left-radius: .75rem;border-bottom-right-radius: .75rem;'>
@@ -528,7 +536,7 @@
                 "searchable": false
             },
             {
-                'targets': 7,
+                'targets': 6,
                 data: null,
                 'defaultContent': action_html
             }
@@ -550,9 +558,6 @@
             },
             {
                 data: 'status'
-            },
-            {
-                data: 'tgl_input'
             }
         ],
         drawCallback: function() {

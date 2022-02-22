@@ -1,3 +1,9 @@
+<link rel="stylesheet" href="{{ asset('trans.css?version=_').time() }}" />
+    <link rel="stylesheet" href="{{ asset('form.css') }}" />
+    <!-- LIST DATA -->
+    <x-list-data judul="Data Siswa" tambah="true" :thead="array('NIS','Nama Siswa','Nama Jurusan','Status','Action')" :thwidth="array(15,30,15,15,15)" :thclass="array('','','','','','text-center')" />
+    <!-- END LIST DATA -->
+
 <!-- CSS tambahan -->
 <style>
         th,td{
@@ -166,8 +172,10 @@
         }
 </style>
 
+
+
 <!-- DATATABLES -->
-    <div class="row" id="saku-datatable">
+    <!-- <div class="row" id="saku-datatable">
         <div class="col-12">
             <div class="card">
                 <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
@@ -220,7 +228,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 <!-- END DATATABLES -->
 
 <!-- FORM INPUT -->
@@ -361,6 +369,77 @@
     
     var scroll = document.querySelector('#content-preview');
     var psscroll = new PerfectScrollbar(scroll);
+
+     //LIST DATA
+     var action_html = "<a href='#' title='Edit' id='btn-edit'><i class='simple-icon-pencil' style='font-size:18px'></i></a> &nbsp;&nbsp;&nbsp; <a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";
+    
+    var dataTable = $("#table-data").DataTable({
+        destroy: true,
+        bLengthChange: false,
+        sDom: 't<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
+        'ajax': {
+            'url': "{{ url('dev-master/siswa') }}",
+            'async':false,
+            'type': 'GET',
+            'dataSrc' : function(json) {
+                if(json.status){
+                    return json.daftar;   
+                }else{
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+                    return [];
+                }
+            }
+        },
+        'columnDefs': [
+            {'targets': 4, data: null, 'defaultContent': action_html,'className': 'text-center' },
+        ],
+        'columns': [
+            { data: 'nim' },
+            { data: 'nama' },
+            { data: 'nama_jur' },
+            { data: 'status' }
+        ],
+        drawCallback: function () {
+            $($(".dataTables_wrapper .pagination li:first-of-type"))
+                .find("a")
+                .addClass("prev");
+            $($(".dataTables_wrapper .pagination li:last-of-type"))
+                .find("a")
+                .addClass("next");
+
+            $(".dataTables_wrapper .pagination").addClass("pagination-sm");
+        },
+        language: {
+            paginate: {
+                previous: "<i class='simple-icon-arrow-left'></i>",
+                next: "<i class='simple-icon-arrow-right'></i>"
+            },
+            search: "_INPUT_",
+            searchPlaceholder: "Search...",
+            // lengthMenu: "Items Per Page _MENU_"
+            "lengthMenu": 'Menampilkan <select>'+
+            '<option value="10">10 per halaman</option>'+
+            '<option value="25">25 per halaman</option>'+
+            '<option value="50">50 per halaman</option>'+
+            '<option value="100">100 per halaman</option>'+
+            '</select>',
+            
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
+            infoFiltered: "(terfilter dari _MAX_ total entri)"
+        }
+    });
+    $.fn.DataTable.ext.pager.numbers_length = 5;
+
+    $("#searchData").on("keyup", function (event) {
+        dataTable.search($(this).val()).draw();
+    });
+
+    $("#page-count").on("change", function (event) {
+        var selText = $(this).val();
+        dataTable.page.len(parseInt(selText)).draw();
+    });
+    // END LIST DATA
 
     //GET TABLE JURUSAN
     function getJurusan(id){
@@ -665,6 +744,8 @@
             dataTable.row(rowIndexes).deselect();
         }, 1000 * 60 * 10);
     }
+
+   
 
     // BUTTON TAMBAH
     $('#saku-datatable').on('click', '#btn-tambah', function(){
