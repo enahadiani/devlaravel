@@ -263,7 +263,7 @@ $('#form-filter').submit(function(e){
     for(var pair of $formData.entries()) {
         console.log(pair[0]+ ', '+ pair[1]);
     }
-      $('#saku-report').removeClass('hidden');
+        $('#saku-report').removeClass('hidden');
         xurl = "{{ url('dev-auth/form/alya_rptBayar') }}";
         $('#saku-report #canvasPreview').load(xurl);
     });

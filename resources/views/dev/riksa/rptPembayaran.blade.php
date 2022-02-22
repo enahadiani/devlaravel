@@ -7,7 +7,7 @@
 </style>
 <script type="text/javascript">
     function drawLap(formData){
-        saiPostLoad('dev-report/dev-lap-siswa', null, formData, null, function(res){
+        saiPostLoad('dev-report/dev-lap-bayar', null, formData, null, function(res){
            if(res.result.length > 0){
 
                 $('#pagination').html('');
@@ -43,20 +43,21 @@
                     font-weight:bold;
                 }
             </style>
-           
+
             `;
-                 
+    
             html+=`
-                <h6> Daftar Laporan Siswa </h6>
+                <h6> Daftar Laporan Pembayaran </h6>
                 <hr>
                 <table class='table table-bordered' style='width:90%'>
                 <thead bgcolor='#CCCCCC'>
                     <tr>
-                        <th width='5%'>NO</th>
+                        <th width='5%'>NO</th>                       
+                        <th width='10%'>No Pembayaran</th>
                         <th width='10%'>NIM</th>
                         <th width='25%'>Nama Siswa</th>
-                        <th width='25%'>Kode Jurusan</th>
-                        <th width='25%'>Nama Jurusan</th>
+                        <th width='25%'>Tanggal</th>
+                        <th width='25%'>Periode</th>
                    </tr>
                 </thead>`;
             var no =1;
@@ -64,10 +65,11 @@
                 var line = data[i];
                 html+=`<tr>
                     <td>`+no+`</td>
+                    <td>`+line.no_bayar+`</td>
                     <td>`+line.nim+`</td>
                     <td>`+line.nama+`</td>
-                    <td>`+line.kode_jur+`</td>
-                    <td>`+line.nama_jur+`</td>
+                    <td>`+line.tanggal+`</td>
+                    <td>`+line.periode+`</td>
                     </tr>`;
                 no++;
             }
