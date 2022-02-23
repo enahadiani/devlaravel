@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('master.css?version=_').time() }}" />
+<link rel="stylesheet" href="{{ asset('form.css') }}" />
+<link rel="stylesheet" href="{{ asset('master-esaku/form.css') }}" />
 <!-- CSS tambahan -->
 <style>
     th,td{
@@ -171,7 +174,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
-                <h5 style="position:absolute;top: 25px;">Data Jenis</h5>
+                <h5 style="position:absolute;top: 25px;">Data Siswa</h5>
                 <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
             </div>
             <div class="separator mb-2"></div>
@@ -221,12 +224,13 @@
         </div>
     </div>
 </div>
+
 <!-- END DATATABLES -->
 
 <!-- FORM INPUT -->
 <form id="form-tambah" class="tooltip-label-right" novalidate>
     <div class="row" id="saku-form" style="display:none;">
-        <div class="col-sm-12" style="height: 90px;">
+        <div class="col-12" style="height: 90px;">
             <div class="card">
                 <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
                     <h5 id="judul-form" style="position:absolute;top:25px"></h5>
@@ -237,7 +241,7 @@
                 <!-- FORM BODY -->
                 <div class="card-body pt-3 form-body">
                     <div class="form-group row" id="row-id">
-                        <div class="col-9">
+                        <div class="col-9">  
                             <input class="form-control" type="hidden" id="id_edit" name="id_edit">
                             <input type="hidden" id="method" name="_method" value="post">
                         </div>
@@ -245,7 +249,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-12 col-sm-12">
                                     <label for="nim">NIS</label>
                                     <input class="form-control" type="text" id="nim" name="nim">
                                 </div>
@@ -255,7 +259,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-12 col-sm-12">
                                     <label for="nama">Nama Siswa</label>
                                     <input class="form-control" type="text" id="nama" name="nama">
                                 </div>
@@ -265,7 +269,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-12 col-sm-12">
                                     <label for="kode_jur">Jurusan</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend hidden" style="border: 1px solid #d7d7d7;">
@@ -341,7 +345,9 @@
     </div>
 </div>
 <!-- END MODAL PREVIEW -->    
+<script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
+    $('#saku-form > .col-12').addClass('mx-auto col-lg-6');
 setHeightForm();
 var $iconLoad = $('.preloader');
 var $target = "";

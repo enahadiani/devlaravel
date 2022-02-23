@@ -1,170 +1,7 @@
+    <link rel="stylesheet" href="{{ asset('master.css?version=_').time() }}" />
+    <link rel="stylesheet" href="{{ asset('form.css') }}" />
+    <link rel="stylesheet" href="{{ asset('master-esaku/form.css') }}" />
 <!-- CSS tambahan -->
-<style>
-    th,td{
-        padding:8px !important;
-        vertical-align:middle !important;
-    }
-    input.error{
-        border:1px solid #dc3545;
-    }
-    label.error{
-        color:#dc3545;
-        margin:0;
-    }
-    #table-data_paginate,#table-search_paginate
-    {
-        margin-top:0 !important;
-    }
-
-    #table-data_paginate ul,#table-search_paginate ul
-    {
-        float:right;
-    }
-    .form-body 
-    {
-        position: relative;
-        overflow: auto;
-    }
-
-    #content-delete
-    {
-        position: relative;
-        overflow: auto;
-    }
-    
-    #table-search
-    {
-        border-collapse:collapse !important;
-    }
-
-    .hidden{
-        display:none;
-    }
-
-    #table-search_filter label, #table-search_filter input
-    {
-        width:100%;
-    }
-
-    .dataTables_wrapper .paginate_button.previous {
-    margin-right: 0px; }
-
-    .dataTables_wrapper .paginate_button.next {
-    margin-left: 0px; }
-
-    div.dataTables_wrapper div.dataTables_paginate {
-    margin-top: 25px; }
-
-    div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-    justify-content: center; }
-
-    .dataTables_wrapper .paginate_button.page-item {
-        padding-left: 5px;
-        padding-right: 5px; 
-    }
-
-    .dataTables_length select {
-        border: 0;
-        background: none;
-        box-shadow: none;
-        border:none;
-        width:120px !important;
-        transition-duration: 0.3s; 
-    }
-
-    #table-data_filter label
-    {
-        width:100%;
-    }
-    #table-data_filter label input
-    {
-        width:inherit;
-    }
-    #searchData
-    {
-        font-size: .75rem;
-        height: 31px;
-    }
-    .dropdown-toggle::after {
-        display:none;
-    }
-    .dropdown-aksi > .dropdown-item{
-        font-size : 0.7rem;
-    }
-    .last-add::before{
-        content: "***";
-        background: var(--theme-color-1);
-        border-radius: 50%;
-        font-size: 3px;
-        position: relative;
-        top: -2px;
-        left: -5px;
-    }
-
-    div.dataTables_wrapper div.dataTables_filter input{
-        height:calc(1.3rem + 1rem) !important;
-    }
-
-    .input-group-prepend{
-        border-top-left-radius: 0.5rem;
-        border-bottom-left-radius: 0.5rem;
-    }
-
-    .input-group > .form-control 
-    {
-        border-radius: 0.5rem !important;
-    }
-
-    .input-group-prepend > span {
-        margin: 5px;padding: 0 5px;
-        background: #e9ecef !important;
-        border: 1px solid #e9ecef !important;
-        border-radius: 0.25rem !important;
-        color: var(--theme-color-1);
-        font-weight:bold;
-        cursor:pointer;
-    }
-
-    span[class^=info-name]{
-        cursor:pointer;font-size: 12px;position: absolute; top: 3px; left: 52.36663818359375px; padding: 5px 0px 5px 5px; z-index: 2; width: 180.883px;background:white;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        line-height:22px;
-
-    }
-
-    .info-icon-hapus{
-        font-size: 14px;
-        position: absolute;
-        top: 10px;
-        right: 35px;
-        z-index: 3;
-    }
-
-    .form-control {
-        padding: 0.1rem 0.5rem; 
-        height: calc(1.3rem + 1rem);
-        border-radius:0.5rem;
-    }
-
-    .selectize-input {
-        min-height: unset !important;
-        padding: 0.1rem 0.5rem; 
-        height: calc(1.3rem + 1rem);
-        line-height: 30px;
-        border-radius: 0.5rem;
-    }
-
-    label{
-        margin-bottom: 0.2rem;
-    }
-
-    .search-item2{
-        cursor:pointer;
-        font-size: 16px;margin-left:5px;position: absolute;top: 5px;right: 10px;background: white;padding: 5px 0 5px 5px;z-index: 4;height:27px;
-    }
-</style>
 
 <!-- DATATABLES -->
 <div class="row" id="saku-datatable">
@@ -212,7 +49,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
                     </table>
                 </div>
@@ -225,11 +61,11 @@
 <!-- FORM INPUT -->
 <form id="form-tambah" class="tooltip-label-right" novalidate>
     <div class="row" id="saku-form" style="display:none;">
-        <div class="col-sm-12" style="height: 90px;">
+        <div class="col-12">
             <div class="card">
-                <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
-                    <h5 id="judul-form" style="position:absolute;top:25px"></h5>
-                    <button type="submit" class="btn btn-primary ml-2"  style="float:right;" id="btn-save"><i class="fa fa-save"></i> Simpan</button>
+                <div class="card-body form-header" style="padding-top:0,5rem;padding-bottom:0,5rem;min-height:48px;">
+                    <h5 id="judul-form" style="position:absolute;top:15px"></h5>
+                    <button type="submit" class="btn btn-primary btn-save float-right"><i class="fa fa-save"></i> Simpan</button>
                     <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;"><i class="fa fa-undo"></i> Keluar</button>
                 </div>
                 <div class="separator mb-2"></div>
@@ -244,7 +80,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-12 col-sm-12">
                                     <label for="kode_jenis">Kode Jenis</label>
                                     <input class="form-control" type="text" id="kode_jenis" name="kode_jenis">
                                 </div>
@@ -255,7 +91,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-12 col-sm-12">
                                     <label for="nama">Nama Jenis Tagihan</label>
                                     <input class="form-control" type="text" id="nama" name="nama">
                                 </div>
@@ -307,14 +143,15 @@
 
 <script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
-
+$('#saku-form > .col-12').addClass('mx-auto col-lg-6');
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
     }
 });
 
-//TD ACTION
+
+// TD ACTION
 var action_html = "<a href='#' title='Edit' id='btn-edit'><i class='simple-icon-pencil' style='font-size:18px'></i></a> &nbsp;&nbsp;&nbsp; <a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";
 
 //DATA TABLE
@@ -427,7 +264,7 @@ function last_add(param,isi){
 // BUTTON TAMBAH
 $('#saku-datatable').on('click', '#btn-tambah', function(){
     $('#row-id').hide();
-    $('#judul-form').html('Tambah Data Jenis');
+    $('#judul-form').html('Tambah Data Jenis ');
     $('#btn-update').attr('id','btn-save');
     $('#btn-save').attr('type','submit');
     $('#form-tambah')[0].reset();
@@ -475,7 +312,7 @@ $('#form-tambah').validate({
         nama:
         {
             required: true,
-            maxlength:50   
+            maxlength:50    
         },
     },
     errorElement: "label",

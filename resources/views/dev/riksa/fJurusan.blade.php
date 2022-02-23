@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('master.css?version=_').time() }}" />
+<link rel="stylesheet" href="{{ asset('form.css') }}" />
+<link rel="stylesheet" href="{{ asset('master-esaku/form.css') }}" />
 <!-- CSS tambahan -->
 <style>
     th,td{
@@ -221,7 +224,7 @@
 <!-- FORM INPUT -->
 <form id="form-tambah" class="tooltip-label-right" novalidate>
     <div class="row" id="saku-form" style="display:none;">
-        <div class="col-sm-12" style="height: 90px;">
+        <div class="col-12" style="height: 90px;">
             <div class="card">
                 <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
                     <h5 id="judul-form" style="position:absolute;top:25px"></h5>
@@ -240,7 +243,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-12 col-sm-12">
                                     <label for="kode_jur">Kode Jurusan</label>
                                     <input class="form-control" type="text" id="kode_jur" name="kode_jur">
                                 </div>
@@ -250,7 +253,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-12 col-sm-12">
                                     <label for="nama">Nama Jurusan</label>
                                     <input class="form-control" type="text" id="nama" name="nama">
                                 </div>
@@ -268,7 +271,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:600px">
         <div class="modal-content" style="border-radius:0.75em">
             <div class="modal-header py-0" style="display:block;">
-                <h6 class="modal-title py-2" style="position: absolute;">Preview Data Jenis <span id="modal-preview-nama"></span><span id="modal-preview-id" style="display:none"></span><span id="modal-preview-kode" style="display:none"></span> </h6>
+                <h6 class="modal-title py-2" style="position: absolute;">Preview Data Jurusan <span id="modal-preview-nama"></span><span id="modal-preview-id" style="display:none"></span><span id="modal-preview-kode" style="display:none"></span> </h6>
                 <button type="button" class="close float-right ml-3" data-dismiss="modal" aria-label="Close" style="line-height:3.5">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -298,8 +301,9 @@
     </div>
 </div>
 <!-- END MODAL PREVIEW -->    
+<script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
-
+$('#saku-form > .col-12').addClass('mx-auto col-lg-6');
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -419,7 +423,7 @@ function last_add(param,isi){
 // BUTTON TAMBAH
 $('#saku-datatable').on('click', '#btn-tambah', function(){
     $('#row-id').hide();
-    $('#judul-form').html('Tambah Data Jenis');
+    $('#judul-form').html('Tambah Data Jurusan');
     $('#btn-update').attr('id','btn-save');
     $('#btn-save').attr('type','submit');
     $('#form-tambah')[0].reset();
