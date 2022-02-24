@@ -388,6 +388,9 @@
 </div>
 <!-- END MODAL CBBL -->
 
+
+
+
 <!-- MODAL PREVIEW -->
 <div class="modal" tabindex="-1" role="dialog" id="modal-preview">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:600px">
@@ -424,7 +427,7 @@
         </div>
     </div>
 <!-- END MODAL PREVIEW -->  
-
+@include('modal_upload')
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
@@ -433,6 +436,12 @@
     var $target = "";
     var $target2 = "";
     var $target3 = "";
+
+    setTimeout(() => {
+    $(".card-body-footer").css("width", $(".container-fluid").width() + "px");
+}, 1000)
+$('#process-upload').addClass('disabled');
+$('#process-upload').prop('disabled', true);
 
     $.ajaxSetup({
         headers: {
@@ -1603,6 +1612,7 @@ $('#import-excel').click(function(e){
     $('#modal-import').modal('show');
 });
 
+
 $("#form-import").validate({
     rules: {
         file: {required: true, accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"}
@@ -1675,7 +1685,7 @@ $("#form-import").validate({
                         var nik_user = "{{ Session::get('nikUser') }}";
                         var nik = "{{ Session::get('userLog') }}";
 
-                        var link = "{{ config('api.url').'dev-trans/pembayaran-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=non";
+                        var link = "{{ config('api.url').'esaku-trans/dev-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=non";
 
                         $('.pesan-upload-judul').html('Gagal upload!');
                         $('.pesan-upload-judul').removeClass('text-success');
@@ -1684,7 +1694,7 @@ $("#form-import").validate({
                     }
                 }
                 else if(!result.data.status && result.data.message == 'Unauthorized'){
-                    window.location.href = "{{ url('esaku-auth/sesi-habis') }}";
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
                 else{
                     Swal.fire({
@@ -1780,17 +1790,17 @@ $('#process-upload').click(function(e){
 });
 // END IMPORT EXCEL
 
-    //Download Template
 
-    $('#download-template').click(function(){
-        alert('test')
-        var kode_lokasi = "{{ Session::get('lokasi') }}";
-        var nik_user = "{{ Session::get('nikUser') }}";
-        var nik = "{{ Session::get('userLog') }}";
-        //database
-        var link = "{{ config('api.url').'dev/pembayaran-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template&no_bayar="+$('#no_bayar').val()+"&nis="+$('#nis').val()+"&kode_jenis="+$('#kode_jenis').text();
-        window.open(link, '_blank'); 
-    });
+// EXPORT EXCEL
+$('#download-template').click(function(){
+    alert('test')
+    var kode_lokasi = "{{ Session::get('lokasi') }}";
+    var nik_user = "{{ Session::get('nikUser') }}";
+    var nik = "{{ Session::get('userLog') }}";
+    var link = "{{ config('api.url').'esaku-trans/pembayaran-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template";
+    window.open(link, '_blank'); 
+});
+// END EXPORT EXCEL
 
     //
     $('#form-tambah').on('click', '.search-item2', function() {

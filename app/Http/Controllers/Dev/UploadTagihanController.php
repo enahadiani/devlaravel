@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Exception\BadResponseException;
 
-class UploadPembayaranController extends Controller
+class UploadTagihanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +29,7 @@ class UploadPembayaranController extends Controller
         try {
 
             $client = new Client();
-            $response = $client->request('POST',  config('api.url') . 'esaku-trans/sdm-karyawan-simpan', [
+            $response = $client->request('POST',  config('api.url') . 'esaku-trans/dev-tagihan-simpan', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . Session::get('token'),
                     'Accept'     => 'application/json',
@@ -57,7 +57,7 @@ class UploadPembayaranController extends Controller
     {
         try {
             $client = new Client();
-            $response = $client->request('GET',  config('api.url') . 'esaku-trans/dev-pembayaran-tmp', [
+            $response = $client->request('GET',  config('api.url') . 'esaku-trans/dev-tagihan-tmp', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . Session::get('token'),
                     'Accept'     => 'application/json',
@@ -107,7 +107,7 @@ class UploadPembayaranController extends Controller
             );
 
             $client = new Client();
-            $response = $client->request('POST',  config('api.url') . 'esaku-trans/dev-pembayaran-import', [
+            $response = $client->request('POST',  config('api.url') . 'esaku-trans/dev-tagihan-import', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . Session::get('token'),
                     'Accept'     => 'application/json',

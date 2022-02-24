@@ -15,3 +15,11 @@ Route::get('bayar-detail', 'Dev\BayarController@show');
 Route::post('bayar', 'Dev\BayarController@store');
 Route::put('bayar', 'Dev\BayarController@update');
 Route::delete('bayar', 'Dev\BayarController@destroy');
+
+
+// pembayara
+Route::post('dev-pembayaran-upload', 'Dev\UploadPembayaranController@uploadXLS');
+Route::get('dev-pembayaran-load', 'Dev\UploadPembayaranController@loadDataTmp');
+
+// tagihan
+Route::post('dev-tagihan-upload', 'Dev\UploadTagihanController@uploadXLS');
