@@ -194,7 +194,7 @@
 <div class="row" id="saku-datatable">
     <div class="col-12">
         <div class="card">
-            <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
+            <div class="card-body form-header" style="padding-top:1rem;min-height:69.2px; position:sticky; top:55px; z-index:4; background-color:#FFFFFF; border-bottom: 1px solid #D7D7D7">
                 <h6 style="position:absolute;top: 25px;">Data Tagihan Siswa</h6>
                 <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
             </div>
@@ -350,26 +350,6 @@
                                         <a type="button" href="#" data-id="0" title="add-row" class="add-row btn btn-light2 btn-block btn-sm">Tambah Baris</a>
                                     </div>
                                 </div>
-                                <!-- <div class="tab-pane" id="data-dok" role="tabpanel">
-                                        <div class='col-xs-12' style='min-height:420px; margin:0px; padding:0px;'>
-                                            <table class="table table-bordered table-condensed" id="input-dok" style='width:100%'>
-                                                <thead>
-                                                    <tr>
-                                                        <th width="5%">No</th>
-                                                        <th width="10%">NIS</th>
-                                                        <th width="20%">Nama</th>
-                                                        <th width="20%">Nama Dokumen</th>
-                                                        <th width="20%">Nama File Upload</th>
-                                                        <th width="20%">Upload File</th>
-                                                        <th width="5%"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                            <a type="button" href="#" data-id="0" title="add-row-dok" class="add-row-dok btn btn-light2 btn-block btn-sm">Tambah Baris</a>
-                                        </div>
-                                    </div> -->
                             </div>
                         </div>
                     </div>
@@ -380,7 +360,36 @@
 </form>
 <!-- FORM INPUT  -->
 
-<!-- MODAL CBBL -->
+{{-- @include('modal_upload')
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+<script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
+<script src="{{ asset('helper.js') }}"></script>
+<script src="{{ asset('main.js') }}"></script>
+
+<script type="text/javascript">
+// SET UP
+setHeightForm()
+setTimeout(() => {
+    $(".card-body-footer").css("width", $(".container-fluid").width() + "px");
+}, 1000)
+$('#process-upload').addClass('disabled');
+$('#process-upload').prop('disabled', true);
+
+$('#btn-save').addClass('disabled');
+$('#btn-save').prop('disabled', true);
+
+var scrollform = document.querySelector('.form-body');
+var psscrollform = new PerfectScrollbar(scrollform);
+
+var $iconLoad = $('.preloader');
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+    }
+}); 
+// END SET UP --}}
+
+//  MODAL CBBL 
 <div class="modal" tabindex="-1" role="dialog" id="modal-search">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:600px">
         <div class="modal-content">
@@ -389,13 +398,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="">
-
+            <div class="modal-body" style="">   
             </div>
         </div>
     </div>
 </div>
-<!-- END MODAL CBBL -->
+// END MODAL CBBL
 
 <!-- MODAL PREVIEW -->
 <div class="modal" tabindex="-1" role="dialog" id="modal-preview">
@@ -1697,8 +1705,8 @@
             for (var pair of formData.entries()) {
                 console.log(pair[0] + ', ' + pair[1]);
             }
-            formData.append('kode_pp', $('#kode_pp').val());
-            formData.append('kode_kelas', $('#kode_kelas').val());
+            formData.append('kode_tagihan', $('#kode_tagihan').val());
+            formData.append('kode_tagihan', $('#kode_tagihan').val());
             $('.pesan-upload').show();
             $('.pesan-upload-judul').html('Proses upload...');
             $('.pesan-upload-judul').removeClass('text-success');
@@ -1756,11 +1764,10 @@
                                 $('#process-upload').prop('disabled', true);
                             }
 
-                            var kode_lokasi = "{{ Session::get('lokasi') }}";
-                            var nik_user = "{{ Session::get('nikUser') }}";
-                            var nik = "{{ Session::get('userLog') }}";
+                            var kode_tagihan = "{{ Session::get('tagihan') }}";
+                            var nis = "{{ Session::get('nis') }}";
 
-                            var link = "{{ config('api.url').'dev/penilaian-export' }}?kode_lokasi=" + kode_lokasi + "&nik_user=" + nik_user + "&nik=" + nik + "&type=non&kode_pp=" + $('#kode_pp').val() + "&kode_kelas=" + $('#kode_kelas').val() + "&kode_matpel=" + $('.info-name_kode_matpel > span ').text() + "&kode_jenis=" + $('#kode_jenis').val() + "&kode_kd=" + $('#kode_kd').val() + "&kode_sem=" + $('#kode_sem option:selected').text() + "&flag_kelas=" + $('#flag_kelas').val() + "&kode_matpel2=" + $('.info-code_kode_matpel').text();
+                            var link = "{{ config('api.url').'dev/penilaian-export' }}?kode_tagihan=" + kode_tagihan + "&nis=" + nis + "&nis=" + nis + "&type=non&kode_pp=" + $('#kode_pp').val() + "&kode_kelas=" + $('#kode_kelas').val() + "&kode_matpel=" + $('.info-name_kode_matpel > span ').text() + "&kode_jenis=" + $('#kode_jenis').val() + "&kode_kd=" + $('#kode_kd').val() + "&kode_sem=" + $('#kode_sem option:selected').text() + "&flag_kelas=" + $('#flag_kelas').val() + "&kode_matpel2=" + $('.info-code_kode_matpel').text();
 
                             $('.pesan-upload-judul').html('Gagal upload!');
                             $('.pesan-upload-judul').removeClass('text-success');
@@ -1948,4 +1955,12 @@
     });
 
     $('#btn-tampil').click();
+
+    $('#download-template').click(function(){
+        var kode_lokasi = "{{ Session::get('lokasi') }}";
+        var nik_user = "{{ Session::get('nikUser') }}";
+        var nik = "{{ Session::get('userLog') }}";
+        var link = "{{ config('api.url').'gl-trans/ju-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template";
+        window.open(link, '_blank'); 
+    });
 </script>

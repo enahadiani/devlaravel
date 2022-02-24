@@ -54,7 +54,7 @@ date_default_timezone_set("Asia/Bangkok");
         toname: "",
     }
 
-    var $no_tagihan = {
+    var $no_bayar = {
         type: "=",
         from: "{{ Session::get('no_bayar') }}",
         fromname: "{{ Session::get('no_bayar') }}",
@@ -252,20 +252,19 @@ var $formData = "";
 $('#form-filter').submit(function(e){
     e.preventDefault();
     $formData = new FormData();
+
+    $formData.append("no_bayar[]",$no_bayar.type);
+    $formData.append("no_bayar[]",$no_bayar.from);
+    $formData.append("no_bayar[]",$no_bayar.to);
+
     $formData.append("nim[]",$nim.type);
     $formData.append("nim[]",$nim.from);
     $formData.append("nim[]",$nim.to);
 
-
-    $formData.append("no_bayar[]",$no_bayar.type);
-    $formData.append("no_bayar[]",$no_bayar.from);
-    $formData.append("no_bayar[]",no_bayar.to);
-
-   
     for(var pair of $formData.entries()) {
         console.log(pair[0]+ ', '+ pair[1]);
     }
-      $('#saku-report').removeClass('hidden');
+    $('#saku-report').removeClass('hidden');
         xurl = "{{ url('dev-auth/form/riksa_rptPembayaran') }}";
         $('#saku-report #canvasPreview').load(xurl);
     });
@@ -286,7 +285,7 @@ $('#show').change(function(e){
             console.log(pair[0]+ ',     '+ pair[1]);
         }
         $('#dev-report').removeClass('hidden');
-        xurl = "{{ url('dev-auth/form/riksa_rptPembayaran') }}";
+        xurl = "{{ url('dev-auth/form/rptPembayaran') }}";
         $('#dev-report #canvasPreview').load(xurl);
     });
 </script>
