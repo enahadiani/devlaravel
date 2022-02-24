@@ -194,7 +194,7 @@
 <div class="row" id="saku-datatable">
     <div class="col-12">
         <div class="card">
-            <div class="card-body form-header" style="padding-top:1rem;pedding-buttom:1rem">
+            <div class="card-body form-header" style="padding-top:1rem;min-height:69.2px; position:sticky; top:55px; z-index:4; background-color:#FFFFFF; border-bottom: 1px solid #D7D7D7">
                 <h6 style="position:absolute;top: 25px;">Data Tagihan Siswa</h6>
                 <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
             </div>
