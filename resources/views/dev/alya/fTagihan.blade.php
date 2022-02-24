@@ -442,7 +442,7 @@
     </div>
 <!-- END MODAL PREVIEW -->  
 
-
+@include('modal_upload')
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
@@ -627,7 +627,7 @@
         var nik_user = "{{ Session::get('nikUser') }}";
         var nik = "{{ Session::get('userLog') }}";
         //database
-        var link = "{{ config('api.url').'dev-trans/tagihan-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template";
+        var link = "{{ config('api.url').'esaku-trans/tagihan-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik+"&type=template";
         window.open(link, '_blank'); 
     });
 
@@ -1705,8 +1705,8 @@
             for (var pair of formData.entries()) {
                 console.log(pair[0] + ', ' + pair[1]);
             }
-            formData.append('kode_pp', $('#kode_pp').val());
-            formData.append('kode_kelas', $('#kode_kelas').val());
+            formData.append('no_bayar', $('#kode_jenis').val());
+            formData.append('kode_jenis', $('#kode_jenis').val());
             $('.pesan-upload').show();
             $('.pesan-upload-judul').html('Proses upload...');
             $('.pesan-upload-judul').removeClass('text-success');
@@ -1740,7 +1740,7 @@
                     return xhr;
                 },
                 type: 'POST',
-                url: "{{ url('dev-trans/import-excel') }}",
+                url: "{{ url('dev-trans/dev-tagihan-upload') }}",
                 dataType: 'json',
                 data: formData,
                 // async:false,
