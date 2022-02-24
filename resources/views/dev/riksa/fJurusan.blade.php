@@ -171,7 +171,7 @@
 <div class="row" id="saku-datatable">
 <div class="col-12">
     <div class="card">
-        <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
+        <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px; position:sticky; top:55px; z-index:4; background-color:#FFFFFF; border-bottom: 1px solid #D7D7D7">
             <h5 style="position:absolute;top: 25px;">Data Jurusan</h5>
             <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
         </div>
@@ -228,8 +228,10 @@
             <div class="card">
                 <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
                     <h5 id="judul-form" style="position:absolute;top:25px"></h5>
-                    <button type="submit" class="btn btn-primary ml-2"  style="float:right;" id="btn-save"><i class="fa fa-save"></i> Simpan</button>
-                    <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;"><i class="fa fa-undo"></i> Keluar</button>
+                    <button type="button" id="btn-kembali" aria-label="Kembali" class="btn btn-back">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-save float-right"><i class="fa fa-save"></i> Simpan</button>
                 </div>
                 <div class="separator mb-2"></div>
                 <!-- FORM BODY -->
