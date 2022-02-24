@@ -17,7 +17,7 @@ Route::put('bayar', 'Dev\BayarController@update');
 Route::delete('bayar', 'Dev\BayarController@destroy');
 
 
-// pembayara
+// pembayaran
 Route::post('dev-pembayaran-upload', 'Dev\UploadPembayaranController@uploadXLS');
 Route::get('dev-pembayaran-load', 'Dev\UploadPembayaranController@loadDataTmp');
 
