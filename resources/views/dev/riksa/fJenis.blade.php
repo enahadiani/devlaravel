@@ -7,7 +7,7 @@
 <div class="row" id="saku-datatable">
     <div class="col-12">
         <div class="card">
-            <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px">
+            <div class="card-body pb-3" style="padding-top:1rem;min-height:69.2px; position:sticky; top:55px; z-index:4; background-color:#FFFFFF; border-bottom: 1px solid #D7D7D7">
                 <h5 style="position:absolute;top: 25px;">Data Jenis Tagihan</h5>
                 <button type="button" id="btn-tambah" class="btn btn-primary" style="float:right;"><i class="simple-icon-plus"></i> Tambah</button>
             </div>
@@ -63,10 +63,12 @@
     <div class="row" id="saku-form" style="display:none;">
         <div class="col-12">
             <div class="card">
-                <div class="card-body form-header" style="padding-top:0,5rem;padding-bottom:0,5rem;min-height:48px;">
-                    <h5 id="judul-form" style="position:absolute;top:15px"></h5>
+                <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
+                    <h5 id="judul-form" style="position:absolute;top:25px"></h5>
+                    <button type="button" id="btn-kembali" aria-label="Kembali" class="btn btn-back">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     <button type="submit" class="btn btn-primary btn-save float-right"><i class="fa fa-save"></i> Simpan</button>
-                    <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;"><i class="fa fa-undo"></i> Keluar</button>
                 </div>
                 <div class="separator mb-2"></div>
                 <!-- FORM BODY -->
@@ -91,7 +93,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
-                                <div class="col-md-12 col-sm-12">
+                                <div class="col-md-18 col-sm-12">
                                     <label for="nama">Nama Jenis Tagihan</label>
                                     <input class="form-control" type="text" id="nama" name="nama">
                                 </div>
@@ -99,10 +101,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+        </div> 
     </div>
 </form>
+
 <!-- END FORM INPUT -->
 
 <!-- MODAL PREVIEW -->

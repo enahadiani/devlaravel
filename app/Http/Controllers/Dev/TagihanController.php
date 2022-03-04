@@ -256,4 +256,57 @@ class TagihanController extends Controller
             return response()->json(['message' => $res["message"], 'status' => false, 'auth_status' => 2], 200);
         }
     }
+
+    public function importExcel(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required'
+        ]);
+
+        try{
+            
+            $image_path = $request->file('file')->getPathname();
+            $image_mime = $request->file('file')->getmimeType();
+            $image_org  = $request->file('file')->getClientOriginalName();
+            $fields[0] = array(
+                'name'     => 'file',
+                'filename' => $image_org,
+                'Mime-Type'=> $image_mime,
+                'contents' => fopen($image_path, 'r' ),
+            );
+            $fields[1] = array(
+                'name'     => 'nik_user',
+                'contents' => Session::get('nikUser')
+            );
+
+            $fields[2] = array(
+                'name'     => 'kode_tagihan',
+                'contents' => $request->kode_tagihan
+            );
+
+            $client = new Client();
+            $response = $client->request('POST',  config('api.url').'gl-trans/ju-excel',[
+                'headers' => [
+                    'Authorization' => 'Bearer '.Session::get('token'),
+                    'Accept'     => 'application/json',
+                ],
+                'multipart' => $fields
+            ]);
+            if ($response->getStatusCode() == 200) { // 200 OK
+                $response_data = $response->getBody()->getContents();
+                
+                $data = json_decode($response_data,true);
+                return response()->json(['data' => $data], 200);  
+            }
+            
+        } catch (BadResponseException $ex) {
+            $response = $ex->getResponse();
+            $res = json_decode($response->getBody(),true);
+            $result['message'] = $res;
+            $result['status']=false;
+            return response()->json(["data" => $result], 200);
+        } 
+        
+    }
+
 }
