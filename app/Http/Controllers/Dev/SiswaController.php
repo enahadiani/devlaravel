@@ -123,11 +123,7 @@ class SiswaController extends Controller
                         'Authorization' => 'Bearer '.Session::get('token'),
                         'Accept'     => 'application/json',
                     ],
-                    'form_params' => [
-                        'nim' => $request->nim,
-                        'nama' => $request->nama,
-                        'kode_jur' => $request->kode_jur
-                    ]
+                    'form_params' => $request->all()
                 ]);
                 if ($response->getStatusCode() == 200) { // 200 OK
                     $response_data = $response->getBody()->getContents();

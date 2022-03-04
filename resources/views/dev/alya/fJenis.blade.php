@@ -226,7 +226,7 @@
             var parameter = $('#id_edit').val();
             var id = $('#kode_jenis').val();
             if(parameter == "edit"){
-                var url = "{{ url('dev-master/jenis') }}/"+id;
+                var url = "{{ url('dev-master/jenis') }}";
                 var pesan = "updated";
                 var text = "Perubahan data "+id+" telah tersimpan";
             }else{
@@ -239,6 +239,10 @@
             for(var pair of formData.entries()) {
                 console.log(pair[0]+ ', '+ pair[1]); 
             }
+            $('label.error').remove();
+              $('input.error').removeClass('error');
+             $('.input-group-error').removeClass('input-group-error');
+             $('label > br').remove();
             
             $.ajax({
                 type: 'POST', 
@@ -250,22 +254,24 @@
                 cache: false,
                 processData: false, 
                 success:function(result){
-                    if(result.data.status){
-                        dataTable.ajax.reload();
-                        var kode = $('#kode_flag').val();
-                        $('#row-id').hide();
-                        $('#form-tambah')[0].reset();
-                        $('#form-tambah').validate().resetForm();
-                        $('[id^=label]').html('');
-                        $('#id_edit').val('');
-                        $('#judul-form').html('Tambah Data Flag Akun');
-                        $('#method').val('post');
-                        $('#kode_flag').attr('readonly', false);
-                        msgDialog({
-                            id:kode,
-                            type:'simpan'
-                        });
-                        last_add("kode",kode);
+                if(result.data.status){
+                    dataTable.ajax.reload();
+                    $('#btn-tampil').click();    
+                    $('#row-id').hide();
+                    $('#form-tambah')[0].reset();
+                    $('#form-tambah').validate().resetForm();
+                    $('[id^=label]').html('');
+                    $('#id_edit').val('');
+                    $('#judul-form').html('Tambah Data Jenis');
+                    $('#method').val('post');
+                    $('.input-group-prepend').addClass('hidden');
+                    $('span[class^=info-name]').addClass('hidden');
+                    $('#kode_jenis').attr('readonly', false);
+                    msgDialog({
+                        id:result.data.kode,
+                        type:'simpan'
+                    });
+                    last_add("kode_jenis",result.data.kode);
                     }else if(!result.data.status && result.data.message === "Unauthorized"){
                     
                         window.location.href = "{{ url('/dev-auth/sesi-habis') }}";
@@ -275,7 +281,7 @@
                             msgDialog({
                                 id: id,
                                 type: result.data.jenis,
-                                text:'Kode Flag Akun sudah digunakan'
+                                text:'Kode Jenis sudah digunakan'
                             });
                         }else{
 
@@ -366,7 +372,7 @@
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
                     $('#saku-form').show();
-                    $('#modal-preview').modal('show');
+                    $('#modal-preview').modal('hide');
                 }else if(!result.status && result.message == "Unauthorized"){
                     window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }
@@ -443,7 +449,7 @@
         var id= $('#modal-preview-id').text();
         // $iconLoad.show();
         $('#form-tambah').validate().resetForm();
-        $('#judul-form').html('Edit Data FS');
+        $('#judul-form').html('Edit Data Jenis');
         
         $('#btn-save').attr('type','button');
         $('#btn-save').attr('id','btn-update');
