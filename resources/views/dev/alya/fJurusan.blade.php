@@ -227,7 +227,7 @@
             var parameter = $('#id_edit').val();
             var id = $('#kode_jur').val();
             if(parameter == "edit"){
-                var url = "{{ url('dev-master/jurusan') }}/"+id;
+                var url = "{{ url('dev-master/jurusan') }}/";
                 var pesan = "updated";
                 var text = "Perubahan data "+id+" telah tersimpan";
             }else{
