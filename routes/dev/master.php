@@ -22,6 +22,8 @@ Route::post('siswa', 'Dev\SiswaController@store');
 Route::put('siswa', 'Dev\SiswaController@update');
 Route::delete('siswa', 'Dev\SiswaController@destroy');
 
+Route::get('dosen', 'Dev\DosenController@index');
+
 // Data Klp Menu //
 Route::get('menu-klp', 'Dev\Settings\KelompokMenuController@index');
 Route::get('menu-klp/{id}', 'Dev\Settings\KelompokMenuController@getData');
@@ -43,3 +45,4 @@ Route::post('setting-menu-move', 'Dev\Settings\SettingMenuController@storeMove')
 Route::put('setting-menu', 'Dev\Settings\SettingMenuController@update');
 Route::delete('setting-menu', 'Dev\Settings\SettingMenuController@delete');
 Route::post('setting-menu-csv', 'Dev\Settings\SettingMenuController@storeCSV');
+
