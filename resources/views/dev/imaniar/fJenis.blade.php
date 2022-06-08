@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="{{ asset('form.css') }}" />
 <link rel="stylesheet" href="{{ asset('master-esaku/form.css') }}" />
 
-<!-- CSS tambahan -->
 <style>
     th,td{
         padding:8px !important;
@@ -172,7 +171,7 @@
 </style>
 
 <!-- LIST DATA -->
-<x-list-data judul="Data Jurusan" tambah="true" :thead="array('Kode','Nama','Status','Action')" :thwidth="array(15,15,15,15)" :thclass="array('','','','text-center')" />
+<x-list-data judul="Data Jenis" tambah="true" :thead="array('Kode Jenis','Nama','Status','Tanggal Input','Action')" :thwidth="array(15,15,15,15,15)" :thclass="array('','','','','text-center')" />
 <!-- END LIST DATA -->
 
 <!-- FORM INPUT -->
@@ -181,7 +180,7 @@
         <div class="col-sm-12" style="height: 90px;">
             <div class="card">
                 <div class="card-body form-header" style="padding-top:1rem;padding-bottom:1rem;">
-                    <h5 id="judul-form" style="position:absolute;top:25px"></h5>
+                    <h6 id="judul-form" style="position:absolute;top:25px"></h6>
                     <button type="submit" class="btn btn-primary ml-2"  style="float:right;" id="btn-save"><i class="fa fa-save"></i> Simpan</button>
                     <button type="button" class="btn btn-light ml-2" id="btn-kembali" style="float:right;width:100px;margin-right:5px"><i class="fa fa-undo"></i> Keluar</button>
                 </div>
@@ -198,8 +197,8 @@
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
-                                    <label for="kode_jur">Kode Jurusan</label>
-                                    <input class="form-control" type="text" id="kode_jur" name="kode_jur">
+                                    <label for="kode_jenis">Kode Jenis</label>
+                                    <input class="form-control" type="text" id="kode_jenis" name="kode_jenis">
                                 </div>
                             </div>
                         </div>
@@ -208,7 +207,7 @@
                         <div class="form-group col-md-6 col-sm-12">
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
-                                    <label for="nama">Nama Jurusan</label>
+                                    <label for="nama">Nama</label>
                                     <input class="form-control" type="text" id="nama" name="nama">
                                 </div>
                             </div>
@@ -221,11 +220,11 @@
 </form>
 <!-- END FORM INPUT -->
 
-
-{{-- JAVASRICPT --}}
 <script src="{{ asset('asset_dore/js/vendor/jquery.validate/sai-validate-custom.js') }}"></script>
 <script>
-    $('#modal-preview > .modal-dialog').css({'max-width':'600px'});
+    setHeightForm();
+    $('#modal-preview > .modal-dialog').css({'max-width':'500px'});
+    
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -240,7 +239,7 @@
     var psscrollform = new PerfectScrollbar(scrollform);
     // END PLUGIN SCROLL di bagian preview dan form input
 
-    // DATABASE - DATA JURUSAN
+    // DATABASE JENIS
     //TD ACTION
     var action_html = "<a href='#' title='Edit' id='btn-edit'><i class='simple-icon-pencil' style='font-size:18px'></i></a> &nbsp;&nbsp;&nbsp; <a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";
 
@@ -252,7 +251,7 @@
         "ordering": true,
         "order": [[3, "desc"]],
         'ajax': {
-            'url': "{{url('dev-master/jurusan')}}",
+            'url': "{{url('dev-master/jenis')}}",
             'async':false,
             'type': 'GET',
             'dataSrc' : function(json) {
@@ -267,12 +266,27 @@
             }
         },
         'columnDefs': [
-            {'targets': 3, data: null, 'defaultContent': action_html, 'className':'text-center'}
+            {
+                "targets": 0,
+                "createdCell": function (td, cellData, rowData, row, col) {
+                    if ( rowData.status == "baru" ) {
+                        $(td).parents('tr').addClass('selected');
+                        $(td).addClass('last-add');
+                    }
+                }
+            },
+            {
+                "targets": [3],
+                "visible": false,
+                "searchable": false
+            },
+            {'targets': 4, data: null, 'defaultContent': action_html }
         ],
         'columns': [
-            { data: 'kode_jur' },
+            { data: 'kode_jenis' },
             { data: 'nama' },
-            { data: 'status' }
+            { data: 'status' },
+            { data: 'tgl_input'}
         ],
         drawCallback: function () {
             $($(".dataTables_wrapper .pagination li:first-of-type"))
@@ -327,7 +341,7 @@
         $('#form-tambah').validate().resetForm();
         $('#method').val('post');
         $('#id_edit').val('');
-        $('#kode_jur').attr('readonly', false);
+        $('#kode_jenis').attr('readonly', false);
         $('#saku-datatable').hide();
         $('#saku-form').show();
         $('.input-group-prepend').addClass('hidden');
@@ -349,7 +363,7 @@
     $('#saku-datatable').on('click', '#btn-edit', function(){
         var id = $(this).closest('tr').find('td:eq(0)').html();
         
-        $('#judul-form').html('Edit Data Jurusan');
+        $('#judul-form').html('Edit Data Jenis');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
         $('#btn-save').attr('type','button');
@@ -357,16 +371,16 @@
 
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-master/jurusan-detail') }}",
+            url: "{{ url('dev-master/jenis-detail') }}",
             dataType: 'json',
-            data:{'kode_jur':id},
+            data:{'kode_jenis':id},
             async:false,
             success:function(result){
                 if(result.status){
                     $('#id_edit').val('edit');
-                    $('#kode_jur').val(id);
+                    $('#kode_jenis').val(id);
                     $('#method').val('put');
-                    $('#kode_jur').attr('readonly', true);
+                    $('#kode_jenis').attr('readonly', true);
                     $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
@@ -383,15 +397,15 @@
     function hapusData(id,kode){
         $.ajax({
             type: 'DELETE',
-            url: "{{ url('dev-master/jurusan') }}",
+            url: "{{ url('dev-master/jenis') }}",
             dataType: 'json',
-            data:{'kode_jur':id},
+            data:{'kode_jenis':id},
             async:false,
             success:function(result){
                 if(result.data.status){
                     dataTable.ajax.reload(); 
                     $('#btn-tampil').click();                       
-                    showNotification("top", "center", "success","Hapus Data","Data Jurusan ("+id+")");
+                    showNotification("top", "center", "success","Hapus Data","Data Jenis ("+id+")");
                     $('#modal-pesan-id').html('');
                     $('#table-delete tbody').html('');
                     $('#modal-pesan').modal('hide');
@@ -408,7 +422,8 @@
             }
         });
     }
-    $('#saku-datatable').on('click','#btn-delete',function(e){
+
+     $('#saku-datatable').on('click','#btn-delete',function(e){
         var kode = $(this).closest('tr').find('td:eq(0)').html();
 
         msgDialog({
@@ -416,7 +431,28 @@
             type:'hapus'
         });
     });
-    // END BUTTON HAPUS DATA
+    // END BUTTON HAPUS
+    // END DATABASE JENIS
+
+    // TAMBAH / EDIT DATA
+    //LAST ADD
+    function last_add(param,isi){
+        var rowIndexes = [];
+        dataTable.rows( function ( idx, data, node ) {             
+            if(data[param] === isi){
+                rowIndexes.push(idx);                  
+            }
+            return false;
+        }); 
+        dataTable.row(rowIndexes).select();
+        $('.selected td:eq(0)').addClass('last-add');
+        console.log('last-add');
+        setTimeout(function() {
+            console.log('timeout');
+            $('.selected td:eq(0)').removeClass('last-add');
+            dataTable.row(rowIndexes).deselect();
+        }, 1000 * 60 * 10);
+    }
 
     // BUTTON UPDATE
     $('#saku-form').on('click', '#btn-update', function(){
@@ -428,34 +464,12 @@
     });
     // END BUTTON UPDATE
 
-    
-    // END DATABASE - DATA JURUSAN
-
-    //LAST ADD
-    function last_add(param,isi){
-    var rowIndexes = [];
-    dataTable.rows( function ( idx, data, node ) {             
-        if(data[param] === isi){
-            rowIndexes.push(idx);                  
-        }
-        return false;
-    }); 
-    dataTable.row(rowIndexes).select();
-    $('.selected td:eq(0)').addClass('last-add');
-    console.log('last-add');
-    setTimeout(function() {
-        console.log('timeout');
-        $('.selected td:eq(0)').removeClass('last-add');
-        dataTable.row(rowIndexes).deselect();
-    }, 1000 * 60 * 10);
-    }
-
     //BUTTON SIMPAN /SUBMIT
     $('#form-tambah').validate({
         ignore: [],
         rules: 
         {
-            kode_jur:
+            kode_jenis:
             {
                 required: true,
                 maxlength:10   
@@ -469,12 +483,12 @@
         errorElement: "label",
         submitHandler: function (form) {
             var parameter = $('#id_edit').val();
-            var id = $('#kode_ta').val();
+            var id = $('#kode_jenis').val();
             if(parameter == "edit"){
-                var url = "{{ url('dev-master/jurusan') }}";
+                var url = "{{ url('dev-master/jenis') }}";
                 var pesan = "updated";
             }else{
-                var url = "{{ url('dev-master/jurusan') }}";
+                var url = "{{ url('dev-master/jenis') }}";
                 var pesan = "saved";
             }
 
@@ -501,16 +515,16 @@
                         $('#form-tambah').validate().resetForm();
                         $('[id^=label]').html('');
                         $('#id_edit').val('');
-                        $('#judul-form').html('Tambah Data Jurusan');
+                        $('#judul-form').html('Tambah Data Jenis');
                         $('#method').val('post');
                         $('.input-group-prepend').addClass('hidden');
                         $('span[class^=info-name]').addClass('hidden');
-                        $('#kode_jur').attr('readonly', false);
+                        $('#kode_jenis').attr('readonly', false);
                         msgDialog({
                             id:result.data.kode,
                             type:'simpan'
                         });
-                        last_add("kode_jur",result.data.kode);
+                        last_add("kode_jenis",result.data.kode);
                     }else if(!result.data.status && result.data.message === "Unauthorized"){
                         window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                     }else{
@@ -518,7 +532,7 @@
                             msgDialog({
                                 id: id,
                                 type: result.data.jenis,
-                                text:'Kode Jurusan sudah digunakan'
+                                text:'Kode Jenis sudah digunakan'
                             });
                         }else{
 
@@ -544,7 +558,10 @@
         }
     });
     // END BUTTON SIMPAN
+    // END TAMBAH / EDIT DATA
+    
 
+    //PREVIEW DATA JENIS
     // PREVIEW DETAIL
     $('#table-data tbody').on('click','td',function(e){
         if($(this).index() != 3){
@@ -552,27 +569,31 @@
             var id = $(this).closest('tr').find('td').eq(0).html();
             var data = dataTable.row(this).data();
             var html = `<tr>
-                <td style='border:none'>Kode Jurusan</td>
-                <td style='border:none'>`+data.kode_jur+`</td>
+                <td style='border:none'>Kode Jenis</td>
+                <td style='border:none'>`+data.kode_jenis+`</td>
             </tr>
             <tr>
-                <td>Nama Jurusan</td>
+                <td>Nama Jenis</td>
                 <td>`+data.nama+`</td>
             </tr>
             <tr>
-                <td>Status Jurusan</td>
+                <td>Status Jenis</td>
                 <td>`+data.status+`</td>
             </tr>
+            <tr>
+                <td>Tanggal Input</td>
+                <td>`+data.tgl_input+`</td>
+            </tr>
             `;
-            $   ('#table-preview tbody').html(html);
+            $('#table-preview tbody').html(html);
             
             $('#modal-preview-id').text(id);
             $('#modal-preview').modal('show');
         }
     });
-    
-    // BUTTON DELETE 2 - PREVIEW DATA
-        $('.modal-header').on('click','#btn-delete2',function(e){
+
+    // BUTTON DELETE 2
+    $('.modal-header').on('click','#btn-delete2',function(e){
         var id = $('#modal-preview-id').text();
         $('#modal-preview').modal('hide');
         msgDialog({
@@ -581,11 +602,11 @@
         });
     });
 
-    //BUTTON EDIT 2 - PREVIEW DATA
+    //BUTTON EDIT 2
     $('.modal-header').on('click', '#btn-edit2', function(){
         var id= $('#modal-preview-id').text();
         
-        $('#judul-form').html('Edit Data Jurusan');
+        $('#judul-form').html('Edit Data Jenis');
         $('#form-tambah')[0].reset();
         $('#form-tambah').validate().resetForm();
         $('#btn-save').attr('type','button');
@@ -593,16 +614,16 @@
 
         $.ajax({
             type: 'GET',
-            url: "{{ url('dev-master/jurusan-detail') }}",
+            url: "{{ url('dev-master/jenis-detail') }}",
             dataType: 'json',
-            data:{'kode_jur':id},
+            data:{'kode_jenis':id},
             async:false,
             success:function(result){
                 if(result.status){
                     $('#id_edit').val('edit');
-                    $('#kode_jur').val(id);
+                    $('#kode_jenis').val(id);
                     $('#method').val('put');
-                    $('#kode_jur').attr('readonly', true);
+                    $('#kode_jenis').attr('readonly', true);
                     $('#nama').val(result.daftar[0].nama);
                     // $('#row-id').show();
                     $('#saku-datatable').hide();
@@ -630,8 +651,6 @@
         $('.dropdown-ke1').removeClass('hidden');
         $('.dropdown-ke2').addClass('hidden');
     });
-    
-
-    // END PREVIEW DETAIL
+    //END PREVIEW DATA JENIS
 
 </script>
