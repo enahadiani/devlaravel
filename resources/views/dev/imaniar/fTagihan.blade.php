@@ -405,19 +405,19 @@
                                 return $(this).text();
                             }
                         })
-                        no= 1;
-                        for(var i=0;i<result.detail.length;i++){
-                            var line =result.detail[i];
-                            $('.nilke'+no).inputmask("numeric", {
-                                radixPoint: ",",
-                                groupSeparator: ".",
-                                digits: 2,
-                                autoGroup: true,
-                                rightAlign: true,
-                                oncleared: function () { self.Value(''); }
-                            });
-                            no++;
-                        }
+                        // no= 1;
+                        // for(var i=0;i<result.detail.length;i++){
+                        //     var line =result.detail[i];
+                        //     $('.nilke'+no).inputmask("numeric", {
+                        //         radixPoint: ",",
+                        //         groupSeparator: ".",
+                        //         digits: 2,
+                        //         autoGroup: true,
+                        //         rightAlign: true,
+                        //         oncleared: function () { self.Value(''); }
+                        //     });
+                        //     no++;
+                        // }
                         
                     }
 
@@ -903,14 +903,14 @@
                 input += "<td class='text-center'><a class=' hapus-item' style='font-size:18px'><i class='simple-icon-trash'></i></a>&nbsp;</td>";
                 input += "</tr>";
                 $('#input-tagihan tbody').append(input);
-                $('.nilke'+no).inputmask("numeric", {
-                    radixPoint: ",",
-                    groupSeparator: ".",
-                    digits: 2,
-                    autoGroup: true,
-                    rightAlign: true,
-                    oncleared: function () { self.Value(''); }
-                });
+                // $('.nilke'+no).inputmask("numeric", {
+                //     radixPoint: ",",
+                //     groupSeparator: ".",
+                //     digits: 2,
+                //     autoGroup: true,
+                //     rightAlign: true,
+                //     oncleared: function () { self.Value(''); }
+                // });
 
                 hitungTotalRow();
                 hideUnselectedRow();
@@ -1198,19 +1198,19 @@
                                 return $(this).text();
                             }
                         })
-                        no= 1;
-                        for(var i=0;i<result.detail.length;i++){
-                            var line =result.detail[i];
-                            $('.nilke'+no).inputmask("numeric", {
-                                radixPoint: ",",
-                                groupSeparator: ".",
-                                digits: 2,
-                                autoGroup: true,
-                                rightAlign: true,
-                                oncleared: function () { self.Value(''); }
-                            });
-                            no++;
-                        }
+                        // no= 1;
+                        // for(var i=0;i<result.detail.length;i++){
+                        //     var line =result.detail[i];
+                        //     $('.nilke'+no).inputmask("numeric", {
+                        //         radixPoint: ",",
+                        //         groupSeparator: ".",
+                        //         digits: 2,
+                        //         autoGroup: true,
+                        //         rightAlign: true,
+                        //         oncleared: function () { self.Value(''); }
+                        //     });
+                        //     no++;
+                        // }
                         
                     }
                     hitungTotalRow();
@@ -1516,19 +1516,19 @@
                                 return $(this).text();
                             }
                         })
-                        no= 1;
-                        for(var i=0;i<result.detail.length;i++){
-                            var line =result.detail[i];
-                            $('.nilke'+no).inputmask("numeric", {
-                                radixPoint: ",",
-                                groupSeparator: ".",
-                                digits: 2,
-                                autoGroup: true,
-                                rightAlign: true,
-                                oncleared: function () { self.Value(''); }
-                            });
-                            no++;
-                        }
+                        // no= 1;
+                        // for(var i=0;i<result.detail.length;i++){
+                        //     var line =result.detail[i];
+                        //     $('.nilke'+no).inputmask("numeric", {
+                        //         radixPoint: ",",
+                        //         groupSeparator: ".",
+                        //         digits: 2,
+                        //         autoGroup: true,
+                        //         rightAlign: true,
+                        //         oncleared: function () { self.Value(''); }
+                        //     });
+                        //     no++;
+                        // }
                         
                     }
                     hitungTotalRow();
