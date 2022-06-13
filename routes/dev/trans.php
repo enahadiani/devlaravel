@@ -23,3 +23,6 @@ Route::get('dev-pembayaran-load', 'Dev\UploadPembayaranController@loadDataTmp');
 
 // tagihan
 Route::post('dev-tagihan-upload', 'Dev\UploadTagihanController@uploadXLS');
+
+// upload mahasiswa
+Route::post('dev-mahasiswa-upload', 'Dev\UploadMahasiswaController@uploadExcel');
