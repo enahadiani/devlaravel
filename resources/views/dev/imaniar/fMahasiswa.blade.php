@@ -37,7 +37,7 @@
 </style>
 
 <!-- LIST DATA -->
-<x-list-data judul="Data Mahasiswa" tambah="true" :thead="array('NIM','Nama Mahasiswa','Jurusan','Status','Action')" :thwidth="array(15,15,15,15,15)" :thclass="array('','','','','text-center')" />
+<x-list-data judul="Data Mahasiswa" tambah="true" :thead="array('NIM','Nama Mahasiswa','Jenis Kelamin','Jurusan','Status','Action')" :thwidth="array(15,15,15,15,15,15)" :thclass="array('','','','','','text-center')" />
 <!-- END LIST DATA -->
 
 <!-- FORM INPUT -->
@@ -112,8 +112,8 @@
                                 <thead style="background:#F8F8F8">
                                     <tr>
                                       @php 
-                                        $column = array("No","NIM","Nama Mahasiswa","Jurusan");
-                                        $width = array(5,15,15,15);
+                                        $column = array("No","NIM","Nama Mahasiswa","Jenis Kelamin","Jurusan");
+                                        $width = array(5,15,15,15,15);
                                         @endphp
                                         @for($i=0; $i < count($column); $i++)
                                             <th style='width:{{ $width[$i] }}%'>{{ $column[$i] }}</th>
@@ -209,6 +209,7 @@
     var psscrollform = new PerfectScrollbar(scrollform);    
 
     $('.selectize').selectize();
+
     $("#tanggal").bootstrapDP({
         autoclose: true,
         format: 'dd/mm/yyyy',
@@ -222,10 +223,11 @@
     // END 
 
     // FUNCTION AJAX
+    // Menghapus data mahasiswa tmp pada database dev_mahasiswa_tmp
     function clearTmp(){
         $.ajax({
             type: 'DELETE',
-            url: "{{ url('payroll-trans/payroll-no_gaji-upload-clear-tmp') }}",
+            url: "{{ url('dev-trans/mahasiswa-upload-clear-temp') }}",
             dataType: 'json',
             async:false,
             success:function(result){   
@@ -233,13 +235,252 @@
                     tablepeserta.ajax.reload();
                 }
                 else if(!result.status && result.message == 'Unauthorized'){
-                    window.location.href = "{{ url('bdh-auth/sesi-habis') }}";
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                 }else{
                     alert(result.message);
                 }
             }
         });
     }
+
+    $('#tanggal').change(function(e){
+        // e.preventDefault();
+        var tanggal = $('#tanggal').val();
+        if(tanggal == ""){
+            alert('Tanggal wajib diisi');
+            return false;
+        }
+        generateNoBukti(tanggal);
+    })
+
+        // DATABASE
+        // var action_html = "<a href='#' title='Edit' id='btn-edit'><i class='simple-icon-pencil' style='font-size:18px'></i></a> &nbsp;&nbsp;&nbsp; <a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";
+        // var dataTable = $("#table-data").DataTable({
+        // destroy: true,
+        // bLengthChange: false,
+        // sDom: 't<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
+        // 'ajax': {
+        //     'url': "{{ url('dev-trans/mahasiswa') }}",
+        //     'async':false,
+        //     'type': 'GET',
+        //     'dataSrc' : function(json) {
+        //         if(json.status){
+        //             return json.daf tar;   
+        //         }else{
+        //             window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+        //             return [];
+        //         }
+        //     }
+        // },
+        // 'columnDefs': [
+        //     {'targets': 5, data: null, 'defaultContent': action_html,'className': 'text-center' },
+        // ],
+        // 'columns': [
+        //     { data: 'nim' },
+        //     { data: 'nama' },
+        //     { data: 'jenis_kelamin' },
+        //     { data: 'nama_jur' },
+        //     { data: 'status' }
+        // ],
+        // drawCallback: function () {
+        //     $($(".dataTables_wrapper .pagination li:first-of-type"))
+        //         .find("a")
+        //         .addClass("prev");
+        //     $($(".dataTables_wrapper .pagination li:last-of-type"))
+        //         .find("a")
+        //         .addClass("next");
+
+        //     $(".dataTables_wrapper .pagination").addClass("pagination-sm");
+        // },
+        // language: {
+        //     paginate: {
+        //         previous: "<i class='simple-icon-arrow-left'></i>",
+        //         next: "<i class='simple-icon-arrow-right'></i>"
+        //     },
+        //     search: "_INPUT_",
+        //     searchPlaceholder: "Search...",
+        //     // lengthMenu: "Items Per Page _MENU_"
+        //     "lengthMenu": 'Menampilkan <select>'+
+        //     '<option value="10">10 per halaman</option>'+
+        //     '<option value="25">25 per halaman</option>'+
+        //     '<option value="50">50 per halaman</option>'+
+        //     '<option value="100">100 per halaman</option>'+
+        //     '</select>',
+            
+        //     info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        //     infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
+        //     infoFiltered: "(terfilter dari _MAX_ total entri)"
+        // }
+        // });
+        //END DATABASE
+
+    // LIST DATA
+    var action_html = "<a href='#' title='Hapus'  id='btn-delete'><i class='simple-icon-trash' style='font-size:18px'></i></a>";
+    var action_html2 = "";
+    var dataTable = generateTable(
+        "table-data",
+        "{{ url('dev-trans/mahasiswa') }}", 
+        [
+            {'targets': 5, data: null, 'defaultContent': action_html,'className': 'text-center' },
+            {
+                "targets": 0,
+                "createdCell": function (td, cellData, rowData, row, col) {
+                    if ( rowData.status == "baru" ) {
+                        $(td).parents('tr').addClass('selected');
+                        $(td).addClass('last-add');
+                    }
+                }
+            }
+        ],
+        [
+            { data: 'nim' },
+            { data: 'nama' },
+            { data: 'jenis_kelamin' },
+            { data: 'nama_jur' },
+            { data: 'status'}
+        ],
+        "{{ url('dev-auth/sesi-habis') }}",
+        [[3 ,"desc"]]
+    );
+
+    $.fn.DataTable.ext.pager.numbers_length = 3;
+
+    $("#searchData").on("keyup", function (event) {
+        dataTable.search($(this).val()).draw();
+    });
+
+    $("#page-count").on("change", function (event) {
+        var selText = $(this).val();
+        dataTable.page.len(parseInt(selText)).draw();
+    });
+
+    $('[data-toggle="popover"]').popover({ trigger: "focus" });
+    // END LIST DATA
+
+    // GRID
+        var tablepeserta = $("#input-peserta").DataTable({
+            destroy: true,
+            scrollX: true,
+            pageLength: 50,
+            scrollY: '50vh',
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ url('dev-trans/mahasiswa-upload-tmp') }}",
+                type: "POST",
+                data: function(prm) {
+                    return $.extend({}, prm, {})
+                }
+            },
+            deferRender: true,
+            sDom: 't<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
+            columns: [
+                { data: 'no' },
+                { data: 'nim' },
+                { data: 'nama' },
+                { data: 'jenis_kelamin' },
+                { data: 'kode_jur' }
+            ],
+            order:[],
+            drawCallback: function () {
+                $($(".dataTables_wrapper .pagination li:first-of-type"))
+                    .find("a")
+                    .addClass("prev");
+                $($(".dataTables_wrapper .pagination li:last-of-type"))
+                    .find("a")
+                    .addClass("next");
+
+                $(".dataTables_wrapper .pagination").addClass("pagination-sm");
+            },
+            language: {
+                paginate: {
+                    previous: "<i class='simple-icon-arrow-left'></i>",
+                    next: "<i class='simple-icon-arrow-right'></i>"
+                },
+                search: "_INPUT_",
+                searchPlaceholder: "Search...",
+                lengthMenu: "Items Per Page _MENU_",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
+                infoFiltered: "(terfilter dari _MAX_ total entri)"
+            }
+        });
+        var tableerror = $("#input-error").DataTable({
+            destroy: true,
+            scrollX: true,
+            pageLength: 50,
+            scrollY: 'calc(100vh - 360px)',
+            sDom: 't<"row view-pager pl-2 mt-3"<"col-sm-12 col-md-4"i><"col-sm-12 col-md-8"p>>',
+            data: [],
+            columns: [
+                { data: 'no' },
+                { data: 'error' }
+            ],
+            order:[],
+            drawCallback: function () {
+                $($(".dataTables_wrapper .pagination li:first-of-type"))
+                    .find("a")
+                    .addClass("prev");
+                $($(".dataTables_wrapper .pagination li:last-of-type"))
+                    .find("a")
+                    .addClass("next");
+
+                $(".dataTables_wrapper .pagination").addClass("pagination-sm");
+            },
+            language: {
+                paginate: {
+                    previous: "<i class='simple-icon-arrow-left'></i>",
+                    next: "<i class='simple-icon-arrow-right'></i>"
+                },
+                search: "_INPUT_",
+                searchPlaceholder: "Search...",
+                lengthMenu: "Items Per Page _MENU_",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
+                infoFiltered: "(terfilter dari _MAX_ total entri)"
+            }
+        });
+    //END GRID
+
+    // HAPUS DATA
+    function hapusData(id){
+        $.ajax({
+            type: 'DELETE',
+            url: "{{ url('dev-trans/mahasiswa') }}/"+id,
+            dataType: 'json',
+            async:false,
+            success:function(result){
+                if(result.data.status){
+                    dataTable.ajax.reload();                    
+                    showNotification("top", "center", "success",'Hapus Data','Upload Peserta ('+id+') berhasil dihapus ');
+                    // $('#modal-preview-id').html('');
+                    $('#table-delete tbody').html('');                  
+                    if(typeof M == 'undefined'){
+                        $('#modal-delete').modal('hide');
+                    }else{
+                        $('#modal-delete').bootstrapMD('hide');
+                    }
+                }else if(!result.data.status && result.data.message == "Unauthorized"){
+                    window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+                }else{
+                    msgDialog({
+                        id: '-',
+                        type: 'warning',
+                        title: 'Error',
+                        text: result.data.message
+                    });
+                }
+            }
+        });
+    }
+    $('#saku-datatable').on('click','#btn-delete',function(e){
+            var id = $(this).closest('tr').find('td').eq(0).html();
+            msgDialog({
+                id: id,
+                type:'hapus'
+            });
+        });
+    // END HAPUS DATA
 
     // BUTTON TAMBAH
     $('#saku-datatable').on('click', '#btn-tambah', function(){
@@ -291,6 +532,7 @@
         }
     });
 
+    // Menyimpan data import ke table dev_mahasiswa_tmp / tabel sementara
     $("#form-import").validate({
         rules: {
             file: {required: true, accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"}
@@ -371,7 +613,7 @@
                                 $('#process-upload').addClass('disabled');
                                 $('#process-upload').prop('disabled', true);
                             }
-                            var link = "{{ config('api.url').'payroll-trans/payroll-export?kode_lokasi='.Session::get('lokasi').'&nik_user='.Session::get('nikUser').'&nik='.Session::get('userLog') }}";
+                            var link = "{{ config('api.url').'dev2/export-mahasiswa2' }}?type=template";
                             $('.pesan-upload-judul').html('Gagal upload!');
                             $('.pesan-upload-judul').removeClass('text-success');
                             $('.pesan-upload-judul').addClass('text-danger');
@@ -379,7 +621,7 @@
                         }
                     }
                     else if(!result.data.status && result.data.message == 'Unauthorized'){
-                        window.location.href = "{{ url('bdh-auth/sesi-habis') }}";
+                        window.location.href = "{{ url('dev-auth/sesi-habis') }}";
                         console.log("Gagal 2 ");
                     }
                     else{
@@ -431,19 +673,184 @@
         }
     });
 
-    $('#download-template').click(function(){
-        alert('test');
-        // var nik_user = "{{ Session::get('nikUser') }}";
-        // var nik = "{{ Session::get('userLog') }}";
-        // var link = "{{ config('api.url').'payroll-trans/payroll-export' }}?nik_user="+nik_user+"&nik="+nik+"&type=template";
-        // window.open(link, '_blank'); 
-        $("#input-peserta").table2excel({
-            // exclude: ".excludeThisClass",
-            name: "Mahasiswa_Template{{ Session::get('userLog').'_'.Session::get('lokasi').'_'.date('dmy').'_'.date('Hi') }}",
-            filename: "Mahasiswa_Template_{{ Session::get('userLog') }}.xlsx", // do include extension
-            preserveColors: false // set to true if you want background colors and font colors preserved
-        }); 
+    $('#validate-data').click(function(e){
+        
+        $.ajax({
+            type: 'GET',
+            url: "{{ url('/dev-trans/mahasiswa-upload-validate') }}",
+            dataType: 'json',
+            data: {nik_user: "{{ Session::get('nikUser') }}"},
+            async:false,
+            success:function(result){
+                tableerror.clear().draw();
+                if(!result.status){
+                    $('#btn-save').addClass('disabled');
+                    $('#btn-save').prop('disabled', true);
+                    tableerror.rows.add(result.data).draw(false);
+                    tableerror.columns.adjust().draw();
+                    $('.nav-tabs a[href="#data-error"]').tab('show');
+                    if(typeof M == 'undefined'){
+                        $('#modal-import').modal('hide');
+                    }else{
+                        $('#modal-import').bootstrapMD('hide');
+                    }
+                    if(result.message == 'Unauthorized'){
+                        window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+                    }else if(result.message == 'Sukses'){
+                        // 
+                    }else{
+                        msgDialog({
+                            id: '-',
+                            type: 'warning',
+                            title: 'Error',
+                            text: JSON.stringify(result.message)
+                        });
+                    }
+                }else{
+                    msgDialog({
+                        id: '-',
+                        type: 'sukses',
+                        title: 'Sukses',
+                        text: 'Validasi data berhasil'
+                    });
+                    $('#btn-save').removeClass('disabled');
+                    $('#btn-save').prop('disabled', false);
+                }
+            }
+        });
     });
 
+    $('#download-template').click(function(){
+        alert('test');
+        var nik_user = "{{ Session::get('nikUser') }}";
+        var nik = "{{ Session::get('userLog') }}";
+        console.log(nik);
+        var link = "{{ config('api.url').'dev2/export-mahasiswa2' }}?type=template";
+        console.log(link);
+        window.open(link, '_blank'); 
+        // $("#input-peserta").table2excel({
+        //     // exclude: ".excludeThisClass",
+        //     name: "Mahasiswa_Template{{ Session::get('userLog').'_'.Session::get('lokasi').'_'.date('dmy').'_'.date('Hi') }}",
+        //     filename: "Mahasiswa_Template_{{ Session::get('userLog') }}.xls", // do include extension
+        //     preserveColors: false // set to true if you want background colors and font colors preserved
+        // }); 
+    });
+
+    $('#download-error').click(function(){
+        var kode_lokasi = "{{ Session::get('lokasi') }}";
+        var nik_user = "{{ Session::get('nikUser') }}";
+        var nik = "{{ Session::get('userLog') }}";
+        var link = "{{ config('api.url').'billing-trans/error-payroll-export' }}?kode_lokasi="+kode_lokasi+"&nik_user="+nik_user+"&nik="+nik;
+        window.open(link, '_blank'); 
+    });
+
+
+    // SIMPAN DATA
+    $('#form-tambah').validate({
+        ignore: [],
+        errorElement: "label",
+        submitHandler: function (form) {
+            console.log(form);
+            var formData = new FormData(form);
+            console.log(formData);
+            for(var pair of formData.entries()) {
+                console.log(pair[0]+ ', '+ pair[1]); 
+            }
+
+            var jumdet = tablepeserta.data().count();
+            var param = $('#id').val();
+            var id = $('#nim').val();
+
+            var url = "{{ url('/dev-trans/mahasiswa-simpan') }}";
+
+            if(jumdet == 0){
+                alert('Transaksi tidak valid. Detail Mahasiswa tidak boleh kosong ');
+            }else{
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    dataType: 'json',
+                    data: formData,
+                    async:false,
+                    contentType: false,
+                    cache: false,
+                    processData: false, 
+                    success:function(result){
+                        // alert('Input data '+result.message);
+                        if(result.data.status){
+                            // location.reload();
+                            dataTable.ajax.reload();
+                            tablepeserta.ajax.reload();
+                            tableerror.clear().draw();
+                            $('#form-tambah')[0].reset();
+                            $('#form-tambah').validate().resetForm();
+                            $('#row-id').hide();
+                            $('#method').val('post');
+                            $('#judul-form').html('Tambah Upload Payroll');
+                            $('#id').val('');
+                            $('#input-grid tbody').html('');
+                            $('[id^=label]').html('');
+                            $('#kode_form').val($form_aktif);
+                            
+                            msgDialog({
+                                id:'-',
+                                type:'simpan',
+                                text: result.data.message
+                            });
+
+                            if(result.data.no_pooling != undefined){
+                                kirimWAEmail(result.data.no_pooling);
+                            }
+
+                        }
+                        else if(!result.data.status && result.data.message == 'Unauthorized'){
+                            window.location.href = "{{ url('dev-auth/sesi-habis') }}";
+                        }
+                        else{
+                            msgDialog({
+                                id: '-',
+                                type: 'warning',
+                                title: 'Gagal',
+                                text: result.data.message
+                            });
+                        }
+                        // $iconLoad.hide();
+                    },
+                    error: function(xhr, status, error) {
+                        var error = JSON.parse(xhr.responseText);
+                        var detail = Object.values(error.trace);
+                        console.log(detail);
+                        if(xhr.status == 422){
+                            var keys = Object.keys(error.trace);
+                            var tab =  $('#'+keys[0]).parents('.tab-pane').attr('id');
+                            $('a[href="#'+tab+'"]').click();
+                            $('#'+keys[0]).addClass('error');
+                            $('#'+keys[0]).parent('.input-group').addClass('input-group-error');
+                            $("label[for="+keys[0]+"]").append("<br/>");
+                            $("label[for="+keys[0]+"]").append('<label id="'+keys[0]+'-error" class="error" for="'+keys[0]+'">'+detail[0]+'</label>');
+                            $('#'+keys[0]).focus();
+                        }
+                        Swal.fire({
+                            type: 'error',
+                            title: error.message,
+                            text: detail[0]
+                        })
+                    },
+                    fail: function(xhr, textStatus, errorThrown){
+                        alert('request failed:'+textStatus);
+                    }
+                });
+            }
+
+        },
+        errorPlacement: function (error, element) {
+            var id = element.attr("id");
+            $("label[for="+id+"]").append("<br/>");
+            $("label[for="+id+"]").append(error);
+        }
+    });
+
+    // END SIMPAN
 
 </script>
