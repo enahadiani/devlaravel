@@ -108,10 +108,13 @@ class JurusanController extends Controller
 
     public function update(Request $request) {
 
+  
+
             $this->validate($request, [
                 'kode_jur' => 'required',
                 'nama' => 'required'
             ]);
+
 
             try {
                 $client = new Client();

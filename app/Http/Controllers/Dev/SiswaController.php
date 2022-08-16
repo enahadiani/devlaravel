@@ -11,9 +11,11 @@ use GuzzleHttp\Exception\BadResponseException;
 class SiswaController extends Controller
 {
     public function __contruct() {
+
         if(!Session::get('login')){
             return redirect('dev-auth/login');
         }
+        
     }
 
     public function index(Request $request){
