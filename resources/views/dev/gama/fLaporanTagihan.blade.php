@@ -61,8 +61,6 @@ date_default_timezone_set("Asia/Bangkok");
         toname : "",
     }
 
-    
-
 
   
 
@@ -193,7 +191,7 @@ date_default_timezone_set("Asia/Bangkok");
             console.log(pair[0]+ ', '+ pair[1]); 
         }
         $('#saku-report').removeClass('hidden');
-        xurl = "{{ url('dev-auth/form/imaniar_rptTagihan') }}";
+        xurl = "{{ url('dev-auth/form/gama_rtagihan') }}";
         $('#saku-report #canvasPreview').load(xurl);
         setHeightReport();
     });
@@ -209,7 +207,7 @@ date_default_timezone_set("Asia/Bangkok");
         for(var pair of $formData.entries()) {
             console.log(pair[0]+ ', '+ pair[1]); 
         }
-        xurl = "{{ url('dev-auth/form/imaniar_rptTagihan') }}";
+        xurl = "{{ url('dev-auth/form/gama_rtagihan') }}";
         $('#saku-report #canvasPreview').load(xurl);
     });
 

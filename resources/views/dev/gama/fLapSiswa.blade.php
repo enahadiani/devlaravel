@@ -2,7 +2,7 @@
 <div class="row" id="saku-filter">
     <div class="col-12">
         <div class="card" >
-            <x-report-header judul="Laporan Data Tagihan" padding="px-0 py-4"/>
+            <x-report-header judul="Laporan Siswa Aktif" padding="px-0 py-4"/>
             <div class="separator"></div>
             <div class="row">
                 <div class="col-12 col-sm-12">
@@ -12,8 +12,8 @@
                                 <h6>Filter</h6>
                                 <div id="inputFilter">
                                     <!-- COMPONENT -->
-                                    <x-inp-filter kode="no_tagihan" nama="Nomor Tagihan" selected="1" :option="array('1','2','3','i')"/>
                                     <x-inp-filter kode="nim" nama="NIS Siswa" selected="1" :option="array('1','2','3','i')"/>
+                                    <x-inp-filter kode="kode_jur" nama="Jurusan" selected="1" :option="array('1','2','3','i')"/>
                                     <!-- END COMPONENT -->
                                 </div>
                                 <button id="btn-tampil" style="float:right;width:110px" class="btn btn-primary ml-2 mb-3" type="submit" >Tampilkan</button>
@@ -28,7 +28,7 @@
         </div>
     </div>
 </div>
-<x-report-result judul="Tagihan" padding="px-0 py-4"/>
+<x-report-result judul="Siswa" padding="px-0 py-4"/>
 
 @include('modal_search')
 @include('modal_email')
@@ -45,14 +45,6 @@ date_default_timezone_set("Asia/Bangkok");
             'X-CSRF-TOKEN': $('meta[name="-token"]').attr('content')
         }
     });
-    var $no_tagihan = {
-        type : "=",
-        from : "{{ Session::get('no_tagihan') }}",
-        fromname : "{{ Session::get('no_tagihan') }}",
-        to : "",
-        toname : "",
-    }
-
     var $nim = {
         type : "=",
         from : "{{ Session::get('nim') }}",
@@ -61,13 +53,16 @@ date_default_timezone_set("Asia/Bangkok");
         toname : "",
     }
 
-    
+    var $kode_jur = {
+        type : "=",
+        from : "{{ Session::get('kode_jur') }}",
+        fromname : "{{ Session::get('kode_jur') }}",
+        to : "",
+        toname : "",
+    }
 
-
-  
-
-    $('#no_tagihan-from').val("{{ Session::get('no_tagihan') }}");
     $('#nim-from').val("{{ Session::get('nim') }}");
+    $('#kode_jur-from').val("{{ Session::get('kode_jur') }}");
 
     $('#btn-filter').click(function(e){
         $('#collapseFilter').show();
@@ -105,20 +100,20 @@ date_default_timezone_set("Asia/Bangkok");
     $('.selectize').selectize();
 
     $('#inputFilter').reportFilter({
-        kode : ['nim','no_tagihan'],
-        nama : ['NIS','Daftar Tagihan'],
-        header : [['NIS', 'Nama Siswa'],['Nomor Tagihan','Ketarangan Tagihan']],
-        headerpilih : [['NIS', 'Nama Siswa','Action'],['Nomor Tagihan', 'Keterangan Tagihan','Action']],
+        kode : ['nim','kode_jur'],
+        nama : ['NIS','Jurusan'],
+        header : [['NIS', 'Nama Siswa'],['Kode Jurusan','Nama Jurusan']],
+        headerpilih : [['NIS', 'Nama Siswa','Action'],['Kode Jurusan', 'Nama Jurusan','Action']],
         columns: [
             [
                 { data: 'nim' },
                 { data: 'nama' }
             ],[
-                { data: 'no_tagihan' },
-                { data: 'keterangan' }
+                { data: 'kode_jur' },
+                { data: 'nama' }
             ]
         ],
-        url :["{{ url('dev-report/filter-nim') }}","{{ url('dev-report/filter-tagihan') }}"],
+        url :["{{ url('dev-report/filter-nim') }}","{{ url('dev-report/filter-jurusan') }}"],
         parameter:[{},{
             'nim[0]' : $nim.type,
             'nim[1]' : $nim.from,
@@ -127,9 +122,9 @@ date_default_timezone_set("Asia/Bangkok");
             'flag_aktif[1]' : '1',
             'flag_aktif[2]' : ''
         },{
-            'no_tagihan[0]' : $no_tagihan.type,
-            'no_tagihan[1]' : $no_tagihan.from,
-            'no_tagihan[2]' : $no_tagihan.to,
+            'kode_jur[0]' : $kode_jur.type,
+            'kode_jur[1]' : $kode_jur.from,
+            'kode_jur[2]' : $kode_jur.to,
             'flag_aktif[0]' : '=',
             'flag_aktif[1]' : '1',
             'flag_aktif[2]' : ''
@@ -142,20 +137,20 @@ date_default_timezone_set("Asia/Bangkok");
     $('#inputFilter').on('change','input',function(e){
         setTimeout(() => {
             $('#inputFilter').reportFilter({
-                kode : ['nim','no_tagihan'],
-                nama : ['NIS','Daftar Tagihan'],
-                header : [['NIS', 'Nama Siswa'],['Nomor Tagihan','Ketarangan Tagihan']],
-                headerpilih : [['NIS', 'Nama Siswa','Action'],['Nomor Tagihan', 'Keterangan Tagihan','Action']],
+                kode : ['nim','kode_jur'],
+                nama : ['NIS','Jurusan'],
+                header : [['NIS', 'Nama Siswa'],['Kode Jurusan','Nama Jurusan']],
+                headerpilih : [['NIS', 'Nama Siswa','Action'],['Kode Jurusan', 'Nama Jurusan','Action']],
                 columns: [
                     [
                         { data: 'nim' },
                         { data: 'nama' }
                     ],[
-                        { data: 'no_tagihan' },
-                        { data: 'keterangan' }
+                        { data: 'kode_jur' },
+                        { data: 'nama' }
                     ]
                 ],
-                url :["{{ url('dev-report/filter-nim') }}","{{ url('dev-report/filter-tagihan') }}"],
+                url :["{{ url('dev-report/filter-nim') }}","{{ url('dev-report/filter-jurusan') }}"],
                 parameter:[{},{
                     'nim[0]' : $nim.type,
                     'nim[1]' : $nim.from,
@@ -164,9 +159,9 @@ date_default_timezone_set("Asia/Bangkok");
                     'flag_aktif[1]' : '1',
                     'flag_aktif[2]' : ''
                 },{
-                    'no_tagihan[0]' : $no_tagihan.type,
-                    'no_tagihan[1]' : $no_tagihan.from,
-                    'no_tagihan[2]' : $no_tagihan.to,
+                    'kode_jur[0]' : $kode_jur.type,
+                    'kode_jur[1]' : $kode_jur.from,
+                    'kode_jur[2]' : $kode_jur.to,
                     'flag_aktif[0]' : '=',
                     'flag_aktif[1]' : '1',
                     'flag_aktif[2]' : ''
@@ -186,14 +181,14 @@ date_default_timezone_set("Asia/Bangkok");
         $formData.append("nim[]",$nim.type);
         $formData.append("nim[]",$nim.from);
         $formData.append("nim[]",$nim.to);
-        $formData.append("no_tagihan[]",$no_tagihan.type);
-        $formData.append("no_tagihan[]",$no_tagihan.from);
-        $formData.append("no_tagihan[]",$no_tagihan.to);
+        $formData.append("kode_jur[]",$kode_jur.type);
+        $formData.append("kode_jur[]",$kode_jur.from);
+        $formData.append("kode_jur[]",$kode_jur.to);
         for(var pair of $formData.entries()) {
             console.log(pair[0]+ ', '+ pair[1]); 
         }
         $('#saku-report').removeClass('hidden');
-        xurl = "{{ url('dev-auth/form/imaniar_rptTagihan') }}";
+        xurl = "{{ url('dev-auth/form/gama_rsiswa') }}";
         $('#saku-report #canvasPreview').load(xurl);
         setHeightReport();
     });
@@ -203,13 +198,13 @@ date_default_timezone_set("Asia/Bangkok");
         $formData.append("nim[]",$nim.type);
         $formData.append("nim[]",$nim.from);
         $formData.append("nim[]",$nim.to);
-        $formData.append("no_tagihan[]",$no_tagihan.type);
-        $formData.append("no_tagihan[]",$no_tagihan.from);
-        $formData.append("no_tagihan[]",$no_tagihan.to);
+        $formData.append("kode_jur[]",$kode_jur.type);
+        $formData.append("kode_jur[]",$kode_jur.from);
+        $formData.append("kode_jur[]",$kode_jur.to);
         for(var pair of $formData.entries()) {
             console.log(pair[0]+ ', '+ pair[1]); 
         }
-        xurl = "{{ url('dev-auth/form/imaniar_rptTagihan') }}";
+        xurl = "{{ url('dev-auth/form/gama_rsiswa') }}";
         $('#saku-report #canvasPreview').load(xurl);
     });
 
@@ -235,6 +230,5 @@ date_default_timezone_set("Asia/Bangkok");
             preserveColors: false // set to true if you want background colors and font colors preserved
         });
     });
-
 
 </script>
