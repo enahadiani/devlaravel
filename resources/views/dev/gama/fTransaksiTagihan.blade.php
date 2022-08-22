@@ -51,7 +51,7 @@
                                                         <span class="input-group-text info-code_nim" readonly="readonly" title="" data-toggle="tooltip" data-placement="top" ></span>
                                                     </div>
                                                     <input type="text" class="form-control inp-label-nim" id="nim" name="nim" value="" title="">
-                                                    <span class="info-name_nim hidden">
+                                                    <span class="info-name_nim ">
                                                         <span></span> 
                                                     </span>
                                                     <i class="simple-icon-close float-right info-icon-hapus hidden"></i>
@@ -491,7 +491,7 @@
         $target = target1;
         $target2 = target2;
         var parameter = {param:par};
-        console.log(par);
+      
         
         switch(par){
             case 'nim': 
@@ -863,6 +863,7 @@
             if(nim != ""){
                 var no=$('#input-tagihan .row-nilai:last').index();
                 no=no+2;
+                console.log(no);
                 var input = "";
                 input += "<tr class='row-nilai'>";
                 input += "<td class='no-nilai text-center'>"+no+"</td>";
@@ -1218,7 +1219,13 @@
             nim:
             {
                 required: true
-            }
+            },
+            keterangan:{
+                required:true
+            },
+            periode:{
+                required:true
+            },
         },
         errorElement: "label",
         submitHandler: function (form) {
