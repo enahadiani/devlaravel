@@ -37,7 +37,7 @@
 </style>
 
 <!-- LIST DATA -->
-<x-list-data judul="Data Mahasiswa" tambah="true" :thead="array('NIM','Nama Mahasiswa','Jenis Kelamin','Jurusan','Status','Action')" :thwidth="array(15,15,15,15,15,15)" :thclass="array('','','','','','text-center')" />
+<x-list-data judul="Data Siswa" tambah="true" :thead="array('NIM','Nama Siswa','Jenis Kelamin','Jurusan','Status','Action')" :thwidth="array(15,15,15,15,15,15)" :thclass="array('','','','','','text-center')" />
 <!-- END LIST DATA -->
 
 <!-- FORM INPUT -->
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     <ul class="nav nav-tabs col-12 " role="tablist">
-                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#data-peserta" role="tab" aria-selected="true"><span class="hidden-xs-down">Data Mahasiswa</span></a> </li>
+                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#data-peserta" role="tab" aria-selected="true"><span class="hidden-xs-down">Data Siswa</span></a> </li>
                         <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#data-error" role="tab" aria-selected="true"><span class="hidden-xs-down">Pesan Validasi</span></a> </li>
                     </ul>
                     <div class="tab-content tabcontent-border col-12 p-0">
@@ -112,7 +112,7 @@
                                 <thead style="background:#F8F8F8">
                                     <tr>
                                       @php 
-                                        $column = array("No","NIM","Nama Mahasiswa","Jenis Kelamin","Jurusan");
+                                        $column = array("No","NIM","Nama Siswa","Jenis Kelamin","Jurusan");
                                         $width = array(5,15,15,15,15);
                                         @endphp
                                         @for($i=0; $i < count($column); $i++)
@@ -490,7 +490,7 @@
         $('#btn-save').prop('disabled', true);
         $('#row-id').hide();
         $('#method').val('post');
-        $('#judul-form').html('Tambah Upload Mahasiswa');
+        $('#judul-form').html('Tambah Upload Siswa');
         $('#btn-update').attr('id','btn-save');
         $('#btn-save').attr('type','submit');
         $('#form-tambah')[0].reset();
@@ -730,8 +730,8 @@
         window.open(link, '_blank'); 
         // $("#input-peserta").table2excel({
         //     // exclude: ".excludeThisClass",
-        //     name: "Mahasiswa_Template{{ Session::get('userLog').'_'.Session::get('lokasi').'_'.date('dmy').'_'.date('Hi') }}",
-        //     filename: "Mahasiswa_Template_{{ Session::get('userLog') }}.xls", // do include extension
+        //     name: "Siswa_Template{{ Session::get('userLog').'_'.Session::get('lokasi').'_'.date('dmy').'_'.date('Hi') }}",
+        //     filename: "Siswa_Template_{{ Session::get('userLog') }}.xls", // do include extension
         //     preserveColors: false // set to true if you want background colors and font colors preserved
         // }); 
     });
@@ -764,7 +764,7 @@
             var url = "{{ url('/dev-trans/mahasiswa-simpan') }}";
 
             if(jumdet == 0){
-                alert('Transaksi tidak valid. Detail Mahasiswa tidak boleh kosong ');
+                alert('Transaksi tidak valid. Detail Siswa tidak boleh kosong ');
             }else{
 
                 $.ajax({
