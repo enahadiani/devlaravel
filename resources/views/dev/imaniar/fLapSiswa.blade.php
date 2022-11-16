@@ -46,23 +46,20 @@ date_default_timezone_set("Asia/Bangkok");
         }
     });
     var $nim = {
-        type : "=",
-        from : "{{ Session::get('nim') }}",
-        fromname : "{{ Session::get('nim') }}",
+        type : "all",
+        from : "",
+        fromname : "",
         to : "",
         toname : "",
     }
 
     var $kode_jur = {
-        type : "=",
-        from : "{{ Session::get('kode_jur') }}",
-        fromname : "{{ Session::get('kode_jur') }}",
+        type : "all",
+        from : "",
+        fromname : "",
         to : "",
         toname : "",
     }
-
-    $('#nim-from').val("{{ Session::get('nim') }}");
-    $('#kode_jur-from').val("{{ Session::get('kode_jur') }}");
 
     $('#btn-filter').click(function(e){
         $('#collapseFilter').show();
