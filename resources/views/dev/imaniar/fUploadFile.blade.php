@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ asset('form.css') }}" />
 
 {{-- LIST DATA --}}
-<x-list-data judul="Data Mahasiswa" tambah="true" :thead="['NIM', 'Nama', 'Jenis Kelamin', 'Jurusan', 'Aksi']" :thwidth="[10, 20, 10, 10, 10]" :thclass="['', '', '', '', 'text-center']" />
+<x-list-data judul="Data Siswa" tambah="true" :thead="['NIM', 'Nama', 'Jenis Kelamin', 'Jurusan', 'Aksi']" :thwidth="[10, 20, 10, 10, 10]" :thclass="['', '', '', '', 'text-center']" />
 {{-- END LIST DATA --}}
 
 {{-- FORM --}}
@@ -21,7 +21,7 @@
                 <div class="card-body pt-0 form-body" id="form-body">
                     <ul class="nav nav-tabs col-12 " role="tablist">
                         <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#data-kedinasan"
-                                role="tab" aria-selected="true"><span class="hidden-xs-down">Data Mahasiswa</span></a></li>
+                                role="tab" aria-selected="true"><span class="hidden-xs-down">Data Siswa</span></a></li>
                         {{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#data-unit" role="tab" aria-selected="true"><span class="hidden-xs-down">Data Unit</span></a></li>
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#data-posisi" role="tab" aria-selected="true"><span class="hidden-xs-down">Data Posisi</span></a></li> --}}
                     </ul>
@@ -117,7 +117,7 @@
         // $('#btn-save').prop('disabled', true);
         $('#row-id').hide();
         $('#method').val('post');
-        $('#judul-form').html('Tambah Mahasiswa');
+        $('#judul-form').html('Tambah Siswa');
         $('#btn-update').attr('id','btn-save');
         $('#btn-save').attr('type','submit');
         $('#form-tambah')[0].reset();
@@ -237,13 +237,13 @@
             case 'nim[]': 
                 var options = { 
                     id : par,
-                    header : ['NIM', 'Nama Mahasiswa'],
+                    header : ['NIM', 'Nama Siswa'],
                     url : "{{ url('dev-trans/mahasiswa') }}",
                     columns : [
                         { data: 'nim' },
                         { data: 'nama' }
                     ],
-                    judul : "Daftar Mahasiswa",
+                    judul : "Daftar Siswa",
                     pilih : "nim",
                     jTarget1 : "val",
                     jTarget2 : "val",
@@ -649,7 +649,7 @@
                             var kode = result.data.kode;
                             dataTable.ajax.reload();
                             $('#input-mahsiswa tbody').empty()
-                            $('#judul-form').html('Tambah Data Mahasiswa');
+                            $('#judul-form').html('Tambah Data Siswa');
                             $('#form-tambah')[0].reset();
                             $('#form-tambah').validate().resetForm();
                             msgDialog({
@@ -703,7 +703,7 @@
         $('#btn-save').attr('type', 'button');
         $('#btn-save').attr('id', 'btn-update');
 
-        $('#judul-form').html('Edit Data Mahasiswa "' + nama + '"');
+        $('#judul-form').html('Edit Data Siswa "' + nama + '"');
         $('.input-group-prepend').addClass('hidden');
         $('span[class^=info-name]').addClass('hidden');
         $('.info-icon-hapus').addClass('hidden');
@@ -865,7 +865,7 @@
             success: function(result) {
                 if (result.data.status) {
                     dataTable.ajax.reload();
-                    showNotification("top", "center", "success", 'Hapus Data', 'Data Mahasiswa dengan NIM (' + id +
+                    showNotification("top", "center", "success", 'Hapus Data', 'Data Siswa dengan NIM (' + id +
                         ') berhasil dihapus ');
                     $('#modal-pesan-id').html('');
                     $('#table-delete tbody').html('');
